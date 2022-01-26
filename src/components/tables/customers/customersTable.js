@@ -1,197 +1,209 @@
-import React, {useMemo, useState, useEffect} from 'react'
-import {useTable, useSortBy, useGlobalFilter, useFilters, usePagination, useResizeColumns} from 'react-table'
-import { Table, Button } from 'reactstrap';
-import Loader from 'react-loader-spinner'
-import { faArrowUp, faArrowDown} from "@fortawesome/free-solid-svg-icons";
+import React, { useMemo, useState, useEffect } from "react";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  useFilters,
+  usePagination,
+  useResizeColumns,
+} from "react-table";
+import { Table } from "reactstrap";
+import Loader from "react-loader-spinner";
+import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// import DayPicker from '../../components/DayPicker'
+import { COLUMNS } from "./customersColumns";
+import { GlobalFilter } from "../common/GlobalFilter";
 
-import {COLUMNS, GROUPED_COLUMNS} from './customersColumns'
-import Pagination from '../common/Pagination'
-import { GlobalFilter } from '../common/GlobalFilter';
-
-import getAllCustomers from '../../../services/getAllCustomers'
+import getAllCustomers from "../../../services/getAllCustomers";
 
 export const CustomersTable = () => {
-    
-    const [customers, setCustomers] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
-    // const [dateRange, setdateRange] = useState({
-    //     from: undefined,
-    //     to: undefined,
-    //     show: false
-    // })
-    const [filterNum, setfilterNum] = useState('')
+  const [customers, setCustomers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  const getRecords = async () => {
+    setIsLoading(true);
+    const records = await getAllCustomers();
+    setCustomers(records);
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    getRecords();
+  }, []);
 
-    // const filterRecords = async () => {
-    //     console.log(dateRange)
-    //     let filteredPayments = await filterPayments(dateRange.from, dateRange.to)
-    //     console.log(filteredPayments)
-    //     setPayments(filteredPayments)
-    //     setfilterNum(filteredPayments.length)
-    // }
+  const columns = useMemo(() => COLUMNS, []);
+  const data = customers;
 
-    useEffect(async () => {
-        setIsLoading(true)
-        const records = await getAllCustomers()
-        // records.forEach(p => {
-        //     if(p.salesCombinations) {
-        //         p.salesCombinations.forEach( c => {
-        //             p[c.size] = c.qty
-        //         })
-        //     }
-        // })
-        setCustomers(records)
-        setIsLoading(false)
-    }, []);
-        
-    const columns = useMemo(() => COLUMNS, [])
-    const data = customers
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        page,
-        allColumns,
-        getToggleHideAllColumnsProps,
-        nextPage,
-        previousPage,
-        canNextPage,
-        canPreviousPage,
-        pageOptions,
-        gotoPage,
-        pageCount,
-        setPageSize,
-        state,
-        setGlobalFilter,
-        prepareRow,
-
-    } = useTable({
-        columns,
-        data,
-        useResizeColumns
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page,
+    allColumns,
+    getToggleHideAllColumnsProps,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    pageOptions,
+    gotoPage,
+    pageCount,
+    setPageSize,
+    state,
+    setGlobalFilter,
+    prepareRow,
+  } = useTable(
+    {
+      columns,
+      data,
+      useResizeColumns,
     },
     useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination
-    )
+  );
 
-    const {globalFilter, pageIndex, pageSize} = state
+  const { globalFilter, pageIndex, pageSize } = state;
 
-    return (
+  return (
+    <div>
+      {isLoading ? (
+        <Loader
+          style={{ marginLeft: "35%" }}
+          type="ThreeDots"
+          color="#00BFFF"
+          height={300}
+          width={300}
+        />
+      ) : (
         <div>
-            {
-                isLoading ? 
-                <Loader style={{marginLeft : "35%"}}
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={300}
-                    width={300}
-                /> :
-                <div>
-                    
+          <p className="alert alert-info"> {data.length} records.</p>
+          <div className="row">
+            <div className="col-12">
+              <input type="checkbox" {...getToggleHideAllColumnsProps()} />
+              All Columns
+            </div>
+            {allColumns.map((column) => (
+              <div key={column.id} className="col-3" style={{ float: "left" }}>
+                <label>
+                  <input type="checkbox" {...column.getToggleHiddenProps()} />
+                  {column.Header}
+                </label>
+              </div>
+            ))}
+          </div>
 
-                    <p className="alert alert-info"> {data.length} records.</p>
-                    <div className="row">
-                        <div className="col-12">
-                            <input type="checkbox" {...getToggleHideAllColumnsProps()} />All Columns
-                        </div>
-                        {
-                            allColumns.map(column => (
-                                <div key={column.id} className="col-3" style={{float: "left"}}>
-                                    <label>
-                                        <input type="checkbox" {...column.getToggleHiddenProps()}/>
-                                        {column.Header}
-                                    </label>
-                                </div>
-                            ))
-                        }
-                    </div>
+          <div className="mb-3">
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+          </div>
 
-                    
-                    {/* <DayPicker dateRange={dateRange} setdateRange={setdateRange} filterRecords={filterRecords}/>
-                    {filterNum && (
-                        filterNum>0 ?
-                            <h6>{filterNum} records found.</h6>
-                            : <h6>No records found.</h6>
-                    )
-                    } */}
-                    <div className="mb-3">
-                        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
-                    </div>                   
-
-                    <Table size="sm"  dark hover {...getTableProps()} responsive style={{height: "200px"}}>
-                        <thead style={{textAlign: 'center'}}> 
-                            {headerGroups.map((headerGroups) => (
-                                <tr {...headerGroups.getHeaderGroupProps()}>
-                                    {
-                                        headerGroups.headers.map( (column) => (
-                                            <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.style}  >
-                                                {column.render('Header')}
-                                                <span>
-                                                    {column.isSorted ? (column.isSortedDesc ? 
-                                                        <FontAwesomeIcon icon={faArrowDown} size="1x"/>: 
-                                                        <FontAwesomeIcon icon={faArrowUp} size="1x"/>) : ''}
-                                                </span>
-                                                <div placeholder="Search">{column.canFilter ? column.render('Filter') : null}</div>
-                                            </th>
-                                        ))
-                                    }
-                                </tr>
-                            ))}
-                            
-                        </thead>
-                        <tbody {...getTableBodyProps()}>
-                            {
-                                page.map( row => {
-                                    prepareRow(row)
-                                    return (
-                                        <tr {...row.getRowProps()}>
-                                            {row.cells.map((cell) => {
-                                                return <td {...cell.getCellProps()} style={{textAlign: 'center'}} 
-                                                >{cell.render('Cell')}</td>
-                                            })}
-                                            {/* <Button>Hello</Button> */}
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </Table>
-                    <div>
-                        <span>
-                            Page{' '}
-                        <strong> {pageIndex + 1} of {pageOptions.length}</strong> {' '}
-                        </span>
-                        <span>
-                            | Go to Page: {' '}
-                            <input type="number" defaultValue={pageIndex+1}
-                            onChange={e => {
-                                const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0
-                                gotoPage(pageNumber)
-                            }} style={{width: "50px"}}/>
-                        </span>
-                        <select value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
-                            {
-                                [5,10,25,50,100].map((pageSize) => (
-                                    <option key={pageSize} value={pageSize}>
-                                        Show {pageSize}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>{'<<'}</button>
-                        <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>
-                        <button onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
-                        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>{'>>'}</button>
-                    </div>
-                </div>
-            }
-        {/* <Pagination /> */}
+          <Table
+            size="sm"
+            dark
+            hover
+            {...getTableProps()}
+            responsive
+            style={{ height: "200px" }}
+          >
+            <thead style={{ textAlign: "center" }}>
+              {headerGroups.map((headerGroups) => (
+                <tr {...headerGroups.getHeaderGroupProps()}>
+                  {headerGroups.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      style={column.style}
+                    >
+                      {column.render("Header")}
+                      <span>
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <FontAwesomeIcon icon={faArrowDown} size="1x" />
+                          ) : (
+                            <FontAwesomeIcon icon={faArrowUp} size="1x" />
+                          )
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                      <div placeholder="Search">
+                        {column.canFilter ? column.render("Filter") : null}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td
+                          {...cell.getCellProps()}
+                          style={{ textAlign: "center" }}
+                        >
+                          {cell.render("Cell")}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+          <div>
+            <span>
+              Page{" "}
+              <strong>
+                {" "}
+                {pageIndex + 1} of {pageOptions.length}
+              </strong>{" "}
+            </span>
+            <span>
+              | Go to Page:{" "}
+              <input
+                type="number"
+                defaultValue={pageIndex + 1}
+                onChange={(e) => {
+                  const pageNumber = e.target.value
+                    ? Number(e.target.value) - 1
+                    : 0;
+                  gotoPage(pageNumber);
+                }}
+                style={{ width: "50px" }}
+              />
+            </span>
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+            >
+              {[5, 10, 25, 50, 100].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              {"<<"}
+            </button>
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+              Previous
+            </button>
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+              Next
+            </button>
+            <button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              {">>"}
+            </button>
+          </div>
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};
