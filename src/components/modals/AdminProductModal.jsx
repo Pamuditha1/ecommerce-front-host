@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Link } from "react-router-dom";
+
 import SetDiscount from "../SetDiscount";
 import ViewProductImage from "../ViewProductImage";
+
 import addDiscount from "../../services/addDiscount";
-import { Link, Route, Switch } from "react-router-dom";
-import UpdateProduct from "../UpdateProduct";
 
 const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
-  console.log("function called");
-
   useEffect(() => {}, [product.productNo]);
 
   let combinations = [];
@@ -19,7 +18,6 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
   const setDis = (d) => {
     setdiscount(d);
     product.discount = d;
-    console.log(discount);
   };
   const removeDiscount = async () => {
     setdiscount(0);
@@ -28,20 +26,13 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
       id: product._id,
       discount: 0,
     };
-    console.log(discountData);
     await addDiscount(discountData);
-  };
-  const updateItm = () => {
-    toggle();
   };
 
   const toggle = () => setisModalOpen(!isModalOpen);
 
   return (
     <div>
-      {" "}
-      {console.log(combinations)}
-      {/* <Button color="danger" onClick={toggle}>Open</Button> */}
       <Modal isOpen={isModalOpen} toggle={toggle}>
         <ModalHeader toggle={toggle} style={{ color: "black" }}>
           {product.productName}
@@ -128,7 +119,6 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
               </Button>
             </Link>
           </center>
-          {/* <Button color="danger" onClick={toggle}>Close</Button> */}
         </ModalFooter>
       </Modal>
     </div>

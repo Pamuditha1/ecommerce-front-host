@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Link } from "react-router-dom";
-import PurchaseForm from "../PurchaseForm";
 import jwtDecode from "jwt-decode";
+
+import PurchaseForm from "../PurchaseForm";
+
 import getCustomer from "../../services/getCustomerService";
 import placeOrder from "../../services/placeOrderService";
 
@@ -21,7 +23,7 @@ const PurchaseModal = ({
 
   const [placeAccess, setplaceAccess] = useState(false);
 
-  useEffect(async () => {
+  const getUser = async () => {
     try {
       const jwt = localStorage.getItem("token");
       const uid = jwtDecode(jwt)._id;
@@ -31,16 +33,17 @@ const PurchaseModal = ({
     } catch (err) {
       console.log(err);
     }
+  };
+
+  useEffect(() => {
+    getUser();
   }, [user]);
 
   const placeOder = async (e) => {
     e.preventDefault();
-    // setLoading(true)
-    // addProduct(customerData)
 
     let cartStore = JSON.parse(localStorage.getItem("cart"));
     let orderDetails = cartStore.map((i) => {
-      // let orderDetails = cart.map(i => {
       return {
         id: i._id,
         size: i.user.size,
@@ -56,19 +59,15 @@ const PurchaseModal = ({
     };
 
     await placeOrder(order);
-    console.log("Placing Order", order);
     toggle();
     const resetCart = () => {
       localStorage.removeItem("cart");
     };
     resetCart();
     history.push("/");
-    // console.log(cart)
-    // setLoading(false)
   };
   return (
     <div>
-      {/* <Button color="danger" onClick={toggle}>Open</Button> */}
       <Modal isOpen={isModalOpen} toggle={toggle}>
         <ModalHeader toggle={toggle} style={{ color: "black" }}>
           Checkout
