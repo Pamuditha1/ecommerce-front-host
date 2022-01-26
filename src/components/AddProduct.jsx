@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import ProductImageUpload from "./ProductImageUpload";
-import { toast } from "react-toastify";
 
 import addProduct from "../services/addProductService.js";
-import addProductImage from "../services/addProductImageService";
 import getSuppliers from "../services/getSupplierForProduct";
 import getProductNo from "../services/getProductNo";
 
@@ -24,11 +20,7 @@ function AddProduct() {
     rquantity: 0,
     profit: 0,
     profitP: "",
-    barcode: ""
-  });
-  const [sizeQty, setsizeQty] = useState({
-    size: "",
-    qty: 0,
+    barcode: "",
   });
   const sizes = ["Choose Size", "XS", "S", "M", "L", "XL", "XXL"];
   const materials = [
@@ -47,101 +39,75 @@ function AddProduct() {
     "Shorts",
   ];
   const [suppliers, setsuppliers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const [file, setFile] = useState("");
-  const [filePreview, setFilePreview] = useState("");
-  const [filename, setFilename] = useState("Choose File");
-  const [nameOfImage, setNameOfImage] = useState("");
 
   const [productSaved, setproductSaved] = useState(false);
-  const [imageSaved, setimagesaved] = useState(false);
   const [savedSize, setsavedSize] = useState("");
 
-  useEffect(async () => {
+  const getInitialData = async () => {
     let suppl = ["Choose Supplier"];
     let result = await getSuppliers();
     result.forEach((r) => {
       suppl.push(r);
     });
     setsuppliers(suppl);
-    // setsuppliers([...suppliers, await getSuppliers()]);
-    console.log(suppliers);
     setProductData({ ...productData, productNo: "P" + (await getProductNo()) });
+  };
+
+  useEffect(() => {
+    getInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onchange = (e) => {
+  function onchange(e) {
     setProductData({
       ...productData,
       [e.target.name]: e.target.value,
     });
-
-  };
+  }
 
   const onchangeSelect = (e) => {
     setProductData({
       ...productData,
       size: e.target.value,
     });
-    // console.log(productData)
   };
   const onchangeSelectSupp = (e) => {
     setProductData({
       ...productData,
       supplier: e.target.value,
     });
-    // console.log(productData)
   };
   const onchangeSelectMaterial = (e) => {
     setProductData({
       ...productData,
       material: e.target.value,
     });
-    // console.log(productData)
   };
   const onchangeSelectCategory = (e) => {
     setProductData({
       ...productData,
       category: e.target.value,
     });
-    // console.log(productData)
-  };
-  const reload = () => {
-    window.location.reload(false);
   };
 
   const submit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setsavedSize(productData.size);
-    setNameOfImage(productData.productNo);
 
-    let profit = parseInt(productData.price) - parseInt(productData.bprice)
-    let profitPresen = ((parseInt(productData.price) - parseInt(productData.bprice)) /
-    parseInt(productData.bprice)) *
-  100;
-
+    let profit = parseInt(productData.price) - parseInt(productData.bprice);
+    let profitPresen =
+      ((parseInt(productData.price) - parseInt(productData.bprice)) /
+        parseInt(productData.bprice)) *
+      100;
 
     addProduct({
       ...productData,
-        profit: profit,
+      profit: profit,
       profitP: parseFloat(profitPresen).toFixed(2),
-    })
-    .then(() => {
-      // addProductImage(file, productData.productNo)
-    })
+    }).then(() => {});
 
-    console.log(file, filename, filePreview, nameOfImage);
-    setLoading(false);
     setproductSaved(true);
-
   };
-  const submitImage = async () => {
-    // e.preventDefault();
-    await addProductImage(file, nameOfImage);
-    setimagesaved(true);
-  };
-  const addSize = () => {};
 
   let profitPre =
     ((parseInt(productData.price) - parseInt(productData.bprice)) /
@@ -159,18 +125,7 @@ function AddProduct() {
         </h6>
 
         <div className="row">
-          <div className="col-5">
-            {/* <ProductImageUpload
-              // onImageSubmit={onImageSubmit}
-              file={file}
-              setFile={setFile}
-              filePreview={filePreview}
-              setFilePreview={setFilePreview}
-              filename={filename}
-              setFilename={setFilename}
-              nameOfImage={nameOfImage}
-            /> */}
-          </div>
+          <div className="col-5"></div>
 
           <div className="col-7">
             <div className="row">
@@ -243,7 +198,6 @@ function AddProduct() {
                 <label htmlFor="material" className="col-5">
                   Material
                 </label>
-                {/* <input onChange={onchange} value={productData.material} className="form-control col-11 ml-3" type="text" id="material" name="material"/> */}
                 <select
                   onChange={onchangeSelectMaterial}
                   value={productData.material}
@@ -318,9 +272,6 @@ function AddProduct() {
                   </div>
                 </>
               )}
-              {/* <div className="col-12">
-                                <SizeAqty />
-                            </div> */}
               <div className="form-group col-6 mt-3">
                 <label htmlFor="category" className="col-5">
                   Category
@@ -423,7 +374,6 @@ function AddProduct() {
         >
           {productSaved ? `Product Saved` : "Save Product"}
         </button>
-
       </form>
     </div>
   );

@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import registerSupplier from "../services/addSupplier";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 function AddSupplier() {
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  const nicRegex = /^([0-9]{9}[X|V]|[0-9]{12})$/
+  const nicRegex = /^([0-9]{9}[X|V]|[0-9]{12})$/;
 
   const formik = useFormik({
     initialValues: {
@@ -23,13 +22,18 @@ function AddSupplier() {
         .max(15, "Maximum 10 characters")
         .required("Required!"),
       email: Yup.string().email("Invalid Email").required("Required!"),
-      contact1: Yup.string().matches(phoneRegex, "Invalid Phone Number.").required("Contact No Required"),
-      contact2: Yup.string().matches(phoneRegex, "Invalid Phone Number.").required("Contact No Required"),
-      nic: Yup.string().matches(nicRegex,'Invalid NIC number').required('National Identity Card Number is required.'),
+      contact1: Yup.string()
+        .matches(phoneRegex, "Invalid Phone Number.")
+        .required("Contact No Required"),
+      contact2: Yup.string()
+        .matches(phoneRegex, "Invalid Phone Number.")
+        .required("Contact No Required"),
+      nic: Yup.string()
+        .matches(nicRegex, "Invalid NIC number")
+        .required("National Identity Card Number is required."),
       address: Yup.string().required("Required!"),
     }),
     onSubmit: async (values) => {
-      console.log("F USer Data", values);
       await registerSupplier(values);
     },
   });

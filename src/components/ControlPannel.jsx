@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import AddProduct from "./AddProduct";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import Header from "./Header";
 import AdminHeader from "./AdminHeader";
-import AdminViewProducts from "./AdminViewProducts";
 import AddSupplier from "./AddSupplier";
 import UpdateProduct from "./UpdateProduct";
 import NewAdminProducts from "./NewAdminProducts";
 import Inventory from "./Inventory";
-import { SalesTable } from "./tables/sales/salesTable";
 import Sales from "./Sales";
 import Orders from "./Orders";
 import AdminLogin from "./AdminLogin";
@@ -19,13 +16,6 @@ import Customers from "./Customers";
 import Reports from "./Reports";
 
 function ControlPannel(props) {
-  const [userType, setuserType] = useState("");
-
-  useEffect(() => {
-    let t = localStorage.getItem("type");
-    setuserType(t);
-  }, []);
-  console.log("Pannel Props", props.location.pathname);
   return (
     <>
       {localStorage.getItem("adminToken") ? (
@@ -61,7 +51,7 @@ function ControlPannel(props) {
           <Switch>
             <Route exact path="/admin" component={AdminLogin} />
           </Switch>
-          {props.location.pathname != "/admin" && (
+          {props.location.pathname !== "/admin" && (
             <div>
               No Access, Please Login
               <Link to="/admin">

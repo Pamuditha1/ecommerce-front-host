@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { DatePicker } from "react-rainbow-components";
 
 import registerCustomer from "../services/registerCustomer";
 
 function RegisterCustomer() {
-  const[dob, setdob] = useState("")
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
   const formik = useFormik({
     initialValues: {
@@ -18,7 +16,7 @@ function RegisterCustomer() {
       password: "",
       repeatpassword: "",
       district: "",
-      province: ""
+      province: "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -26,7 +24,9 @@ function RegisterCustomer() {
         .max(15, "Maximum 10 characters")
         .required("Name is Required"),
       email: Yup.string().email("Invalid Email").required("Email is Required"),
-      contact: Yup.string().matches(phoneRegex, "Invalid Phone Number.").required("Contact No Required"),
+      contact: Yup.string()
+        .matches(phoneRegex, "Invalid Phone Number.")
+        .required("Contact No Required"),
       address: Yup.string().required("Address is Required"),
       password: Yup.string()
         .min(5, "Minimum 5 Characters")
@@ -34,23 +34,15 @@ function RegisterCustomer() {
       repeatpassword: Yup.string()
         .oneOf([Yup.ref("password")], "Password's Not Match")
         .required("Required"),
-        // district : Yup.string().required("Required"),
-        // province : Yup.string().required("Required")
     }),
     onSubmit: async (values) => {
-      console.log("F USer Data", values);
       let newOb = {
         ...values,
-        // dob
-      }
+      };
       const jwt = await registerCustomer(newOb);
       localStorage.setItem("token", jwt);
     },
   });
-
-  const reload = () => {
-    window.location.reload(false);
-  };
 
   return (
     <div>
@@ -137,60 +129,7 @@ function RegisterCustomer() {
                   </p>
                 )}
               </div>
-              {/* <div className="form-group col-12">
-                <label htmlFor="dob" className="col-5">
-                  DOB
-                </label>
-                <DatePicker
-                  id="dob"
-                  formatStyle="medium"
-                  value={dob}
-                  onChange={(value) =>
-                    setdob(value.toLocaleDateString())
-                  }
-                />
-                {formik.errors.dob && formik.touched.dob && (
-                  <p className="ml-5 mt-2 text-danger">
-                    {formik.errors.dob}
-                  </p>
-                )}
-              </div> */}
-              {/* <div className="form-group col-12">
-                <label htmlFor="province" className="col-5">
-                  Province
-                </label>
-                <input
-                  onChange={formik.handleChange}
-                  value={formik.values.province}
-                  className="form-control col-11 ml-3"
-                  type="text"
-                  id="province"
-                  name="province"
-                />
-                {formik.errors.province && formik.touched.province && (
-                  <p className="ml-5 mt-2 text-danger">
-                    {formik.errors.province}
-                  </p>
-                )}
-              </div> */}
-              {/* <div className="form-group col-12">
-                <label htmlFor="district" className="col-5">
-                  District
-                </label>
-                <input
-                  onChange={formik.handleChange}
-                  value={formik.values.district}
-                  className="form-control col-11 ml-3"
-                  type="text"
-                  id="district"
-                  name="district"
-                />
-                {formik.errors.district && formik.touched.district && (
-                  <p className="ml-5 mt-2 text-danger">
-                    {formik.errors.district}
-                  </p>
-                )}
-              </div> */}
+
               <div className="form-group col-12">
                 <label htmlFor="password" className="col-5">
                   Password

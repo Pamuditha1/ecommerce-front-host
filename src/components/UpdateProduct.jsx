@@ -7,12 +7,9 @@ import getSuppliers from "../services/getSupplierForProduct";
 import ViewProductImage from "./ViewProductImage";
 
 function UpdateProduct(props) {
-  console.log(props.match.params.id);
-
   const [productData, setProductData] = useState({});
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  const [loading, setLoading] = useState(false);
   const [suppliers, setsuppliers] = useState([]);
 
   const [file, setFile] = useState("");
@@ -25,14 +22,10 @@ function UpdateProduct(props) {
   const [savedSize, setsavedSize] = useState("");
 
   useEffect(() => {
-    // setIsLoading(true)
     async function fetchProduct() {
       const products = await getOneProductAdmin(props.match.params.id);
-      // console.log("products", products)
       setProductData(products);
       setsuppliers(await getSuppliers());
-      console.log(suppliers);
-      console.log("Update Product", products);
     }
     fetchProduct();
   }, [props.match.params.id]);
@@ -42,39 +35,26 @@ function UpdateProduct(props) {
       ...productData,
       [e.target.name]: e.target.value,
     });
-    // console.log(productData)
   };
   const onchangeSelect = (e) => {
     setProductData({
       ...productData,
       size: e.target.value,
     });
-    // console.log(productData)
   };
   const onchangeSelectSupp = (e) => {
     setProductData({
       ...productData,
       supplier: e.target.value,
     });
-    // console.log(productData)
-  };
-  const reload = () => {
-    window.location.reload(false);
   };
 
   const submit = (e) => {
     e.preventDefault();
-    setLoading(true);
     setsavedSize(productData.size);
     setNameOfImage(productData.productNo);
-    console.log("Name of image", nameOfImage);
-    console.log("Product Data to update", productData);
     updateProduct(productData);
-    console.log(file, filename, filePreview, nameOfImage);
-    // addProductImage(file, nameOfImage)
-    setLoading(false);
     setproductSaved(true);
-    // setTimeout(function(){ reload() }, 3000);
   };
   const submitImage = (e) => {
     e.preventDefault();
@@ -95,7 +75,6 @@ function UpdateProduct(props) {
         <div className="row">
           <div className="col-6">
             <ProductImageUpload
-              // onImageSubmit={onImageSubmit}
               file={file}
               setFile={setFile}
               filePreview={filePreview}
@@ -220,9 +199,6 @@ function UpdateProduct(props) {
                   name="price"
                 />
               </div>
-              {/* <div className="col-12">
-                                <SizeAqty />
-                            </div> */}
               <div className="form-group col-6">
                 <label htmlFor="category" className="col-5">
                   Category

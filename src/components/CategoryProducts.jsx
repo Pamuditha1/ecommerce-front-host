@@ -13,31 +13,17 @@ function CategoryProducts(props) {
   async function fetchProducts() {
     const products = await getAllProducts();
     let fill = products.filter((p) => {
-      if (p.category == props.match.params.category) return true;
+      if (p.category === props.match.params.category) return true;
+      return false;
     });
     setallProducts(fill);
   }
 
   useEffect(() => {
-    // setIsLoading(true)
     fetchProducts();
-
-    // setIsLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.category]);
-  console.log("URL", props.match.params.category);
 
-  const productNameStyle = {
-    backgroundColor: "hsl(0, 0%, 100%, 0.7)",
-    color: "black",
-    paddingLeft: "5px",
-  };
-  const productPriceStyle = {
-    color: "white",
-    marginBottom: "0",
-    // backgroundColor: "yellow",
-    borderRadius: "10px",
-    opacity: "1",
-  };
   const discountedPriceStyle = {
     color: "#ff0000",
     marginTop: "0%",
@@ -45,9 +31,6 @@ function CategoryProducts(props) {
     backgroundColor: "white",
     borderRadius: "10px",
     opacity: "0.8",
-  };
-  const viewButtomStyle = {
-    marginTop: "90%",
   };
 
   const viewModal = (p) => {
@@ -59,7 +42,6 @@ function CategoryProducts(props) {
     color: "black",
     boxShadow: "0px 10px 10px black",
     borderRadius: "20px",
-    // backgroundColor: "#f4d219",
   };
 
   const titaleStyle = {
@@ -95,7 +77,7 @@ function CategoryProducts(props) {
                         style={{
                           textDecoration:
                             product.discount &&
-                            product.discount != 0 &&
+                            product.discount !== 0 &&
                             "line-through",
                         }}
                       >
@@ -103,7 +85,7 @@ function CategoryProducts(props) {
                       </p>
                     </div>
                     <div className="col-6">
-                      {product.discount && product.discount != 0 && (
+                      {product.discount && product.discount !== 0 && (
                         <p className="card-text" style={discountedPriceStyle}>
                           <strong>Rs. {product.discountedPrice}</strong>
                         </p>

@@ -3,9 +3,6 @@ import getAllProducts from "../services/getAllProductsService.js";
 import ViewProductImage from "./ViewProductImage.jsx";
 import Modal from "react-modal";
 import ProductModal from "./modals/ProductModal.jsx";
-import { Badge } from "reactstrap";
-import { faArrowsAlt, faStar } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 Modal.setAppElement("#root");
 
 function Products(props) {
@@ -13,24 +10,15 @@ function Products(props) {
   const [isModalOpen, setisModalOpen] = useState(false);
   const [modalProduct, setmodalProduct] = useState({});
 
-  useEffect(async () => {
+  const getProducts = async () => {
     const products = await getAllProducts();
     setallProducts(products);
-    console.log(products);
+  };
+
+  useEffect(() => {
+    getProducts();
   }, []);
 
-  const productNameStyle = {
-    backgroundColor: "hsl(0, 0%, 100%, 0.7)",
-    color: "black",
-    paddingLeft: "5px",
-  };
-  const productPriceStyle = {
-    color: "white",
-    marginBottom: "0",
-    // backgroundColor: "yellow",
-    borderRadius: "10px",
-    opacity: "1",
-  };
   const discountedPriceStyle = {
     color: "#ff0000",
     marginTop: "0%",
@@ -38,9 +26,6 @@ function Products(props) {
     backgroundColor: "white",
     borderRadius: "10px",
     opacity: "0.8",
-  };
-  const viewButtomStyle = {
-    marginTop: "90%",
   };
 
   const viewModal = (p) => {
@@ -52,7 +37,6 @@ function Products(props) {
     color: "black",
     boxShadow: "0px 10px 10px black",
     borderRadius: "20px",
-    // backgroundColor: "#f4d219",
   };
   const titaleStyle = {
     color: "#f4d219",
@@ -87,7 +71,7 @@ function Products(props) {
                         style={{
                           textDecoration:
                             product.discount &&
-                            product.discount != 0 &&
+                            product.discount !== 0 &&
                             "line-through",
                         }}
                       >
@@ -95,7 +79,7 @@ function Products(props) {
                       </p>
                     </div>
                     <div className="col-6">
-                      {product.discount && product.discount != 0 && (
+                      {product.discount && product.discount !== 0 && (
                         <p
                           className="card-text pl-1"
                           style={discountedPriceStyle}

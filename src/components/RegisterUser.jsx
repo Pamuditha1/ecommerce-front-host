@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -7,7 +6,7 @@ import registerUser from "../services/registerUser";
 
 function RegisterUser() {
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  const nicRegex = /^([0-9]{9}[X|V]|[0-9]{12})$/
+  const nicRegex = /^([0-9]{9}[X|V]|[0-9]{12})$/;
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -26,9 +25,15 @@ function RegisterUser() {
         .max(15, "Maximum 10 characters")
         .required("Required!"),
       email: Yup.string().email("Invalid Email").required("Required!"),
-      contactNo: Yup.string().matches(phoneRegex, "Invalid Phone Number.").required("Contact No Required"),
-      contactNo2: Yup.string().matches(phoneRegex, "Invalid Phone Number.").required("Contact No Required"),
-      nic: Yup.string().matches(nicRegex,'Invalid NIC number').required('National Identity Card Number is required.'),
+      contactNo: Yup.string()
+        .matches(phoneRegex, "Invalid Phone Number.")
+        .required("Contact No Required"),
+      contactNo2: Yup.string()
+        .matches(phoneRegex, "Invalid Phone Number.")
+        .required("Contact No Required"),
+      nic: Yup.string()
+        .matches(nicRegex, "Invalid NIC number")
+        .required("National Identity Card Number is required."),
       address: Yup.string().required("Required!"),
       type: Yup.string().required("Required!"),
       password: Yup.string()
@@ -39,13 +44,11 @@ function RegisterUser() {
         .required("Required!"),
     }),
     onSubmit: async (values) => {
-      console.log("F USer Data", values);
       await registerUser(values);
     },
   });
 
   const roles = ["Choose Role", "Employee", "Admin"];
-  const [loading, setLoading] = useState(false);
 
   return (
     <div>
@@ -172,7 +175,6 @@ function RegisterUser() {
                 <label htmlFor="type" className="col-5">
                   User Role
                 </label>
-                {/* <input handleChange={handleChange} value={productData.material} className="form-control col-11 ml-3" type="text" id="material" name="material"/> */}
                 <select
                   onChange={formik.handleChange}
                   value={formik.values.type}
@@ -236,11 +238,7 @@ function RegisterUser() {
               </div>
               <div className="form-group col-12 mt-3">
                 <center>
-                  <button
-                    // onClick={submit}
-                    type="submit"
-                    className="btn btn-success"
-                  >
+                  <button type="submit" className="btn btn-success">
                     Register
                   </button>
                 </center>

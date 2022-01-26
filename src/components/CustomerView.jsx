@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Carousel from "./Carousel";
 import Header from "./Header";
 import NavBar from "./NavBar";
-import Products from "./Products";
 import Cart from "./Cart";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import RegisterCustomer from "./RegisterCustomer";
 import CustomerLogin from "./CustomerLogin";
-import PurchaseModal from "./modals/PurchaseModal";
 import CustomerHome from "./CustomerHome";
 import ChatBot from "./chatbot/ChatBot";
 import CategoryProducts from "./CategoryProducts";
@@ -23,27 +21,17 @@ function CustomerView(props) {
 
   const addtoCart = (p) => {
     let newCart = JSON.parse(localStorage.getItem("cart")) || [];
-    // let newCart = cart;
     newCart.push(p);
 
     setcart(newCart);
-    console.log("new Cart", cart);
 
-    //localstorage
     localStorage.setItem("cart", JSON.stringify(newCart));
 
     setcCount(cCount + 1);
   };
   const removeFromCart = (p) => {
-    // console.log("Remobing",p)
-    // console.log(pid)
-    console.log(p.user.size);
-    console.log(p);
-    // let currentCart = cart;
-    //localstorage
     let currentCart = JSON.parse(localStorage.getItem("cart"));
 
-    console.log("curr cart", currentCart);
     let removed = currentCart.filter((c) => {
       if ((c._id === p._id) & (c.user.size === p.user.size)) {
         c.user.addedToCart = false;
@@ -52,13 +40,9 @@ function CustomerView(props) {
       }
       return true;
     });
-    console.log("removef cart", removed);
     setcart(removed);
 
-    //localstorage
     localStorage.setItem("cart", JSON.stringify(removed));
-
-    console.log("filtered cart", cart);
   };
   const resetCart = () => {
     setcart([]);
@@ -71,7 +55,7 @@ function CustomerView(props) {
       <UserContext.Provider value={cart}>
         <Header />
         <NavBar count={cart.length} cCount={cCount} />
-        {currentLocation == "/user/home" && <Carousel />}
+        {currentLocation === "/user/home" && <Carousel />}
         <Switch>
           <Route
             path="/user/cart"

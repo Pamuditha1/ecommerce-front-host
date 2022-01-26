@@ -1,37 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "reactstrap";
 import ViewProductImage from "../components/ViewProductImage";
-import PurchaseModal from "./modals/PurchaseModal";
 
 function CartTable({
   cart,
   removeFromCart,
   resetCart,
-  cCount,
   setisModalOpen,
   subtotal,
   setsubtotal,
-  setSaveCart,
 }) {
-  // const [subTotal, setsubTotal] = useState(0)
-  // const [isPModalOpen, setisPModalOpen] = useState(false)
   const [items, setitems] = useState([]);
 
   function setCart() {
     let cartSto = localStorage.getItem("cart");
-    console.log("Cart storage", cartSto);
     let cartjson = JSON.parse(cartSto);
     setitems(cartjson);
   }
 
   useEffect(() => {
-    //localstorage
     setCart();
-
-    // setitems(cart);
   }, [cart]);
 
-  const qtyAva = "";
   let checkDisable = false;
 
   let ttotal = 0;
@@ -41,10 +31,6 @@ function CartTable({
       ttotal = ttotal + e.user.total;
     });
 
-  // cart.forEach(e=> {
-  //     () => setttotal( ttotal + e.user.total);
-  // });
-
   const tableStyle = {
     backgroundColor: "white",
     marginTop: "3%",
@@ -53,40 +39,20 @@ function CartTable({
     borderRadius: "40px",
   };
 
-  console.log(items);
-
   const changeQty = (value, id) => {
-    // setitems()
-    console.log("Items", items);
     let tem = items;
     let newItems = [];
-    let obj;
-
-    // let without = tem.filter((i) => {
-    //   if (i._id != id) {
-    //     return true;
-    //   }
-    //   obj = i;
-    // });
     tem.forEach((i) => {
-      if (i._id == id) {
+      if (i._id === id) {
         i.user.quantity = value;
-        // i.user.total = parseInt(i.price) * parseInt(value);
-
         i.user.total =
           parseInt(i.discountedPrice ? i.discountedPrice : i.price) *
           parseInt(value);
         newItems.push(i);
-        console.log("NEW IREMS", newItems);
       } else {
         newItems.push(i);
       }
     });
-    // obj.user.quantity = value;
-    // without.push(obj);
-
-    // setitems(without);
-    // localStorage.setItem("cart", JSON.stringify(without));
     localStorage.setItem("cart", JSON.stringify(newItems));
     setCart();
   };
@@ -98,15 +64,8 @@ function CartTable({
 
   const onCheckout = () => {
     setsubtotal(ttotal);
-    console.log(subtotal);
 
     setisModalOpen(true);
-  };
-
-  const cartStyle = {
-    boxShadow: "0px 10px 10px black",
-    fontWeight: "bold",
-    borderRadius: "40px",
   };
 
   return (
@@ -125,11 +84,10 @@ function CartTable({
           <tbody>
             {items &&
               items.map((p) => {
-                // setsubTotal(subTotal + p.user.total)
                 let aq = p.combinations.filter((c) => {
-                  if (c.size == p.user.size) return true;
+                  if (c.size === p.user.size) return true;
+                  return false;
                 })[0].qty;
-                console.log("aq", aq);
 
                 if (aq < p.user.quantity) checkDisable = true;
 
@@ -172,12 +130,10 @@ function CartTable({
                         style={{ maxWidth: "60px" }}
                       />
                       <p style={{ color: "red" }}>
-                        {aq < p.user.quantity &&
-                          // `Only ${aq} \nin Stock`
-                          "Out of Stock"}
+                        {aq < p.user.quantity && "Out of Stock"}
                       </p>
                     </td>
-                    {p.discount && p.discount != 0 ? (
+                    {p.discount && p.discount !== 0 ? (
                       <td className="text-center">
                         <span style={{ textDecoration: "line-through" }}>
                           Rs. {p.price}{" "}
@@ -205,7 +161,6 @@ function CartTable({
               })}
             <tr>
               <td>
-                {/* {cart.length > 0 && ( */}
                 {items && items.length > 0 && (
                   <Button color="warning" onClick={resetCart} className="ml-5">
                     {" "}
@@ -239,8 +194,6 @@ function CartTable({
       ) : (
         <h3 className="text-center mt-5">Your Cart is Empty</h3>
       )}
-
-      {/* <PurchaseModal isModalOpen={isPModalOpen} setisModalOpen={setisPModalOpen}/>  */}
     </div>
   );
 }

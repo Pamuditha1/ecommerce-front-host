@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import http from "../services/httpService";
-import { toast } from "react-toastify";
 import { api } from "../services/api";
 
 function ViewProductImage(props) {
   const [imagePath, setImagePath] = useState("");
-  const [msg, setMsg] = useState("");
 
-  useEffect(async () => {
+  const getImage = async () => {
     axios
       .get(`${api}/user/product/image/${props.proNo}`, {
         responseType: "arraybuffer",
       })
       .then((response) => {
         if (typeof response.data == "object") {
-          setMsg(response.data.msg);
         }
         const base64 = btoa(
           new Uint8Array(response.data).reduce(
@@ -26,6 +22,11 @@ function ViewProductImage(props) {
         setImagePath("data:;base64," + base64);
       })
       .catch((err) => console.log("Image Error", err));
+  };
+
+  useEffect(() => {
+    getImage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.proNo]);
 
   let discountBadge = {
@@ -45,12 +46,11 @@ function ViewProductImage(props) {
     display: "inlineBlock",
     margin: "auto",
   };
-  console.log(props.discount);
   return (
     <>
       {imagePath ? (
         <div style={item}>
-          {props.discount == 0 || typeof props.discount == "undefined" ? (
+          {props.discount === 0 || typeof props.discount == "undefined" ? (
             <></>
           ) : (
             <span style={discountBadge}>
@@ -61,9 +61,9 @@ function ViewProductImage(props) {
             </span>
           )}
           <img
+            alt="product"
             src={imagePath}
             style={{ borderRadius: "20px" }}
-            // className="pt-2"
             height={props.height}
             width={props.width}
           />

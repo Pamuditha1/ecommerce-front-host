@@ -3,8 +3,7 @@ import logo from "../images/Logo.png";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function AdminHeader(props) {
-  console.log("Sidebar", props);
+function AdminHeader() {
   const logout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("type");
@@ -26,6 +25,7 @@ function AdminHeader(props) {
   return (
     <div id="adminheader" style={headerStyle}>
       <img
+        alt="Logo"
         style={logoStyle}
         src={logo}
         id="logo"

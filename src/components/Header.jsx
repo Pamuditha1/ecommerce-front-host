@@ -15,6 +15,7 @@ function Header() {
   return (
     <div id="header" style={headerStyle}>
       <img
+        alt="Logo"
         src={logo}
         style={logoStyle}
         id="logo"
