@@ -8,8 +8,7 @@ export default function addDiscount(discountData) {
   return http
     .post(apiEndPoint, discountData)
     .then(function (response) {
-      console.log(response.data);
-      if (response.data == "Discount Added.")
+      if (response.data === "Discount Added.")
         return toast.success(`${response.data}`);
       toast.error(`${response.data}`);
     })

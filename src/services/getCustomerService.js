@@ -8,8 +8,6 @@ export default function getCustomer(id) {
   return http
     .get(`${apiEndPoint}${id}`)
     .then(function (response) {
-      console.log(response.data);
-      // toast.success(`${response.data}`);
       return response.data;
     })
     .catch(function (error) {

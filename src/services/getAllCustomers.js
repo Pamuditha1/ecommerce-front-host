@@ -2,15 +2,14 @@ import http from "./httpService";
 import { toast } from "react-toastify";
 import { api } from "./api";
 
-const apiEndPoint = `${api}/admin/customers`;
+const apiEndPoint = `${api}/user/auth`;
 
-export default function getAllCustomers() {
+export default function customerLogin(loginData) {
   return http
-    .get(apiEndPoint)
+    .post(apiEndPoint, loginData)
     .then(function (response) {
-      console.log(response.data);
-      // toast.success(`${response.data}`);
-      return response.data;
+      toast.success(`${response.data.msg}`);
+      return response.data.jwt;
     })
     .catch(function (error) {
       if (error.response.data) {

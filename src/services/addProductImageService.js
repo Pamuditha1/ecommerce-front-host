@@ -7,7 +7,6 @@ const apiEndPoint = `${api}/admin/addproduct/image`;
 export default function addProductImage(file, nameOfImage) {
   const formData = new FormData();
   formData.append("file", file);
-  console.log(file);
 
   return http
     .post(apiEndPoint, formData, {
@@ -17,7 +16,6 @@ export default function addProductImage(file, nameOfImage) {
       },
     })
     .then(function (response) {
-      console.log(response.data);
       toast.success(`${response.data}`);
     })
     .catch(function (error) {
