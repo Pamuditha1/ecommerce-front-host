@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import addProduct from "../services/addProductService.js";
 import getSuppliers from "../services/getSupplierForProduct";
 import getProductNo from "../services/getProductNo";
+import ImageUpload from "./UploadWidget.jsx";
 
 function AddProduct() {
   const [productData, setProductData] = useState({
@@ -42,6 +43,8 @@ function AddProduct() {
 
   const [productSaved, setproductSaved] = useState(false);
   const [savedSize, setsavedSize] = useState("");
+  const [imageURL, setimageURL] = useState(null);
+  const [imageNull, setimageNull] = useState("");
 
   const getInitialData = async () => {
     let suppl = ["Choose Supplier"];
@@ -92,6 +95,8 @@ function AddProduct() {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (!imageURL) return setimageNull("* Product Image Required");
+
     setsavedSize(productData.size);
 
     let profit = parseInt(productData.price) - parseInt(productData.bprice);
@@ -102,11 +107,21 @@ function AddProduct() {
 
     addProduct({
       ...productData,
+      image: imageURL,
       profit: profit,
       profitP: parseFloat(profitPresen).toFixed(2),
     }).then(() => {});
 
     setproductSaved(true);
+  };
+
+  const setImage = (url) => {
+    setimageURL(url);
+    setimageNull("");
+  };
+
+  const removeImage = () => {
+    setimageURL(null);
   };
 
   let profitPre =
@@ -125,12 +140,22 @@ function AddProduct() {
         </h6>
 
         <div className="row">
-          <div className="col-5"></div>
+          <div className="col-5 text-center">
+            <p style={{ color: "red" }}>{imageNull}</p>
+            <ImageUpload
+              imageURL={imageURL}
+              setImageURL={setImage}
+              removeImage={removeImage}
+            />
+            {imageURL && (
+              <img alt="product" src={imageURL} width={300} height="auto" />
+            )}
+          </div>
 
           <div className="col-7">
             <div className="row">
-              <div className="form-group col-12">
-                <label htmlFor="productNo" className="col-5">
+              <div className="form-group col-6">
+                <label htmlFor="productNo" className="col-7">
                   Product No
                 </label>
                 <input
@@ -140,6 +165,19 @@ function AddProduct() {
                   type="text"
                   id="productNo"
                   name="productNo"
+                />
+              </div>
+              <div className="form-group col-6">
+                <label htmlFor="barcode" className="col-5">
+                  Barcode
+                </label>
+                <input
+                  onChange={onchange}
+                  value={productData.barcode}
+                  className="form-control col-11"
+                  type="number"
+                  id="barcode"
+                  name="barcode"
                 />
               </div>
               <div className="form-group col-12">
@@ -349,24 +387,12 @@ function AddProduct() {
                   name="rquantity"
                 />
               </div>
-              <div className="form-group col-6 ml-3">
-                <label htmlFor="barcode" className="col-12">
-                  Barcode
-                </label>
-                <input
-                  onChange={onchange}
-                  value={productData.barcode}
-                  className="form-control col-11"
-                  type="number"
-                  id="barcode"
-                  name="barcode"
-                />
-              </div>
             </div>
           </div>
         </div>
 
         {savedSize && <p className="">* Product Size {savedSize} Saved</p>}
+        {}
         <button
           onClick={submit}
           type="submit"

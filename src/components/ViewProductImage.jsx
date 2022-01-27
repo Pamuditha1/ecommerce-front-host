@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { api } from "../services/api";
@@ -40,6 +41,17 @@ function ViewProductImage(props) {
     padding: "5px 10px",
     fontSize: "15px",
   };
+  let popular = {
+    position: "absolute",
+    left: "-20px",
+    top: "10px",
+    background: "yellow",
+    textAlign: "center",
+    borderRadius: "30px 30px 30px 30px",
+    color: "white",
+    padding: "5px 10px",
+    fontSize: "15px",
+  };
   let item = {
     position: "relative",
     paddingTop: "20px",
@@ -50,7 +62,7 @@ function ViewProductImage(props) {
     <>
       {imagePath ? (
         <div style={item}>
-          {props.discount === 0 || typeof props.discount == "undefined" ? (
+          {props.discount == 0 || typeof props.discount == "undefined" ? (
             <></>
           ) : (
             <span style={discountBadge}>
@@ -59,6 +71,14 @@ function ViewProductImage(props) {
                 {!props.discount.includes("%") && "/="} off
               </strong>
             </span>
+          )}
+
+          {props.popular ? (
+            <span style={popular}>
+              <strong>PP</strong>
+            </span>
+          ) : (
+            <></>
           )}
           <img
             alt="product"

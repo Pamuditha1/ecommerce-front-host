@@ -1,20 +1,75 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Loader from "react-loader-spinner";
+
 import Carousel from "./Carousel";
-import DiscountedProducts from "./DiscountedProducts";
-import MostPopularSales from "./MostPopularSales";
 import Products from "./Products";
 
+import getAllProducts from "../services/getAllProductsService.js";
+import getDiscountedProducts from "../services/getDiscountedProducts";
+import getPopularProducts from "../services/getPopularProducts";
+
 function CustomerHome({ cart, addtoCart, filterCategory }) {
+  const [allProducts, setallProducts] = useState([]);
+  const [discountedProducts, setdiscountedProducts] = useState([]);
+  const [popular, setpopular] = useState([]);
+  const [loading, setloading] = useState(true);
+
+  const getProducts = async () => {
+    const popu = await getPopularProducts();
+    setpopular(popu);
+    const discounted = await getDiscountedProducts();
+    setdiscountedProducts(discounted);
+    const products = await getAllProducts();
+    setallProducts(products);
+  };
+
+  useEffect(() => {
+    getProducts();
+    setloading(false);
+  }, []);
+
   return (
     <div>
       <Carousel />
-      <DiscountedProducts cart={cart} addtoCart={addtoCart} />
-      <MostPopularSales cart={cart} addtoCart={addtoCart} />
-      <Products
-        cart={cart}
-        addtoCart={addtoCart}
-        filterCategory={filterCategory}
-      />
+      <>
+        {loading ? (
+          <div className="container text-center" style={{ width: "793px" }}>
+            <Loader
+              type="Puff"
+              color="#050A30"
+              height={100}
+              width={100}
+              timeout={5000}
+            />
+          </div>
+        ) : (
+          <>
+            <Products
+              title="Most Popular Items"
+              products={popular}
+              cart={cart}
+              addtoCart={addtoCart}
+              filterCategory={filterCategory}
+              popular={true}
+            />
+
+            <Products
+              title="Discounted Items"
+              products={discountedProducts}
+              cart={cart}
+              addtoCart={addtoCart}
+              filterCategory={filterCategory}
+            />
+            <Products
+              title="All Items"
+              products={allProducts}
+              cart={cart}
+              addtoCart={addtoCart}
+              filterCategory={filterCategory}
+            />
+          </>
+        )}
+      </>
     </div>
   );
 }
