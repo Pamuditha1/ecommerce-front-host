@@ -1,15 +1,15 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/register-user`;
+const apiEndPoint = `${api2}/user`;
 
 export default function registerUser(user) {
   return http
     .post(apiEndPoint, user)
     .then(function (response) {
-      console.log(response.data);
       toast.success(`${response.data}`);
+      return response.status;
     })
     .catch(function (error) {
       if (error.response.data) {

@@ -19,6 +19,7 @@ function RegisterUser() {
       password: "",
       repeatpassword: "",
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       username: Yup.string()
         .min(2, "Mininum 2 characters")
@@ -43,8 +44,9 @@ function RegisterUser() {
         .oneOf([Yup.ref("password")], "Password's Not Match")
         .required("Required!"),
     }),
-    onSubmit: async (values) => {
-      await registerUser(values);
+    onSubmit: async (values, { resetForm }) => {
+      const status = await registerUser(values);
+      if (status === 200) resetForm();
     },
   });
 
