@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import AdminHeader from "./AdminHeader";
 import AddSupplier from "./AddSupplier";
-import UpdateProduct from "./UpdateProduct";
-import NewAdminProducts from "./NewAdminProducts";
+import AdminProducts from "./AdminProducts";
 import Inventory from "./Inventory";
 import Sales from "./Sales";
 import Orders from "./Orders";
@@ -14,6 +13,8 @@ import AdminLogin from "./AdminLogin";
 import RegisterUser from "./RegisterUser";
 import Customers from "./Customers";
 import Reports from "./Reports";
+import UpdateProduct from "./UpdateProduct";
+import Categories from "./Categories";
 
 function ControlPannel(props) {
   return (
@@ -27,10 +28,14 @@ function ControlPannel(props) {
             </div>
             <div className="col-10">
               <Switch>
+                <Route exact path="/admin/category" component={Categories} />
                 <Route exact path="/admin/orders" component={Orders} />
-                <Route path="/admin/additem" component={AddProduct} />
-                <Route path="/admin/updateitem/:id" component={UpdateProduct} />
-                <Route path="/admin/viewitems" component={NewAdminProducts} />
+                <Route path="/admin/item/add" component={AddProduct} />
+                <Route
+                  path="/admin/item/update/:id"
+                  component={UpdateProduct}
+                />
+                <Route path="/admin/items" component={AdminProducts} />
                 <Route path="/admin/inventory" component={Inventory} />
                 <Route path="/admin/customers" component={Customers} />
 

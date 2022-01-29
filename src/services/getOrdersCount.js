@@ -8,8 +8,6 @@ export default function getOrdersCount() {
   return http
     .get(apiEndPoint)
     .then(function (response) {
-      console.log(response.data);
-      // toast.warning(`${response.data} Orders in Queue`);
       return response.data;
     })
     .catch(function (error) {

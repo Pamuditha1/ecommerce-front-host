@@ -1,15 +1,13 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/get-supplier/all`;
+const apiEndPoint = `${api2}/supplier`;
 
 export default function getSuppliers() {
   return http
     .get(apiEndPoint)
     .then(function (response) {
-      console.log(response.data);
-      // toast.success(`${response.data}`);
       return response.data;
     })
     .catch(function (error) {

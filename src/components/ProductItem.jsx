@@ -13,6 +13,7 @@ function ProductItem({ product, viewModal, popular }) {
     width: "23%",
   };
   const discountedPriceStyle = {
+    fontSize: 12,
     color: "#ff0000",
     marginTop: "0%",
     marginBottom: "0",
@@ -26,34 +27,37 @@ function ProductItem({ product, viewModal, popular }) {
       <ViewProductImage
         popular={popular}
         discount={product.discount}
-        proNo={product.productNo}
+        image={product.image}
         height="200"
         width="200"
       />
       <div className="card-body">
         <h6 className="card-title">
           {product.productName}{" "}
-          <small class="text-muted ml-5">{product.category}</small>
+          <small className="text-muted ml-5">{product.category.name}</small>
         </h6>
 
         <div className="card-text">
           <div className="row">
-            <div className="col-6">
+            <div className="col-5">
               <p
                 style={{
                   textDecoration:
                     product.discount && product.discount == 0
                       ? "none"
                       : "line-through",
+                  fontSize: 12,
                 }}
               >
-                Rs. {product.price}
+                Rs. {parseFloat(product.price).toFixed(2)}
               </p>
             </div>
-            <div className="col-6">
+            <div className="col-7">
               {product.discount && product.discount != 0 && (
                 <p className="card-text pl-1" style={discountedPriceStyle}>
-                  <strong>Rs. {product.discountedPrice}</strong>
+                  <strong>
+                    Rs. {parseFloat(product.discountedPrice).toFixed(2)}
+                  </strong>
                 </p>
               )}
             </div>

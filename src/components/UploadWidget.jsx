@@ -1,37 +1,97 @@
 import React, { Component } from "react";
+//import { WidgetLoader, Widget } from "react-cloudinary-upload-widget";
 
 class ImageUpload extends Component {
-  componentDidMount() {
-    var myWidget = window.cloudinary.createUploadWidget(
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     options: {
+  //       cloudName: "dl2axglxd",
+  //       uploadPreset: "e-commerce",
+  //       cropping: true,
+  //       croppingShowDimensions: true,
+  //       croppingAspectRatio: 1,
+  //       clientAllowedFormats: ["jpg", "jpeg", "png"],
+  //       maxImageFileSize: 5000000,
+  //       maxFiles: 1,
+  //       multiple: false,
+  //       resourceType: "image",
+  //       minImageWidth: 400,
+  //       minImageHeight: 400,
+  //       croppingValidateDimensions: true,
+  //       showUploadMoreButton: false,
+  //     },
+  //   };
+  // }
+
+  showWidget = () => {
+    let myWidget = window.cloudinary.createUploadWidget(
       {
         cloudName: "dl2axglxd",
         uploadPreset: "e-commerce",
+        cropping: true,
+        croppingShowDimensions: true,
+        croppingAspectRatio: 1,
+        clientAllowedFormats: ["jpg", "jpeg", "png"],
+        maxImageFileSize: 5000000,
+        maxFiles: 1,
+        multiple: false,
+        resourceType: "image",
+        minImageWidth: 400,
+        minImageHeight: 400,
+        croppingValidateDimensions: true,
+        showUploadMoreButton: false,
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          console.log("Done! Here is the image info: ", result.info);
           this.props.setImageURL(result.info.url);
         }
       }
     );
-    document.getElementById("upload_widget").addEventListener(
-      "click",
-      function () {
-        myWidget.open();
-      },
-      false
-    );
-  }
+    myWidget.open();
+  };
+
+  onSuccess = (result) => {
+    this.props.setImageURL(result.info.url);
+  };
 
   render() {
     return (
+      // <div className="col-12 text-center mb-3">
+      //   <WidgetLoader />
+      //   <Widget
+      //     resourceType="image"
+      //     cloudName="dl2axglxd"
+      //     uploadPreset="e-commerce"
+      //     buttonText="Upload"
+      //     style={{
+      //       color: "#007bff",
+      //       borderColor: "#007bff",
+      //       backgroundColor: "transparent",
+      //       borderRadius: 5,
+      //       height: 38,
+      //       width: 100,
+      //       marginTop: 2,
+      //     }}
+      //     onSuccess={this.onSuccess}
+      //     croppingAspectRatio={1}
+      //     {...this.state.options}
+      //   />
+      //   <button
+      //     onClick={this.props.removeImage}
+      //     className="btn btn-outline-danger ml-3"
+      //   >
+      //     Remove
+      //   </button>
+      // </div>
       <div className="col-12 text-center">
         <button
           id="upload_widget"
           className="btn btn-outline-primary mb-3"
-          disabled={this.props.imageURL}
+          onClick={this.showWidget}
+          disabled={!this.props.update && this.props.imageURL}
         >
-          {this.props.imageURL ? "Uploaded" : "Upload"}
+          {!this.props.update && this.props.imageURL ? "Uploaded" : "Upload"}
         </button>
         <button
           onClick={this.props.removeImage}

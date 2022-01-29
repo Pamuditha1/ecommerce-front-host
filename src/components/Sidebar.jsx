@@ -28,7 +28,7 @@ function Sidebar() {
     setInterval(async () => {
       let count = await getOrdersCount();
       setnumOfOrders(count);
-    }, 10000);
+    }, 60000);
   }, []);
 
   const onClickStyle = {
@@ -61,7 +61,7 @@ function Sidebar() {
           )}
         </p>
       </Link>
-      <Link to="/admin/additem">
+      <Link to="/admin/item/add">
         <p
           onClick={onClick}
           id="add-item"
@@ -73,7 +73,7 @@ function Sidebar() {
           Add Item
         </p>
       </Link>
-      <Link to="/admin/viewitems">
+      <Link to="/admin/items">
         <p
           onClick={onClick}
           id="view-item"
@@ -136,6 +136,20 @@ function Sidebar() {
               <FontAwesomeIcon icon={faHandshake} size="2x" />
             </span>
             Add Supplier
+          </p>
+        </Link>
+      )}
+      {userType === "Admin" && (
+        <Link to="/admin/category">
+          <p
+            onClick={onClick}
+            id="categories"
+            style={clicked === "categories" ? onClickStyle : s}
+          >
+            <span style={{ marginRight: 10 }}>
+              <FontAwesomeIcon icon={faChartLine} size="2x" />
+            </span>
+            Categories
           </p>
         </Link>
       )}

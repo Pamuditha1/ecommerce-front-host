@@ -1,14 +1,15 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/proNo`;
+const apiEndPoint = `${api2}/product/image`;
 
-export default function getProductNo() {
+export default function deleteProductImage(id) {
   return http
-    .get(`${apiEndPoint}`)
+    .delete(`${apiEndPoint}/${id}`)
     .then(function (response) {
-      return response.data;
+      console.log(response.data);
+      toast.success(`${response.data}`);
     })
     .catch(function (error) {
       if (error.response.data) {

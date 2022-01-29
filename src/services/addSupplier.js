@@ -1,8 +1,8 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/add-supplier`;
+const apiEndPoint = `${api2}/supplier`;
 
 export default function registerSupplier(supplierData) {
   return http

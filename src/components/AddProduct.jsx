@@ -3,10 +3,12 @@ import React, { useState, useEffect } from "react";
 import addProduct from "../services/addProductService.js";
 import getSuppliers from "../services/getSupplierForProduct";
 import getProductNo from "../services/getProductNo";
+import { getCategories } from "../services/category";
+
 import ImageUpload from "./UploadWidget.jsx";
 
 function AddProduct() {
-  const [productData, setProductData] = useState({
+  const initialState = {
     productNo: "",
     productName: "",
     description: "",
@@ -22,7 +24,8 @@ function AddProduct() {
     profit: 0,
     profitP: "",
     barcode: "",
-  });
+  };
+  const [productData, setProductData] = useState(initialState);
   const sizes = ["Choose Size", "XS", "S", "M", "L", "XL", "XXL"];
   const materials = [
     "Choose Material",
@@ -32,27 +35,27 @@ function AddProduct() {
     "Polyester",
     "Velvet",
   ];
-  const categories = [
-    "Choose Category",
-    "T-Shirt",
-    "Shirt",
-    "Trouser",
-    "Shorts",
-  ];
+  const [categories, setcategories] = useState([]);
   const [suppliers, setsuppliers] = useState([]);
-
-  const [productSaved, setproductSaved] = useState(false);
   const [savedSize, setsavedSize] = useState("");
   const [imageURL, setimageURL] = useState(null);
   const [imageNull, setimageNull] = useState("");
 
   const getInitialData = async () => {
-    let suppl = ["Choose Supplier"];
     let result = await getSuppliers();
+    let suppl = [{ name: "Choose Supplier", _id: "Choose Supplier" }];
     result.forEach((r) => {
       suppl.push(r);
     });
     setsuppliers(suppl);
+
+    const categories = await getCategories();
+    let cat = [{ name: "Choose Category", _id: "Choose Category" }];
+    categories.forEach((r) => {
+      cat.push(r);
+    });
+    setcategories(cat);
+
     setProductData({ ...productData, productNo: "P" + (await getProductNo()) });
   };
 
@@ -95,7 +98,7 @@ function AddProduct() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!imageURL) return setimageNull("* Product Image Required");
+    //if (!imageURL) return setimageNull("* Product Image Required");
 
     setsavedSize(productData.size);
 
@@ -110,9 +113,9 @@ function AddProduct() {
       image: imageURL,
       profit: profit,
       profitP: parseFloat(profitPresen).toFixed(2),
-    }).then(() => {});
-
-    setproductSaved(true);
+    }).then(() => {
+      setProductData({ ...productData, quantity: 0, size: "" });
+    });
   };
 
   const setImage = (url) => {
@@ -122,6 +125,12 @@ function AddProduct() {
 
   const removeImage = () => {
     setimageURL(null);
+  };
+
+  const clear = () => {
+    setProductData(initialState);
+    setimageURL(null);
+    setsavedSize("");
   };
 
   let profitPre =
@@ -140,25 +149,28 @@ function AddProduct() {
         </h6>
 
         <div className="row">
-          <div className="col-5 text-center">
-            <p style={{ color: "red" }}>{imageNull}</p>
-            <ImageUpload
-              imageURL={imageURL}
-              setImageURL={setImage}
-              removeImage={removeImage}
-            />
-            {imageURL && (
-              <img alt="product" src={imageURL} width={300} height="auto" />
-            )}
-          </div>
-
-          <div className="col-7">
+          <div className="col-6">
             <div className="row">
+              <p style={{ color: "red" }}>{imageNull}</p>
+              <ImageUpload
+                update
+                imageURL={imageURL}
+                setImageURL={setImage}
+                removeImage={removeImage}
+              />
+              <div className="col-12 text-center mb-3">
+                {imageURL && (
+                  <img alt="product" src={imageURL} width={300} height="auto" />
+                )}
+                {!imageURL && <p>No Product Image</p>}
+              </div>
+
               <div className="form-group col-6">
                 <label htmlFor="productNo" className="col-7">
                   Product No
                 </label>
                 <input
+                  readOnly
                   onChange={onchange}
                   value={productData.productNo}
                   className="form-control col-11 ml-3"
@@ -168,13 +180,13 @@ function AddProduct() {
                 />
               </div>
               <div className="form-group col-6">
-                <label htmlFor="barcode" className="col-5">
+                <label htmlFor="barcode" className="col-12">
                   Barcode
                 </label>
                 <input
                   onChange={onchange}
                   value={productData.barcode}
-                  className="form-control col-11"
+                  className="form-control col-11 mr-3"
                   type="number"
                   id="barcode"
                   name="barcode"
@@ -202,11 +214,16 @@ function AddProduct() {
                   value={productData.description}
                   className="form-control col-11 ml-3"
                   type="textarea"
-                  rows="4"
+                  rows="2"
                   id="description"
                   name="description"
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="row">
               <div className="form-group col-12">
                 <label htmlFor="supplier" className="col-5">
                   Supplier
@@ -219,10 +236,10 @@ function AddProduct() {
                   className="form-control col-11 ml-3"
                   required
                 >
-                  {suppliers.map((option) => {
+                  {suppliers.map((option, index) => {
                     return (
                       <option
-                        key={option.name}
+                        key={index}
                         value={option._id}
                         style={{ textAlign: "center" }}
                       >
@@ -325,11 +342,11 @@ function AddProduct() {
                   {categories.map((option) => {
                     return (
                       <option
-                        key={option}
-                        value={option}
+                        key={option._id}
+                        value={option._id}
                         style={{ textAlign: "center" }}
                       >
-                        {option}
+                        {option.name}
                       </option>
                     );
                   })}
@@ -337,6 +354,19 @@ function AddProduct() {
               </div>
 
               <div className="form-group col-6 mt-3">
+                <label htmlFor="rquantity" className="col-12">
+                  Re-Order Quantity
+                </label>
+                <input
+                  onChange={onchange}
+                  value={productData.rquantity}
+                  className="form-control col-11"
+                  type="number"
+                  id="rquantity"
+                  name="rquantity"
+                />
+              </div>
+              <div className="form-group col-6">
                 <label htmlFor="size" className="col-5">
                   Size
                 </label>
@@ -345,7 +375,7 @@ function AddProduct() {
                   value={productData.size}
                   id="size"
                   name="size"
-                  className="form-control col-11"
+                  className="form-control col-11 ml-3"
                   required
                 >
                   {sizes.map((option) => {
@@ -362,29 +392,16 @@ function AddProduct() {
                 </select>
               </div>
               <div className="form-group col-6">
-                <label htmlFor="quantity" className="col-5">
+                <label htmlFor="quantity" className="col-12">
                   Quantity
                 </label>
                 <input
                   onChange={onchange}
                   value={productData.quantity}
-                  className="form-control col-11 ml-3"
+                  className="form-control col-11"
                   type="number"
                   id="quantity"
                   name="quantity"
-                />
-              </div>
-              <div className="form-group col-6">
-                <label htmlFor="rquantity" className="col-12">
-                  Re-Order Quantity
-                </label>
-                <input
-                  onChange={onchange}
-                  value={productData.rquantity}
-                  className="form-control col-11"
-                  type="number"
-                  id="rquantity"
-                  name="rquantity"
                 />
               </div>
             </div>
@@ -392,14 +409,27 @@ function AddProduct() {
         </div>
 
         {savedSize && <p className="">* Product Size {savedSize} Saved</p>}
-        {}
-        <button
-          onClick={submit}
-          type="submit"
-          className="btn btn-primary float-right m-1 col-12"
-        >
-          {productSaved ? `Product Saved` : "Save Product"}
-        </button>
+        <div className="row mb-5 mt-3">
+          <div className="col-6">
+            <button
+              onClick={submit}
+              type="submit"
+              className="btn btn-primary float-right m-1 col-12"
+            >
+              Save Product
+            </button>
+          </div>
+          <div className="col-6">
+            {" "}
+            <button
+              onClick={clear}
+              type="submit"
+              className="btn btn-primary float-right m-1 col-12"
+            >
+              Add Another
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );

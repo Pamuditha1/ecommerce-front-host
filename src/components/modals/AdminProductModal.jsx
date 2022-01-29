@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -8,8 +8,6 @@ import ViewProductImage from "../ViewProductImage";
 import addDiscount from "../../services/addDiscount";
 
 const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
-  useEffect(() => {}, [product.productNo]);
-
   let combinations = [];
   if (product.combinations) {
     combinations = product.combinations;
@@ -41,7 +39,7 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
           <div className="row">
             <div className="col-6" style={{ margin: "auto" }}>
               <ViewProductImage
-                proNo={product.productNo}
+                image={product.image}
                 height="200"
                 width="200"
               />
@@ -60,7 +58,7 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
                 Color : <strong>{product.color}</strong>
               </p>
               <p>
-                Category : <strong>{product.category}</strong>
+                Category : <strong>{product.category?.name}</strong>
               </p>
               <p>
                 Price : <strong>{product.price}</strong>
@@ -113,7 +111,7 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
         </ModalBody>
         <ModalFooter>
           <center>
-            <Link to={`/admin/updateitem/${product._id}`}>
+            <Link to={`/admin/item/update/${product._id}`}>
               <Button color="warning" onClick={toggle}>
                 Update Item
               </Button>

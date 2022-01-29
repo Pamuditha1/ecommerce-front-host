@@ -1,34 +1,81 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import getOneProductAdmin from "../services/getOneProduct";
 import updateProduct from "../services/updateProduct";
-import addProductImage from "../services/addProductImageService";
-import ProductImageUpload from "./ProductImageUpload";
 import getSuppliers from "../services/getSupplierForProduct";
-import ViewProductImage from "./ViewProductImage";
+import deleteProductImage from "../services/removeProductImage";
+import { getCategories } from "../services/category";
 
-function UpdateProduct(props) {
-  const [productData, setProductData] = useState({});
+import ImageUpload from "./UploadWidget.jsx";
 
-  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+function UpdateProduct() {
+  const { id } = useParams();
+  const [productData, setProductData] = useState({
+    productNo: "",
+    productName: "",
+    description: "",
+    supplier: "",
+    material: "",
+    color: "",
+    bprice: "",
+    price: "",
+    category: "",
+    size: "",
+    quantity: 0,
+    rquantity: 0,
+    profit: 0,
+    profitP: "",
+    barcode: "",
+  });
+  const sizes = ["Choose Size", "XS", "S", "M", "L", "XL", "XXL"];
+  const materials = [
+    "Choose Material",
+    "Cotton",
+    "Silk",
+    "Linen",
+    "Polyester",
+    "Velvet",
+  ];
+  const [categories, setcategories] = useState([]);
   const [suppliers, setsuppliers] = useState([]);
 
-  const [file, setFile] = useState("");
-  const [filePreview, setFilePreview] = useState("");
-  const [filename, setFilename] = useState("Choose File");
-  const [nameOfImage, setNameOfImage] = useState("");
-
   const [productSaved, setproductSaved] = useState(false);
-  const [imageSaved, setimagesaved] = useState(false);
   const [savedSize, setsavedSize] = useState("");
+  const [imageURL, setimageURL] = useState(null);
+  const [imageNull, setimageNull] = useState("");
+
+  async function fetchProduct() {
+    const product = await getOneProductAdmin(id);
+    setProductData({ ...product, supplier: product.supplierID._id });
+    setimageURL(product.image);
+  }
 
   useEffect(() => {
-    async function fetchProduct() {
-      const products = await getOneProductAdmin(props.match.params.id);
-      setProductData(products);
-      setsuppliers(await getSuppliers());
-    }
     fetchProduct();
-  }, [props.match.params.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const getInitialData = async () => {
+    let result = await getSuppliers();
+    let suppl = [{ name: "Choose Supplier", _id: "Choose Supplier" }];
+    result.forEach((r) => {
+      suppl.push(r);
+    });
+    setsuppliers(suppl);
+
+    const categories = await getCategories();
+    let cat = [{ name: "Choose Category", _id: "Choose Category" }];
+    categories.forEach((r) => {
+      cat.push(r);
+    });
+    setcategories(cat);
+  };
+
+  useEffect(() => {
+    getInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onchange = (e) => {
     setProductData({
@@ -36,11 +83,13 @@ function UpdateProduct(props) {
       [e.target.name]: e.target.value,
     });
   };
+
   const onchangeSelect = (e) => {
     setProductData({
       ...productData,
       size: e.target.value,
     });
+    setproductSaved(false);
   };
   const onchangeSelectSupp = (e) => {
     setProductData({
@@ -48,19 +97,58 @@ function UpdateProduct(props) {
       supplier: e.target.value,
     });
   };
+  const onchangeSelectMaterial = (e) => {
+    setProductData({
+      ...productData,
+      material: e.target.value,
+    });
+  };
+  const onchangeSelectCategory = (e) => {
+    setProductData({
+      ...productData,
+      category: e.target.value,
+    });
+  };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    //if (!imageURL) return setimageNull("* Product Image Required");
+
     setsavedSize(productData.size);
-    setNameOfImage(productData.productNo);
-    updateProduct(productData);
+
+    let profit = parseInt(productData.price) - parseInt(productData.bprice);
+    let profitPresen =
+      ((parseInt(productData.price) - parseInt(productData.bprice)) /
+        parseInt(productData.bprice)) *
+      100;
+
+    updateProduct({
+      ...productData,
+      image: imageURL,
+      profit: profit,
+      profitP: parseFloat(profitPresen).toFixed(2),
+    }).then(() => {
+      setProductData({ ...productData, size: "", quantity: 0 });
+    });
+
     setproductSaved(true);
   };
-  const submitImage = (e) => {
-    e.preventDefault();
-    addProductImage(file, nameOfImage);
-    setimagesaved(true);
+
+  const setImage = (url) => {
+    setimageURL(url);
+    setimageNull("");
   };
+
+  const removeImage = async () => {
+    await deleteProductImage(productData._id);
+    setimageURL(null);
+    setProductData({ ...productData, image: null });
+  };
+
+  let profitPre =
+    ((parseInt(productData.price) - parseInt(productData.bprice)) /
+      parseInt(productData.bprice)) *
+    100;
 
   return (
     <div>
@@ -69,43 +157,52 @@ function UpdateProduct(props) {
           style={{ backgroundColor: "blueviolet" }}
           className="pl-5 pt-1 pb-1 mb-5"
         >
-          Add Item
+          Update Item
         </h6>
 
         <div className="row">
           <div className="col-6">
-            <ProductImageUpload
-              file={file}
-              setFile={setFile}
-              filePreview={filePreview}
-              setFilePreview={setFilePreview}
-              filename={filename}
-              setFilename={setFilename}
-              nameOfImage={nameOfImage}
-            />
-            {!file && (
-              <ViewProductImage
-                proNo={productData.productNo}
-                height="300"
-                width="300"
-              />
-            )}
-          </div>
-
-          <div className="col-6">
             <div className="row">
-              <div className="form-group col-12">
-                <label htmlFor="productNo" className="col-5">
+              <p style={{ color: "red" }}>{imageNull}</p>
+              <ImageUpload
+                update
+                imageURL={imageURL}
+                setImageURL={setImage}
+                removeImage={removeImage}
+              />
+              <div className="col-12 text-center mb-3">
+                {imageURL && (
+                  <img alt="product" src={imageURL} width={300} height="auto" />
+                )}
+                {!imageURL && <p>No Product Image</p>}
+              </div>
+
+              <div className="form-group col-6">
+                <label htmlFor="productNo" className="col-7">
                   Product No
                 </label>
                 <input
+                  readOnly
                   onChange={onchange}
                   value={productData.productNo}
                   className="form-control col-11 ml-3"
                   type="text"
                   id="productNo"
                   name="productNo"
+                />
+              </div>
+              <div className="form-group col-6">
+                <label htmlFor="barcode" className="col-12">
+                  Barcode
+                </label>
+                <input
                   readOnly
+                  onChange={onchange}
+                  value={productData.barcode}
+                  className="form-control col-11 mr-3"
+                  type="number"
+                  id="barcode"
+                  name="barcode"
                 />
               </div>
               <div className="form-group col-12">
@@ -130,11 +227,16 @@ function UpdateProduct(props) {
                   value={productData.description}
                   className="form-control col-11 ml-3"
                   type="textarea"
-                  rows="4"
+                  rows="2"
                   id="description"
                   name="description"
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="row">
               <div className="form-group col-12">
                 <label htmlFor="supplier" className="col-5">
                   Supplier
@@ -150,7 +252,7 @@ function UpdateProduct(props) {
                   {suppliers.map((option) => {
                     return (
                       <option
-                        key={option.name}
+                        key={option._id}
                         value={option._id}
                         style={{ textAlign: "center" }}
                       >
@@ -164,14 +266,26 @@ function UpdateProduct(props) {
                 <label htmlFor="material" className="col-5">
                   Material
                 </label>
-                <input
-                  onChange={onchange}
+                <select
+                  onChange={onchangeSelectMaterial}
                   value={productData.material}
-                  className="form-control col-11 ml-3"
-                  type="text"
                   id="material"
                   name="material"
-                />
+                  className="form-control col-11 ml-3"
+                  required
+                >
+                  {materials.map((option) => {
+                    return (
+                      <option
+                        key={option}
+                        value={option}
+                        style={{ textAlign: "center" }}
+                      >
+                        {option}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
               <div className="form-group col-6">
                 <label htmlFor="color" className="col-5">
@@ -187,32 +301,84 @@ function UpdateProduct(props) {
                 />
               </div>
               <div className="form-group col-6">
-                <label htmlFor="price" className="col-5">
-                  Price
+                <label htmlFor="bprice" className="col-12">
+                  Buying Price
+                </label>
+                <input
+                  onChange={onchange}
+                  value={productData.bprice}
+                  className="form-control col-11 ml-3"
+                  type="number"
+                  id="bprice"
+                  name="bprice"
+                />
+              </div>
+              <div className="form-group col-6">
+                <label htmlFor="price" className="col-12">
+                  Selling Price
                 </label>
                 <input
                   onChange={onchange}
                   value={productData.price}
-                  className="form-control col-11 ml-3"
+                  className="form-control col-11"
                   type="number"
                   id="price"
                   name="price"
                 />
               </div>
-              <div className="form-group col-6">
+              {productData.price && productData.bprice && (
+                <>
+                  <div className="form-group col-4 text-center ml-5 p-3 shadow font-weight-bold">
+                    Profit
+                  </div>
+                  <div className="form-group col-3 text-center p-3 text-warning shadow font-weight-bold">
+                    Rs.{" "}
+                    {parseInt(productData.price) - parseInt(productData.bprice)}
+                  </div>
+                  <div className="form-group col-3 text-center p-3 text-danger shadow font-weight-bold">
+                    {parseFloat(profitPre).toFixed(2)}%
+                  </div>
+                </>
+              )}
+              <div className="form-group col-6 mt-3">
                 <label htmlFor="category" className="col-5">
                   Category
                 </label>
-                <input
-                  onChange={onchange}
+                <select
+                  onChange={onchangeSelectCategory}
                   value={productData.category}
-                  className="form-control col-11"
-                  type="text"
                   id="category"
                   name="category"
-                />
+                  className="form-control col-11 ml-3"
+                  required
+                >
+                  {categories.map((option) => {
+                    return (
+                      <option
+                        key={option._id}
+                        value={option._id}
+                        style={{ textAlign: "center" }}
+                      >
+                        {option.name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
 
+              <div className="form-group col-6 mt-3">
+                <label htmlFor="rquantity" className="col-12">
+                  Re-Order Quantity
+                </label>
+                <input
+                  onChange={onchange}
+                  value={productData.rquantity}
+                  className="form-control col-11"
+                  type="number"
+                  id="rquantity"
+                  name="rquantity"
+                />
+              </div>
               <div className="form-group col-6">
                 <label htmlFor="size" className="col-5">
                   Size
@@ -239,7 +405,7 @@ function UpdateProduct(props) {
                 </select>
               </div>
               <div className="form-group col-6">
-                <label htmlFor="quantity" className="col-5">
+                <label htmlFor="quantity" className="col-12">
                   Quantity
                 </label>
                 <input
@@ -255,31 +421,15 @@ function UpdateProduct(props) {
           </div>
         </div>
 
-        {savedSize && <p className="">* Product Size {savedSize} Saved</p>}
+        {savedSize && <p className="">* Product Size {savedSize} Updated</p>}
+        {}
         <button
           onClick={submit}
           type="submit"
-          className="btn btn-primary float-right m-1 col-12"
+          className="btn btn-primary float-right mb-5 mt-3 col-12"
         >
-          {productSaved ? `Product Saved` : "Save Product"}
+          {productSaved ? `Product Updated` : "Update Product"}
         </button>
-        <div>
-          {!imageSaved && productSaved && (
-            <>
-              <h6 style={{ backgroundColor: "red" }} className="p-2 rounded">
-                {" "}
-                Image hasn't been saved yet
-              </h6>
-              <button
-                onClick={submitImage}
-                className="btn btn-success float-right m-1 col-12"
-                type="submit"
-              >
-                Save Image
-              </button>
-            </>
-          )}
-        </div>
       </form>
     </div>
   );

@@ -36,7 +36,7 @@ export const OrdersTable = () => {
       r.products.forEach((p) => {
         r.items =
           r.items +
-          ` (${p.id && p.id.productNo} - ${p.id.productName} - ${p.size} - ${
+          ` (${p.id && p.id?.productNo} - ${p.id.productName} - ${p.size} - ${
             p.qty
           })`;
       });
