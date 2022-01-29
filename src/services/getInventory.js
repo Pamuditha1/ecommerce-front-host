@@ -1,8 +1,8 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/inventory`;
+const apiEndPoint = `${api2}/product/inventory`;
 
 export default function getInventory() {
   return http
