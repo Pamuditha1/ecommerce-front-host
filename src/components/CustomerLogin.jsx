@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import customerLogin from "../services/customerLoginService";
+import customerLogin from "../services/customerLogin";
 import { Link } from "react-router-dom";
 
 function CustomerLogin() {

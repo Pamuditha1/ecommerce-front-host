@@ -115,7 +115,7 @@ function CustomerView(props) {
             )}
           />
         </Switch>
-        <ChatBot />
+        {/* <ChatBot /> */}
       </UserContext.Provider>
     </div>
   );

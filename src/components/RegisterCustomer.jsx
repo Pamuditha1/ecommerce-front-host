@@ -40,7 +40,7 @@ function RegisterCustomer() {
         ...values,
       };
       const jwt = await registerCustomer(newOb);
-      localStorage.setItem("token", jwt);
+      localStorage.setItem("customer-token", jwt);
     },
   });
 
