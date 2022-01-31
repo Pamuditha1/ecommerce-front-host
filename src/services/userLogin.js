@@ -1,15 +1,13 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/auth`;
+const apiEndPoint = `${api2}/user/login`;
 
 export default function userLogin(loginData) {
   return http
     .post(apiEndPoint, loginData)
     .then(function (response) {
-      console.log(response.data.data);
-      console.log("Headers", response.headers);
       toast.success(`${response.data.msg}`);
       return response.data;
     })

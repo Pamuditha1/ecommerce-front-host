@@ -19,7 +19,7 @@ import Categories from "./Categories";
 function ControlPannel(props) {
   return (
     <>
-      {localStorage.getItem("adminToken") ? (
+      {localStorage.getItem("admin-token") ? (
         <>
           <AdminHeader />
           <div className="row">

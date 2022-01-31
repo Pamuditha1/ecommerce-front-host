@@ -22,7 +22,7 @@ function AdminLogin(props) {
     e.preventDefault();
     const result = await userLogin(loginData);
     if (result) {
-      localStorage.setItem("adminToken", result.jwt);
+      localStorage.setItem("admin-token", result.token);
       localStorage.setItem("type", result.type);
       props.history.push("/admin/orders");
     } else {

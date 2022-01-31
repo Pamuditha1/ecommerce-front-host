@@ -1,14 +1,13 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/user/place-order`;
+const apiEndPoint = `${api2}/order`;
 
 export default function placeOrder(order) {
   return http
     .post(apiEndPoint, order)
     .then(function (response) {
-      console.log(response.data);
       toast.success(`${response.data}`);
     })
     .catch(function (error) {

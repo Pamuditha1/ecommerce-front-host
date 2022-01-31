@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function AdminHeader() {
   const logout = () => {
-    localStorage.removeItem("adminToken");
+    localStorage.removeItem("admin-token");
     localStorage.removeItem("type");
     window.location.reload();
   };
