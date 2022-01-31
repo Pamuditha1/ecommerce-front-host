@@ -1,14 +1,14 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/add-discount`;
+const apiEndPoint = `${api2}/product/discount`;
 
 export default function addDiscount(discountData) {
   return http
-    .post(apiEndPoint, discountData)
+    .put(apiEndPoint, discountData)
     .then(function (response) {
-      if (response.data === "Discount Added.")
+      if (response.data === "Discount Updated")
         return toast.success(`${response.data}`);
       toast.error(`${response.data}`);
     })

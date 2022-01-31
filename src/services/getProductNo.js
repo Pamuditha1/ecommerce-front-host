@@ -1,12 +1,12 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/proNo`;
+const apiEndPoint = `${api2}/product/pro-no`;
 
 export default function getProductNo() {
   return http
-    .get(`${apiEndPoint}`)
+    .get(apiEndPoint)
     .then(function (response) {
       return response.data;
     })
