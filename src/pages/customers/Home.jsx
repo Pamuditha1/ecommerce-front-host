@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
 
-import Carousel from "./Carousel";
-import Products from "./Products";
+import Carousel from "../../components/Carousel";
+import Products from "../../components/Products";
 
-import getAllProducts from "../services/getAllProductsService.js";
-import getDiscountedProducts from "../services/getDiscountedProducts";
-import getPopularProducts from "../services/getPopularProducts";
+import getAllProducts from "../../services/getAllProductsService.js";
+import getDiscountedProducts from "../../services/getDiscountedProducts";
+import getPopularProducts from "../../services/getPopularProducts";
 
 function CustomerHome({ cart, addtoCart, filterCategory }) {
   const [allProducts, setallProducts] = useState([]);

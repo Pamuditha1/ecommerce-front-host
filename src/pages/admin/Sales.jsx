@@ -1,5 +1,6 @@
 import React from "react";
-import { SalesTable } from "./tables/sales/salesTable";
+
+import { SalesTable } from "../../components/tables/sales/salesTable";
 
 function Sales() {
   const tableStyle = {

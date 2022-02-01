@@ -2,7 +2,7 @@ import http from "./httpService";
 import { toast } from "react-toastify";
 import { api2 } from "./api";
 
-const apiEndPoint = `${api2}/product/admin`;
+const apiEndPoint = `${api2}/product`;
 
 export default function getAllProductsAdmin() {
   return http

@@ -1,22 +1,24 @@
 import React from "react";
-import { CustomersTable } from "./tables/customers/customersTable";
 
-function Customers() {
+import { OrdersTable } from "../../components/tables/orders/ordersTable";
+
+function Orders() {
   const tableStyle = {
     marginLeft: "-70px",
     marginRight: "-70px",
   };
+
   return (
     <div style={tableStyle}>
       <h6
         style={{ backgroundColor: "blueviolet" }}
         className="pl-5 pt-1 pb-1 mb-5"
       >
-        Customers
+        Orders
       </h6>
-      <CustomersTable />
+      <OrdersTable />
     </div>
   );
 }
 
-export default Customers;
+export default Orders;

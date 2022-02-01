@@ -1,26 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import addDiscount from "../services/addDiscount";
 
 function SetDiscount({ discount, setDis, id }) {
-  const [dis, setdis] = useState("");
-
   const submitDiscount = async () => {
-    setDis(dis);
     let discountData = {
       id: id,
-      discount: dis,
+      discount: discount,
     };
     await addDiscount(discountData);
   };
 
   return (
-    <div className="col-12">
+    <div className="row">
       <label htmlFor="productNo" className="col-4">
         Discount :{" "}
       </label>
       <input
-        value={dis}
-        onChange={(e) => setdis(e.target.value)}
+        value={discount}
+        onChange={(e) => setDis(e.target.value)}
         className="form-control col-5 ml-3"
         type="text"
         id="productNo"

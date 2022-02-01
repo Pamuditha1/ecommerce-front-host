@@ -1,42 +1,56 @@
 import React from "react";
-import registerSupplier from "../services/addSupplier";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function AddSupplier() {
+import registerUser from "../../services/registerUser";
+
+function RegisterUser() {
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
   const nicRegex = /^([0-9]{9}[X|V]|[0-9]{12})$/;
-
   const formik = useFormik({
     initialValues: {
-      name: "",
+      username: "",
       email: "",
-      contact1: "",
-      contact2: "",
+      contactNo: "",
+      contactNo2: "",
       nic: "",
       address: "",
+      type: "",
+      password: "",
+      repeatpassword: "",
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
-      name: Yup.string()
+      username: Yup.string()
         .min(2, "Mininum 2 characters")
         .max(15, "Maximum 10 characters")
         .required("Required!"),
       email: Yup.string().email("Invalid Email").required("Required!"),
-      contact1: Yup.string()
+      contactNo: Yup.string()
         .matches(phoneRegex, "Invalid Phone Number.")
         .required("Contact No Required"),
-      contact2: Yup.string()
+      contactNo2: Yup.string()
         .matches(phoneRegex, "Invalid Phone Number.")
         .required("Contact No Required"),
       nic: Yup.string()
         .matches(nicRegex, "Invalid NIC number")
         .required("National Identity Card Number is required."),
       address: Yup.string().required("Required!"),
+      type: Yup.string().required("Required!"),
+      password: Yup.string()
+        .min(5, "Minimum 5 Characters")
+        .required("Required!"),
+      repeatpassword: Yup.string()
+        .oneOf([Yup.ref("password")], "Password's Not Match")
+        .required("Required!"),
     }),
-    onSubmit: async (values) => {
-      await registerSupplier(values);
+    onSubmit: async (values, { resetForm }) => {
+      const status = await registerUser(values);
+      if (status === 200) resetForm();
     },
   });
+
+  const roles = ["Choose Role", "Employee", "Admin"];
 
   return (
     <div>
@@ -44,7 +58,7 @@ function AddSupplier() {
         style={{ backgroundColor: "blueviolet" }}
         className="pl-5 pt-1 pb-1 mb-5"
       >
-        Add Supplier
+        Register User
       </h6>
       <form
         onSubmit={formik.handleSubmit}
@@ -55,19 +69,21 @@ function AddSupplier() {
           <div className="col-12">
             <div className="row">
               <div className="form-group col-6">
-                <label htmlFor="name" className="col-5">
-                  Supplier Name
+                <label htmlFor="username" className="col-5">
+                  User Name
                 </label>
                 <input
                   onChange={formik.handleChange}
-                  value={formik.values.name}
+                  value={formik.values.username}
                   className="form-control col-10 ml-3"
                   type="text"
-                  id="name"
-                  name="name"
+                  id="username"
+                  name="username"
                 />
-                {formik.errors.name && formik.touched.name && (
-                  <p className="ml-5 mt-2 text-danger">{formik.errors.name}</p>
+                {formik.errors.username && formik.touched.username && (
+                  <p className="ml-5 mt-2 text-danger">
+                    {formik.errors.username}
+                  </p>
                 )}
               </div>
               <div className="form-group col-6">
@@ -88,38 +104,38 @@ function AddSupplier() {
               </div>
 
               <div className="form-group col-6">
-                <label htmlFor="contact1" className="col-5">
+                <label htmlFor="contactNo" className="col-5">
                   Contact No (Mobile)
                 </label>
                 <input
                   onChange={formik.handleChange}
-                  value={formik.values.contact1}
+                  value={formik.values.contactNo}
                   className="form-control col-10 ml-3"
                   type="text"
-                  id="contact1"
-                  name="contact1"
+                  id="contactNo"
+                  name="contactNo"
                 />
-                {formik.errors.contact1 && formik.touched.contact1 && (
+                {formik.errors.contactNo && formik.touched.contactNo && (
                   <p className="ml-5 mt-2 text-danger">
-                    {formik.errors.contact1}
+                    {formik.errors.contactNo}
                   </p>
                 )}
               </div>
               <div className="form-group col-6">
-                <label htmlFor="contact2" className="col-5">
-                  Contact No (Official)
+                <label htmlFor="contactNo2" className="col-5">
+                  Contact No (Fixed)
                 </label>
                 <input
                   onChange={formik.handleChange}
-                  value={formik.values.contact2}
+                  value={formik.values.contactNo2}
                   className="form-control col-10 ml-3"
                   type="text"
-                  id="contact2"
-                  name="contact2"
+                  id="contactNo2"
+                  name="contactNo2"
                 />
-                {formik.errors.contact2 && formik.touched.contact2 && (
+                {formik.errors.contactNo2 && formik.touched.contactNo2 && (
                   <p className="ml-5 mt-2 text-danger">
-                    {formik.errors.contact2}
+                    {formik.errors.contactNo2}
                   </p>
                 )}
               </div>
@@ -157,6 +173,73 @@ function AddSupplier() {
                   </p>
                 )}
               </div>
+              <div className="form-group col-12">
+                <label htmlFor="type" className="col-5">
+                  User Role
+                </label>
+                <select
+                  onChange={formik.handleChange}
+                  value={formik.values.type}
+                  id="type"
+                  name="type"
+                  className="form-control col-11 ml-3"
+                  required
+                >
+                  {roles.map((option) => {
+                    return (
+                      <option
+                        key={option}
+                        value={option}
+                        style={{ textAlign: "center" }}
+                      >
+                        {option}
+                      </option>
+                    );
+                  })}
+                </select>
+                {formik.errors.type && formik.touched.type && (
+                  <p className="ml-5 mt-2 text-danger">{formik.errors.type}</p>
+                )}
+              </div>
+              <div className="form-group col-6">
+                <label htmlFor="password" className="col-5">
+                  Password
+                </label>
+                <input
+                  autoComplete="new-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  className="form-control col-10 ml-3"
+                  type="password"
+                  id="password"
+                  name="password"
+                />
+                {formik.errors.password && formik.touched.password && (
+                  <p className="ml-5 mt-2 text-danger">
+                    {formik.errors.password}
+                  </p>
+                )}
+              </div>
+              <div className="form-group col-6">
+                <label htmlFor="repeatpassword" className="col-5">
+                  Repeat Password
+                </label>
+                <input
+                  autoComplete="new-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.repeatpassword}
+                  className="form-control col-10 ml-3"
+                  type="password"
+                  id="repeatpassword"
+                  name="repeatpassword"
+                />
+                {formik.errors.repeatpassword &&
+                  formik.touched.repeatpassword && (
+                    <p className="ml-5 mt-2 text-danger">
+                      {formik.errors.repeatpassword}
+                    </p>
+                  )}
+              </div>
               <div className="form-group col-12 mt-3">
                 <center>
                   <button type="submit" className="btn btn-success">
@@ -172,4 +255,4 @@ function AddSupplier() {
   );
 }
 
-export default AddSupplier;
+export default RegisterUser;

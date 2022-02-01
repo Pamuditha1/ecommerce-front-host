@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import getAllProductsAdmin from "../services/getAllProductsAdmin";
+import getAllProductsAdmin from "../../services/getAllProductsAdmin";
 import Modal from "react-modal";
-import AdminProductModal from "./modals/AdminProductModal.jsx";
-import ProductItem from "./ProductItem";
+import AdminProductModal from "../../components/modals/AdminProductModal.jsx";
+import ProductItem from "../../components/ProductItem";
 
 Modal.setAppElement("#root");
 
-function AdminProducts() {
+function ViewProducts() {
   const [allProducts, setallProducts] = useState([]);
   const [isModalOpen, setisModalOpen] = useState(false);
   const [modalProduct, setmodalProduct] = useState({});
@@ -34,14 +34,13 @@ function AdminProducts() {
         All Items
       </h6>
       <div className="row">
-        {allProducts &&
-          allProducts.map((product) => (
-            <ProductItem
-              key={product._id}
-              product={product}
-              viewModal={viewModal}
-            />
-          ))}
+        {allProducts?.map((product) => (
+          <ProductItem
+            key={product._id}
+            product={product}
+            viewModal={viewModal}
+          />
+        ))}
         <AdminProductModal
           isModalOpen={isModalOpen}
           setisModalOpen={setisModalOpen}
@@ -52,4 +51,4 @@ function AdminProducts() {
   );
 }
 
-export default AdminProducts;
+export default ViewProducts;

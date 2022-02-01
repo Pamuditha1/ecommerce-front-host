@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import Carousel from "./Carousel";
-import Header from "./Header";
-import NavBar from "./NavBar";
-import Cart from "./Cart";
 import { Route, Switch } from "react-router-dom";
-import RegisterCustomer from "./RegisterCustomer";
-import CustomerLogin from "./CustomerLogin";
-import CustomerHome from "./CustomerHome";
-import ChatBot from "./chatbot/ChatBot";
-import CategoryProducts from "./CategoryProducts";
+
+import Carousel from "./components/Carousel";
+import Header from "./components/Header";
+import NavBar from "./components/NavBar";
+import Cart from "./components/Cart";
+import CategoryProducts from "./components/CategoryProducts";
+
+import RegisterCustomer from "./pages/customers/RegisterCustomer";
+import CustomerLogin from "./pages/customers/CustomerLogin";
+import CustomerHome from "./pages/customers/Home";
 
 export const UserContext = React.createContext();
 
@@ -115,7 +116,6 @@ function CustomerView(props) {
             )}
           />
         </Switch>
-        {/* <ChatBot /> */}
       </UserContext.Provider>
     </div>
   );

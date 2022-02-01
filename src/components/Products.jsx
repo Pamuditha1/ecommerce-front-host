@@ -20,7 +20,6 @@ function Products({ cart, addtoCart, title, products, popular }) {
   };
 
   const containerStyle = {
-    backgroundColor: "yellow",
     margin: "auto",
   };
 
@@ -31,7 +30,11 @@ function Products({ cart, addtoCart, title, products, popular }) {
       </h3>
       <div className="row">
         {products?.map((product) => (
-          <ProductItem product={product} viewModal={viewModal} />
+          <ProductItem
+            key={product._id}
+            product={product}
+            viewModal={viewModal}
+          />
         ))}
 
         <ProductModal

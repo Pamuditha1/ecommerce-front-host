@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
-import userLogin from "../services/userLogin";
+import customerLogin from "../../services/customerLogin";
 
-function AdminLogin(props) {
+function CustomerLogin() {
   const [loginData, setloginData] = useState({
     email: "",
     password: "",
   });
-  const [invalidLogin, setinvalidLogin] = useState(false);
 
   const onchange = (e) => {
     setloginData({
@@ -20,45 +18,20 @@ function AdminLogin(props) {
 
   const submit = async (e) => {
     e.preventDefault();
-    const result = await userLogin(loginData);
-    if (result) {
-      localStorage.setItem("admin-token", result.token);
-      localStorage.setItem("type", result.type);
-      props.history.push("/admin/orders");
-    } else {
-      setinvalidLogin(true);
-    }
-  };
-
-  const style = {
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-  };
-
-  const formStyle = {
-    backgroundColor: "rgb(0, 0, 0, 0.7)",
-    padding: "50px 30px 50px 30px",
-    color: "white",
-    borderRadius: "20px",
+    const jwt = await customerLogin(loginData);
+    localStorage.setItem("token", jwt);
   };
 
   return (
-    <div className="row" style={style}>
-      {invalidLogin && (
-        <center>
-          <div class="alert alert-warning" role="alert">
-            Please check you email and password.{" "}
-          </div>
-        </center>
-      )}
-
-      <div className="col-3"></div>
-      <form className="container mt-5 mb-5 col-6" style={formStyle}>
-        <center>
-          <FontAwesomeIcon icon={faUserCircle} size="10x" />
-        </center>
-
+    <div>
+      <center>
+        <Link to="/user/login">
+          <button type="button" className="btn btn-light">
+            Not Registered Yet? Register
+          </button>
+        </Link>
+      </center>
+      <form className="container mt-5">
         <div className="row">
           <div className="col-12">
             <div className="row">
@@ -103,9 +76,8 @@ function AdminLogin(props) {
           </div>
         </div>
       </form>
-      <div className="col-3"></div>
     </div>
   );
 }
 
-export default AdminLogin;
+export default CustomerLogin;

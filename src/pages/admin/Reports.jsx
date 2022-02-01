@@ -52,7 +52,7 @@ function Reports() {
           width="100%"
           height="500"
           src="https://app.powerbi.com/reportEmbed?reportId=aeb9f0cd-0705-437c-b6e9-328826d12b81&autoAuth=true&ctid=aa232db2-7a78-4414-a529-33db9124cba7&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXNvdXRoLWVhc3QtYXNpYS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D"
-          frameborder="0"
+          frameBorder="0"
           allowFullScreen="true"
         ></iframe>
       </div>

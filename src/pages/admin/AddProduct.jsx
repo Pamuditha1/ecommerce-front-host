@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import addProduct from "../services/addProductService.js";
-import getSuppliers from "../services/getSupplierForProduct";
-import getProductNo from "../services/getProductNo";
-import { getCategories } from "../services/category";
+import ImageUpload from "../../components/UploadWidget.jsx";
 
-import ImageUpload from "./UploadWidget.jsx";
+import addProduct from "../../services/addProductService.js";
+import getSuppliers from "../../services/getSupplierForProduct";
+import getProductNo from "../../services/getProductNo";
+import { getCategories } from "../../services/category";
 
 function AddProduct() {
   const initialState = {

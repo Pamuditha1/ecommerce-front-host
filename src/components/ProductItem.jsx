@@ -26,7 +26,7 @@ function ProductItem({ product, viewModal }) {
     <div className="card" style={cardStyle}>
       <ViewProductImage
         discount={product.discount}
-        populat={product.popular}
+        popular={product.popular}
         image={product.image}
         height="200"
         width="200"

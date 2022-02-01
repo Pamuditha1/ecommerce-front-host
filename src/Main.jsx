@@ -1,7 +1,8 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "../css/pageStyle.css";
+import "./css/pageStyle.css";
+
 import ControlPannel from "./ControlPannel";
 import CustomerView from "./CustomerView";
 

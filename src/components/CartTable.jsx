@@ -98,6 +98,7 @@ function CartTable({
                         <div className="col-3 ml-3">
                           <ViewProductImage
                             proNo={p.productNo}
+                            image={p.image}
                             height="100"
                             width="100"
                           />
@@ -133,7 +134,7 @@ function CartTable({
                         {aq < p.user.quantity && "Out of Stock"}
                       </p>
                     </td>
-                    {p.discount && p.discount !== 0 ? (
+                    {p.discount && p.discount !== "0" ? (
                       <td className="text-center">
                         <span style={{ textDecoration: "line-through" }}>
                           Rs. {p.price}{" "}

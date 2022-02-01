@@ -8,8 +8,6 @@ export default function getSales() {
   return http
     .get(apiEndPoint)
     .then(function (response) {
-      console.log(response.data);
-      // toast.success(`${response.data}`);
       return response.data;
     })
     .catch(function (error) {
