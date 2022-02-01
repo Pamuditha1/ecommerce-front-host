@@ -31,11 +31,7 @@ function Products({ cart, addtoCart, title, products, popular }) {
       </h3>
       <div className="row">
         {products?.map((product) => (
-          <ProductItem
-            product={product}
-            viewModal={viewModal}
-            popular={popular}
-          />
+          <ProductItem product={product} viewModal={viewModal} />
         ))}
 
         <ProductModal

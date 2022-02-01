@@ -1,15 +1,13 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/admin/products/`;
+const apiEndPoint = `${api2}/product`;
 
 export default function getOneProductAdmin(id) {
   return http
-    .get(`${apiEndPoint}${id}`)
+    .get(`${apiEndPoint}/${id}`)
     .then(function (response) {
-      console.log(response.data);
-      // toast.success(`${response.data}`);
       return response.data;
     })
     .catch(function (error) {

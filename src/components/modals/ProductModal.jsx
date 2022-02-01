@@ -78,6 +78,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
             <div className="col-6" style={{ margin: "auto" }}>
               <ViewProductImage
                 proNo={product.productNo}
+                image={product.image}
                 height="200"
                 width="200"
               />
@@ -96,7 +97,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
                 Color : <strong>{product.color}</strong>
               </p>
               <p>
-                Category : <strong>{product.category}</strong>
+                Category : <strong>{product.category?.name}</strong>
               </p>
               <p>
                 Price : <strong>Rs. {product.price}</strong>

@@ -2,7 +2,7 @@
 import React from "react";
 import ViewProductImage from "./ViewProductImage.jsx";
 
-function ProductItem({ product, viewModal, popular }) {
+function ProductItem({ product, viewModal }) {
   const cardStyle = {
     color: "black",
     boxShadow: "0px 10px 10px black",
@@ -25,8 +25,8 @@ function ProductItem({ product, viewModal, popular }) {
   return (
     <div className="card" style={cardStyle}>
       <ViewProductImage
-        popular={popular}
         discount={product.discount}
+        populat={product.popular}
         image={product.image}
         height="200"
         width="200"

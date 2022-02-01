@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import React from "react";
 
-function ViewProductImage(props) {
+function ViewProductImage({ image, discount, popular, width, height }) {
   let discountBadge = {
     position: "absolute",
     right: "-20px",
@@ -13,7 +13,7 @@ function ViewProductImage(props) {
     padding: "5px 10px",
     fontSize: "15px",
   };
-  let popular = {
+  let popularBadge = {
     position: "absolute",
     left: "-20px",
     top: "10px",
@@ -32,21 +32,21 @@ function ViewProductImage(props) {
   };
   return (
     <>
-      {props.image ? (
+      {image ? (
         <div style={item}>
-          {props.discount == 0 || typeof props.discount == "undefined" ? (
+          {discount === "0" || typeof discount == "undefined" ? (
             <></>
           ) : (
             <span style={discountBadge}>
               <strong>
-                {props.discount !== "0" && props.discount}
-                {!props.discount.includes("%") && "/="} off
+                {discount !== "0" && discount}
+                {!discount.includes("%") && "/="} off
               </strong>
             </span>
           )}
 
-          {props.popular ? (
-            <span style={popular}>
+          {popular ? (
+            <span style={popularBadge}>
               <strong>PP</strong>
             </span>
           ) : (
@@ -54,10 +54,10 @@ function ViewProductImage(props) {
           )}
           <img
             alt="product"
-            src={props.image}
+            src={image}
             style={{ borderRadius: "20px" }}
-            height={props.height}
-            width={props.width}
+            height={height}
+            width={width}
           />
         </div>
       ) : (

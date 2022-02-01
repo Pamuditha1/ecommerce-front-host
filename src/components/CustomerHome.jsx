@@ -50,7 +50,6 @@ function CustomerHome({ cart, addtoCart, filterCategory }) {
               cart={cart}
               addtoCart={addtoCart}
               filterCategory={filterCategory}
-              popular={true}
             />
 
             <Products

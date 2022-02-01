@@ -1,8 +1,8 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/user/products/discounted`;
+const apiEndPoint = `${api2}/product/discounted`;
 
 export default function getDiscountedProducts() {
   return http

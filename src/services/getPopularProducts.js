@@ -1,15 +1,13 @@
 import http from "./httpService";
 import { toast } from "react-toastify";
-import { api } from "./api";
+import { api2 } from "./api";
 
-const apiEndPoint = `${api}/user/products/popular`;
+const apiEndPoint = `${api2}/product/popular`;
 
 export default function getPopularProducts() {
   return http
     .get(apiEndPoint)
     .then(function (response) {
-      console.log("Popular", response.data);
-      // toast.success(`${response.data}`);
       return response.data;
     })
     .catch(function (error) {
