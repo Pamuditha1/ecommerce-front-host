@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import registerSupplier from "../../services/addSupplier";
+import { registerSupplier } from "../../services/suppliers";
 
 function AddSupplier() {
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;

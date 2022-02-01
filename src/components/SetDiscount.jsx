@@ -1,5 +1,6 @@
 import React from "react";
-import addDiscount from "../services/addDiscount";
+
+import { addDiscount } from "../services/products";
 
 function SetDiscount({ discount, setDis, id }) {
   const submitDiscount = async () => {

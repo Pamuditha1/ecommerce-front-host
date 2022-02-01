@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { COLUMNS } from "./customersColumns";
 import { GlobalFilter } from "../common/GlobalFilter";
 
-import getAllCustomers from "../../../services/getAllCustomers";
+import { getAllCustomers } from "../../../services/customer";
 
 export const CustomersTable = () => {
   const [customers, setCustomers] = useState([]);

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import ImageUpload from "../../components/UploadWidget.jsx";
 
-import addProduct from "../../services/addProductService.js";
-import getSuppliers from "../../services/getSupplierForProduct";
-import getProductNo from "../../services/getProductNo";
+import { addProduct } from "../../services/products";
+import { getSuppliers } from "../../services/suppliers";
+import { getNewProductNo } from "../../services/products";
 import { getCategories } from "../../services/category";
 
 function AddProduct() {
@@ -56,7 +56,10 @@ function AddProduct() {
     });
     setcategories(cat);
 
-    setProductData({ ...productData, productNo: "P" + (await getProductNo()) });
+    setProductData({
+      ...productData,
+      productNo: "P" + (await getNewProductNo()),
+    });
   };
 
   useEffect(() => {

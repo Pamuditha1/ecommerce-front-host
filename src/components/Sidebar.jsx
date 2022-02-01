@@ -14,7 +14,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge } from "reactstrap";
 import "../css/sideBar.css";
-import getOrdersCount from "../services/getOrdersCount";
+import { getOrdersCount } from "../services/orders";
 
 function Sidebar() {
   const [clicked, setclicked] = useState("");

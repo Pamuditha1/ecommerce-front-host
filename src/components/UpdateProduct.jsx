@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import getOneProductAdmin from "../services/getOneProduct";
-import updateProduct from "../services/updateProduct";
-import getSuppliers from "../services/getSupplierForProduct";
-import deleteProductImage from "../services/removeProductImage";
+import { getProductById } from "../services/products";
+import { updateProduct } from "../services/products";
+import { getSuppliers } from "../services/suppliers";
+import { deleteProductImage } from "../services/products";
 import { getCategories } from "../services/category";
 
 import ImageUpload from "./UploadWidget.jsx";
@@ -46,7 +46,7 @@ function UpdateProduct() {
   const [imageNull, setimageNull] = useState("");
 
   async function fetchProduct() {
-    const product = await getOneProductAdmin(id);
+    const product = await getProductById(id);
     setProductData({ ...product, supplier: product.supplierID._id });
     setimageURL(product.image);
   }

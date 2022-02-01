@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import SetDiscount from "../SetDiscount";
 import ViewProductImage from "../ViewProductImage";
 
-import addDiscount from "../../services/addDiscount";
+import { addDiscount } from "../../services/products";
 
 const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
   let combinations = [];

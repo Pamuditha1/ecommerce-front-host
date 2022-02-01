@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import getAllProductsAdmin from "../../services/getAllProductsAdmin";
+import { getAllProducts } from "../../services/products";
 import Modal from "react-modal";
 import AdminProductModal from "../../components/modals/AdminProductModal.jsx";
 import ProductItem from "../../components/ProductItem";
@@ -12,7 +12,7 @@ function ViewProducts() {
   const [modalProduct, setmodalProduct] = useState({});
 
   const getProducts = async () => {
-    const products = await getAllProductsAdmin();
+    const products = await getAllProducts();
     setallProducts(products);
   };
 

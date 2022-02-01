@@ -2,13 +2,14 @@ import http from "./httpService";
 import { toast } from "react-toastify";
 import { api } from "./api";
 
-const apiEndPoint = `${api}/category`;
+const apiEndPoint = `${api}/user`;
 
-export function addCategory(name) {
+export function registerUser(user) {
   return http
-    .post(apiEndPoint, name)
+    .post(apiEndPoint, user)
     .then(function (response) {
-      return toast.success(`${response.data}`);
+      toast.success(`${response.data}`);
+      return response.status;
     })
     .catch(function (error) {
       if (error.response.data) {
@@ -25,32 +26,12 @@ export function addCategory(name) {
     });
 }
 
-export function getCategories() {
+export function userLogin(loginData) {
   return http
-    .get(apiEndPoint)
+    .post(`${apiEndPoint}/login`, loginData)
     .then(function (response) {
+      toast.success(`${response.data.msg}`);
       return response.data;
-    })
-    .catch(function (error) {
-      if (error.response.data) {
-        console.log(error.response.data);
-        toast.error(error.response.data);
-      }
-      if (error.response) {
-        console.log(error.response);
-        toast.error(error.response);
-      } else {
-        console.log(error);
-        toast.error(error);
-      }
-    });
-}
-
-export function updateCategory(id, category) {
-  return http
-    .put(`${apiEndPoint}/${id}`, category)
-    .then(function (response) {
-      return toast.success(`${response.data}`);
     })
     .catch(function (error) {
       if (error.response.data) {

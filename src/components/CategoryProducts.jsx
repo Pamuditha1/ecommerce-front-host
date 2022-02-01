@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import getAllProducts from "../services/getAllProductsService.js";
-import ViewProductImage from "./ViewProductImage.jsx";
 import Modal from "react-modal";
+
+import ViewProductImage from "./ViewProductImage.jsx";
 import ProductModal from "./modals/ProductModal.jsx";
+
+import { getAllProducts } from "../services/products";
+
 Modal.setAppElement("#root");
 
 function CategoryProducts(props) {

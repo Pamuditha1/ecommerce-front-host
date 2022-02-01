@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import registerCustomer from "../../services/registerCustomer";
+import { registerCustomer } from "../../services/customer";
 
 function RegisterCustomer() {
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;

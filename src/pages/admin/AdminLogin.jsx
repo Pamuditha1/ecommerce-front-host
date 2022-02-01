@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import userLogin from "../../services/userLogin";
+import { userLogin } from "../../services/admin";
 
 function AdminLogin(props) {
   const [loginData, setloginData] = useState({

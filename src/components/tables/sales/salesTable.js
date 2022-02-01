@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { COLUMNS } from "./salesColumns";
 import { GlobalFilter } from "../common/GlobalFilter";
 
-import getSales from "../../../services/getSales";
+import { getSales } from "../../../services/products";
 
 export const SalesTable = () => {
   const [products, setProducts] = useState([]);

@@ -2,13 +2,14 @@ import http from "./httpService";
 import { toast } from "react-toastify";
 import { api } from "./api";
 
-const apiEndPoint = `${api}/category`;
+const apiEndPoint = `${api}/customer`;
 
-export function addCategory(name) {
+export function registerCustomer(customerData) {
   return http
-    .post(apiEndPoint, name)
+    .post(apiEndPoint, customerData)
     .then(function (response) {
-      return toast.success(`${response.data}`);
+      toast.success(`${response.data.msg}`);
+      return response.data.token;
     })
     .catch(function (error) {
       if (error.response.data) {
@@ -25,9 +26,31 @@ export function addCategory(name) {
     });
 }
 
-export function getCategories() {
+export function customerLogin(loginData) {
   return http
-    .get(apiEndPoint)
+    .post(`${apiEndPoint}/login`, loginData)
+    .then(function (response) {
+      toast.success(`${response.data.msg}`);
+      return response.data.token;
+    })
+    .catch(function (error) {
+      if (error.response.data) {
+        console.log(error.response.data);
+        toast.error(error.response.data);
+      }
+      if (error.response) {
+        console.log(error.response);
+        toast.error(error.response);
+      } else {
+        console.log(error);
+        toast.error(error);
+      }
+    });
+}
+
+export function getAllCustomers() {
+  return http
+    .get(`${apiEndPoint}/all`)
     .then(function (response) {
       return response.data;
     })
@@ -46,11 +69,11 @@ export function getCategories() {
     });
 }
 
-export function updateCategory(id, category) {
+export function getCustomerById(id) {
   return http
-    .put(`${apiEndPoint}/${id}`, category)
+    .get(`${apiEndPoint}/${id}`)
     .then(function (response) {
-      return toast.success(`${response.data}`);
+      return response.data;
     })
     .catch(function (error) {
       if (error.response.data) {

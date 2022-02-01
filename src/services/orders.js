@@ -2,13 +2,13 @@ import http from "./httpService";
 import { toast } from "react-toastify";
 import { api } from "./api";
 
-const apiEndPoint = `${api}/category`;
+const apiEndPoint = `${api}/order`;
 
-export function addCategory(name) {
+export function placeOrder(order) {
   return http
-    .post(apiEndPoint, name)
+    .post(apiEndPoint, order)
     .then(function (response) {
-      return toast.success(`${response.data}`);
+      toast.success(`${response.data}`);
     })
     .catch(function (error) {
       if (error.response.data) {
@@ -25,7 +25,28 @@ export function addCategory(name) {
     });
 }
 
-export function getCategories() {
+export function getOrdersCount() {
+  return http
+    .get(`${apiEndPoint}/count`)
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      if (error.response.data) {
+        console.log(error.response.data);
+        toast.error(error.response.data);
+      }
+      if (error.response) {
+        console.log(error.response);
+        toast.error(error.response);
+      } else {
+        console.log(error);
+        toast.error(error);
+      }
+    });
+}
+
+export function getOrders() {
   return http
     .get(apiEndPoint)
     .then(function (response) {
@@ -46,11 +67,13 @@ export function getCategories() {
     });
 }
 
-export function updateCategory(id, category) {
+export function deliverOrder(id) {
   return http
-    .put(`${apiEndPoint}/${id}`, category)
+    .put(`${apiEndPoint}/${id}`)
     .then(function (response) {
-      return toast.success(`${response.data}`);
+      console.log(response.data);
+      toast.success(`${response.data}`);
+      return response.data;
     })
     .catch(function (error) {
       if (error.response.data) {

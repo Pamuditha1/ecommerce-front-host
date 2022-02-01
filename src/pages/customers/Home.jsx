@@ -4,9 +4,9 @@ import Loader from "react-loader-spinner";
 import Carousel from "../../components/Carousel";
 import Products from "../../components/Products";
 
-import getAllProducts from "../../services/getAllProductsService.js";
-import getDiscountedProducts from "../../services/getDiscountedProducts";
-import getPopularProducts from "../../services/getPopularProducts";
+import { getAllProducts } from "../../services/products";
+import { getDiscountedProducts } from "../../services/products";
+import { getPopularProducts } from "../../services/products";
 
 function CustomerHome({ cart, addtoCart, filterCategory }) {
   const [allProducts, setallProducts] = useState([]);
