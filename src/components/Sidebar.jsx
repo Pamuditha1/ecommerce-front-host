@@ -10,6 +10,7 @@ import {
   faUserPlus,
   faUserTag,
   faChartLine,
+  faTshirt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge } from "reactstrap";
@@ -61,7 +62,7 @@ function Sidebar() {
         </Link>
       )}
 
-      {hasAccessTo(["Admin", "Employee"]) && (
+      {hasAccessTo(["Admin"]) && (
         <Link to="/admin/item/add">
           <p
             onClick={onClick}
@@ -157,7 +158,7 @@ function Sidebar() {
             style={clicked === "categories" ? onClickStyle : s}
           >
             <span style={{ marginRight: 10 }}>
-              <FontAwesomeIcon icon={faChartLine} size="2x" />
+              <FontAwesomeIcon icon={faTshirt} size="2x" />
             </span>
             Categories
           </p>

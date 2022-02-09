@@ -11,6 +11,7 @@ export const COLUMNS = [
 
       async function onDeliver(orderNo) {
         await deliverOrder(orderNo);
+        window.location.reload(false);
         return;
       }
 

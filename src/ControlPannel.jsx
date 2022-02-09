@@ -29,7 +29,7 @@ function ControlPannel(props) {
           <PrivateRoute
             component={AddProduct}
             path="/admin/item/add"
-            types={["Admin", "Employee"]}
+            types={["Admin"]}
           />
           <PrivateRoute
             component={ViewProducts}

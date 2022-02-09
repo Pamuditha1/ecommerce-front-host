@@ -22,7 +22,7 @@ const PrivateRoute = ({ component: Component, types, ...rest }) => {
         types.includes(userType) ? (
           <Component {...props} />
         ) : (
-          <Redirect to={types[0] === "Customer" ? "/" : "/admin"} />
+          <Redirect to={types.includes("Customer") ? "/" : "/admin"} />
         )
       }
     />
