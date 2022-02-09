@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
-import { getProductById } from "../services/products";
-import { updateProduct } from "../services/products";
-import { getSuppliers } from "../services/suppliers";
-import { deleteProductImage } from "../services/products";
-import { getCategories } from "../services/category";
+import ImageUpload from "../../components/UploadWidget.jsx";
 
-import ImageUpload from "./UploadWidget.jsx";
-import hasAccessTo from "../utils/hasAccess";
+import { addProduct } from "../../services/products";
+import { getSuppliers } from "../../services/suppliers";
+import { getNewProductNo } from "../../services/products";
+import { getCategories } from "../../services/category";
 
-function UpdateProduct() {
-  const { id } = useParams();
-  const [productData, setProductData] = useState({
+function AddProduct() {
+  const initialState = {
     productNo: "",
     productName: "",
     description: "",
@@ -28,7 +24,8 @@ function UpdateProduct() {
     profit: 0,
     profitP: "",
     barcode: "",
-  });
+  };
+  const [productData, setProductData] = useState(initialState);
   const sizes = ["Choose Size", "XS", "S", "M", "L", "XL", "XXL"];
   const materials = [
     "Choose Material",
@@ -40,22 +37,9 @@ function UpdateProduct() {
   ];
   const [categories, setcategories] = useState([]);
   const [suppliers, setsuppliers] = useState([]);
-
-  const [productSaved, setproductSaved] = useState(false);
   const [savedSize, setsavedSize] = useState("");
   const [imageURL, setimageURL] = useState(null);
   const [imageNull, setimageNull] = useState("");
-
-  async function fetchProduct() {
-    const product = await getProductById(id);
-    setProductData({ ...product, supplier: product.supplierID._id });
-    setimageURL(product.image);
-  }
-
-  useEffect(() => {
-    fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
 
   const getInitialData = async () => {
     let result = await getSuppliers();
@@ -71,6 +55,11 @@ function UpdateProduct() {
       cat.push(r);
     });
     setcategories(cat);
+
+    setProductData({
+      ...productData,
+      productNo: "P" + (await getNewProductNo()),
+    });
   };
 
   useEffect(() => {
@@ -78,19 +67,18 @@ function UpdateProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onchange = (e) => {
+  function onchange(e) {
     setProductData({
       ...productData,
       [e.target.name]: e.target.value,
     });
-  };
+  }
 
   const onchangeSelect = (e) => {
     setProductData({
       ...productData,
       size: e.target.value,
     });
-    setproductSaved(false);
   };
   const onchangeSelectSupp = (e) => {
     setProductData({
@@ -123,16 +111,14 @@ function UpdateProduct() {
         parseInt(productData.bprice)) *
       100;
 
-    updateProduct({
+    addProduct({
       ...productData,
       image: imageURL,
       profit: profit,
       profitP: parseFloat(profitPresen).toFixed(2),
     }).then(() => {
-      setProductData({ ...productData, size: "", quantity: 0 });
+      setProductData({ ...productData, quantity: 0, size: "" });
     });
-
-    setproductSaved(true);
   };
 
   const setImage = (url) => {
@@ -140,10 +126,14 @@ function UpdateProduct() {
     setimageNull("");
   };
 
-  const removeImage = async () => {
-    await deleteProductImage(productData._id);
+  const removeImage = () => {
     setimageURL(null);
-    setProductData({ ...productData, image: null });
+  };
+
+  const clear = () => {
+    setProductData(initialState);
+    setimageURL(null);
+    setsavedSize("");
   };
 
   let profitPre =
@@ -158,7 +148,7 @@ function UpdateProduct() {
           style={{ backgroundColor: "blueviolet" }}
           className="pl-5 pt-1 pb-1 mb-5"
         >
-          Update Item
+          Add Item
         </h6>
 
         <div className="row">
@@ -197,7 +187,6 @@ function UpdateProduct() {
                   Barcode
                 </label>
                 <input
-                  readOnly
                   onChange={onchange}
                   value={productData.barcode}
                   className="form-control col-11 mr-3"
@@ -211,7 +200,6 @@ function UpdateProduct() {
                   Product Name
                 </label>
                 <input
-                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.productName}
                   className="form-control col-11 ml-3"
@@ -225,7 +213,6 @@ function UpdateProduct() {
                   Description
                 </label>
                 <textarea
-                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.description}
                   className="form-control col-11 ml-3"
@@ -245,7 +232,6 @@ function UpdateProduct() {
                   Supplier
                 </label>
                 <select
-                  disabled={!hasAccessTo(["Admin"])}
                   onChange={onchangeSelectSupp}
                   value={productData.supplier}
                   id="supplier"
@@ -253,10 +239,10 @@ function UpdateProduct() {
                   className="form-control col-11 ml-3"
                   required
                 >
-                  {suppliers.map((option) => {
+                  {suppliers.map((option, index) => {
                     return (
                       <option
-                        key={option._id}
+                        key={index}
                         value={option._id}
                         style={{ textAlign: "center" }}
                       >
@@ -271,7 +257,6 @@ function UpdateProduct() {
                   Material
                 </label>
                 <select
-                  disabled={!hasAccessTo(["Admin"])}
                   onChange={onchangeSelectMaterial}
                   value={productData.material}
                   id="material"
@@ -310,7 +295,6 @@ function UpdateProduct() {
                   Buying Price
                 </label>
                 <input
-                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.bprice}
                   className="form-control col-11 ml-3"
@@ -324,7 +308,6 @@ function UpdateProduct() {
                   Selling Price
                 </label>
                 <input
-                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.price}
                   className="form-control col-11"
@@ -352,7 +335,6 @@ function UpdateProduct() {
                   Category
                 </label>
                 <select
-                  disabled={!hasAccessTo(["Admin"])}
                   onChange={onchangeSelectCategory}
                   value={productData.category}
                   id="category"
@@ -379,7 +361,6 @@ function UpdateProduct() {
                   Re-Order Quantity
                 </label>
                 <input
-                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.rquantity}
                   className="form-control col-11"
@@ -430,18 +411,31 @@ function UpdateProduct() {
           </div>
         </div>
 
-        {savedSize && <p className="">* Product Size {savedSize} Updated</p>}
-        {}
-        <button
-          onClick={submit}
-          type="submit"
-          className="btn btn-primary float-right mb-5 mt-3 col-12"
-        >
-          {productSaved ? `Product Updated` : "Update Product"}
-        </button>
+        {savedSize && <p className="">* Product Size {savedSize} Saved</p>}
+        <div className="row mb-5 mt-3">
+          <div className="col-6">
+            <button
+              onClick={submit}
+              type="submit"
+              className="btn btn-primary float-right m-1 col-12"
+            >
+              Save Product
+            </button>
+          </div>
+          <div className="col-6">
+            {" "}
+            <button
+              onClick={clear}
+              type="submit"
+              className="btn btn-primary float-right m-1 col-12"
+            >
+              Add Another
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
 }
 
-export default UpdateProduct;
+export default AddProduct;

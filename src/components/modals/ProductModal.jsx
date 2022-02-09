@@ -42,7 +42,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   const onchange = (e) => {
     setquantity(e.target.value);
     let t = 0;
-    if (product.discount && product.discount !== 0) {
+    if (product.discount && product.discount !== "0") {
       t = parseInt(product.discountedPrice) * parseInt(e.target.value);
     } else {
       t = parseInt(product.price) * parseInt(e.target.value);
@@ -76,19 +76,23 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
         <ModalBody style={{ color: "black" }}>
           <div className="row">
             <div className="col-6" style={{ margin: "auto" }}>
+              <p>
+                Product Code : <strong>{product.productNo}</strong>
+              </p>
+              <p>
+                Barcode : <strong>{product.barcode}</strong>
+              </p>
+              <p>
+                Product Name : <strong>{product.productName}</strong>
+              </p>
               <ViewProductImage
                 proNo={product.productNo}
+                image={product.image}
                 height="200"
                 width="200"
               />
             </div>
             <div className="col-6">
-              <p>
-                Product Code : <strong>{product.productNo}</strong>
-              </p>
-              <p>
-                Product Name : <strong>{product.productName}</strong>
-              </p>
               <p>
                 Material : <strong>{product.material}</strong>
               </p>
@@ -96,12 +100,12 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
                 Color : <strong>{product.color}</strong>
               </p>
               <p>
-                Category : <strong>{product.category}</strong>
+                Category : <strong>{product.category?.name}</strong>
               </p>
               <p>
                 Price : <strong>Rs. {product.price}</strong>
               </p>
-              {product.discount && product.discount !== 0 && (
+              {product?.discount !== "0" && (
                 <p style={{ color: "red" }}>
                   Discounted Price :{" "}
                   <strong>Rs. {product.discountedPrice}</strong>
@@ -150,11 +154,11 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mt-5">
             <div className="col-6">
-              <p>
+              <h5>
                 Total Amount : <strong>{total ? total : 0}</strong>
-              </p>
+              </h5>
             </div>
             <div className="col-4">
               <Button

@@ -1,5 +1,5 @@
-import Main from './components/Main';
-import 'react-toastify/dist/ReactToastify.css'
+import Main from "./Main";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (

@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { COLUMNS } from "./orderColumns";
 import { GlobalFilter } from "../common/GlobalFilter";
 
-import getOrders from "../../../services/getOrders";
+import { getOrders } from "../../../services/orders";
 
 export const OrdersTable = () => {
   const [products, setProducts] = useState([]);
@@ -36,7 +36,7 @@ export const OrdersTable = () => {
       r.products.forEach((p) => {
         r.items =
           r.items +
-          ` (${p.id && p.id.productNo} - ${p.id.productName} - ${p.size} - ${
+          ` (${p.id && p.id?.productNo} - ${p.id.productName} - ${p.size} - ${
             p.qty
           })`;
       });

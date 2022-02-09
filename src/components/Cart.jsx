@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CartTable from "./CartTable";
-import { UserContext } from "./CustomerView";
+import { UserContext } from "../CustomerView";
 import PurchaseModal from "./modals/PurchaseModal";
 
 function Cart(props) {

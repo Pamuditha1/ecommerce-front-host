@@ -1,34 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { api } from "../services/api";
+/* eslint-disable eqeqeq */
+import React from "react";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function ViewProductImage(props) {
-  const [imagePath, setImagePath] = useState("");
-
-  const getImage = async () => {
-    axios
-      .get(`${api}/user/product/image/${props.proNo}`, {
-        responseType: "arraybuffer",
-      })
-      .then((response) => {
-        if (typeof response.data == "object") {
-        }
-        const base64 = btoa(
-          new Uint8Array(response.data).reduce(
-            (data, byte) => data + String.fromCharCode(byte),
-            ""
-          )
-        );
-        setImagePath("data:;base64," + base64);
-      })
-      .catch((err) => console.log("Image Error", err));
-  };
-
-  useEffect(() => {
-    getImage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.proNo]);
-
+function ViewProductImage({ image, discount, popular, width, height }) {
   let discountBadge = {
     position: "absolute",
     right: "-20px",
@@ -40,6 +15,18 @@ function ViewProductImage(props) {
     padding: "5px 10px",
     fontSize: "15px",
   };
+  let popularBadge = {
+    position: "absolute",
+    left: "-20px",
+    top: "10px",
+    // background: "white",
+    // textAlign: "center",
+    // borderRadius: "30px 30px 30px 30px",
+    color: "#ffed03",
+    // padding: "5px 10px",
+    // fontSize: "15px",
+    shadow: "0px 5px 5px black",
+  };
   let item = {
     position: "relative",
     paddingTop: "20px",
@@ -48,24 +35,32 @@ function ViewProductImage(props) {
   };
   return (
     <>
-      {imagePath ? (
+      {image ? (
         <div style={item}>
-          {props.discount === 0 || typeof props.discount == "undefined" ? (
+          {discount === "0" || typeof discount == "undefined" ? (
             <></>
           ) : (
             <span style={discountBadge}>
               <strong>
-                {props.discount}
-                {!props.discount.includes("%") && "/="} off
+                {discount !== "0" && discount}
+                {!discount.includes("%") && "/="} off
               </strong>
             </span>
           )}
+
+          {popular ? (
+            <span style={popularBadge}>
+              <FontAwesomeIcon icon={faStar} size="2x" />
+            </span>
+          ) : (
+            <></>
+          )}
           <img
             alt="product"
-            src={imagePath}
+            src={image}
             style={{ borderRadius: "20px" }}
-            height={props.height}
-            width={props.width}
+            height={height}
+            width={width}
           />
         </div>
       ) : (

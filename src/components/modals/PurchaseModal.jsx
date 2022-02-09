@@ -5,8 +5,8 @@ import jwtDecode from "jwt-decode";
 
 import PurchaseForm from "../PurchaseForm";
 
-import getCustomer from "../../services/getCustomerService";
-import placeOrder from "../../services/placeOrderService";
+import { getCustomerById } from "../../services/customer";
+import { placeOrder } from "../../services/orders";
 
 const PurchaseModal = ({
   isModalOpen,
@@ -29,7 +29,7 @@ const PurchaseModal = ({
       const uid = jwtDecode(jwt)._id;
       setuser(uid);
 
-      setuserData(await getCustomer(uid));
+      setuserData(await getCustomerById(uid));
     } catch (err) {
       console.log(err);
     }

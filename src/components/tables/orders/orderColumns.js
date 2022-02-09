@@ -1,5 +1,6 @@
 import { ColumnFilter } from "../common/ColumnFilter";
-import deliverOrder from "../../../services/updateOrderStatus";
+
+import { deliverOrder } from "../../../services/orders";
 
 export const COLUMNS = [
   {
@@ -10,6 +11,7 @@ export const COLUMNS = [
 
       async function onDeliver(orderNo) {
         await deliverOrder(orderNo);
+        window.location.reload(false);
         return;
       }
 

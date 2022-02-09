@@ -12,12 +12,10 @@ import Loader from "react-loader-spinner";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// import DayPicker from '../../components/DayPicker'
-
 import { COLUMNS } from "./inventoryColumns";
 import { GlobalFilter } from "../common/GlobalFilter";
 
-import getInventory from "../../../services/getInventory";
+import { getInventory } from "../../../services/products";
 
 export const InventoryTable = () => {
   const [products, setProducts] = useState([]);
