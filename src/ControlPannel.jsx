@@ -1,9 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { Link } from "react-router-dom";
-
-import AdminHeader from "./components/AdminHeader";
-import Sidebar from "./components/Sidebar";
+import { Switch } from "react-router-dom";
 
 import Orders from "./pages/admin/Orders";
 import AddProduct from "./pages/admin/AddProduct";
@@ -17,57 +13,71 @@ import Categories from "./pages/admin/Categories";
 import Reports from "./pages/admin/Reports";
 import RegisterUser from "./pages/admin/RegisterUser";
 
-import AdminLogin from "./pages/admin/AdminLogin";
+import PrivateRoute from "./components/PrivateRoute";
+import AdminContainer from "./components/AdminContainer";
 
 function ControlPannel(props) {
   return (
     <>
-      {localStorage.getItem("admin-token") ? (
-        <>
-          <AdminHeader />
-          <div className="row">
-            <div className="col-2">
-              <Sidebar />
-            </div>
-            <div className="col-10">
-              <Switch>
-                <Route exact path="/admin/orders" component={Orders} />
-                <Route path="/admin/item/add" component={AddProduct} />
-                <Route path="/admin/items" component={ViewProducts} />
-                <Route
-                  path="/admin/item/update/:id"
-                  component={UpdateProduct}
-                />
-                <Route path="/admin/customers" component={Customers} />
-                <Route path="/admin/inventory" component={Inventory} />
-                <Route path="/admin/sales" component={Sales} />
-                <Route path="/admin/add-supplier" component={AddSupplier} />
-                <Route exact path="/admin/category" component={Categories} />
-                <Route path="/admin/reports" component={Reports} />
-                <Route path="/admin/register" component={RegisterUser} />
-                <Route path="/admin" component={Orders} />
-
-                <Route path="/admin/login" component={AdminLogin} />
-                <Route exact path="/admin" component={AdminLogin} />
-              </Switch>
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <Switch>
-            <Route exact path="/admin" component={AdminLogin} />
-          </Switch>
-          {props.location.pathname !== "/admin" && (
-            <div>
-              No Access, Please Login
-              <Link to="/admin">
-                <button className="btn btn-outline-light">Log In</button>
-              </Link>
-            </div>
-          )}
-        </>
-      )}
+      <AdminContainer>
+        <Switch>
+          <PrivateRoute
+            component={Orders}
+            path="/admin/orders"
+            types={["Admin", "Employee"]}
+          />
+          <PrivateRoute
+            component={AddProduct}
+            path="/admin/item/add"
+            types={["Admin", "Employee"]}
+          />
+          <PrivateRoute
+            component={ViewProducts}
+            path="/admin/items"
+            types={["Admin", "Employee"]}
+          />
+          <PrivateRoute
+            component={UpdateProduct}
+            path="/admin/item/update/:id"
+            types={["Admin", "Employee"]}
+          />
+          <PrivateRoute
+            component={Customers}
+            path="/admin/customers"
+            types={["Admin", "Employee"]}
+          />
+          <PrivateRoute
+            component={Inventory}
+            path="/admin/inventory"
+            types={["Admin", "Employee"]}
+          />
+          <PrivateRoute
+            component={Sales}
+            path="/admin/sales"
+            types={["Admin"]}
+          />
+          <PrivateRoute
+            component={AddSupplier}
+            path="/admin/add-supplier"
+            types={["Admin"]}
+          />
+          <PrivateRoute
+            component={Categories}
+            path="/admin/category"
+            types={["Admin"]}
+          />
+          <PrivateRoute
+            component={Reports}
+            path="/admin/reports"
+            types={["Admin"]}
+          />
+          <PrivateRoute
+            component={RegisterUser}
+            path="/admin/register"
+            types={["Admin"]}
+          />
+        </Switch>
+      </AdminContainer>
     </>
   );
 }

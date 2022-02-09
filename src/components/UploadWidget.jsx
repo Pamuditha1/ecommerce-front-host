@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import hasAccessTo from "../utils/hasAccess";
 //import { WidgetLoader, Widget } from "react-cloudinary-upload-widget";
 
 class ImageUpload extends Component {
@@ -89,11 +90,15 @@ class ImageUpload extends Component {
           id="upload_widget"
           className="btn btn-outline-primary mb-3"
           onClick={this.showWidget}
-          disabled={!this.props.update && this.props.imageURL}
+          disabled={
+            (!this.props.update && this.props.imageURL) ||
+            !hasAccessTo(["Admin"])
+          }
         >
           {!this.props.update && this.props.imageURL ? "Uploaded" : "Upload"}
         </button>
         <button
+          disabled={!hasAccessTo(["Admin"])}
           onClick={this.props.removeImage}
           className="btn btn-outline-danger mb-3 ml-3"
         >

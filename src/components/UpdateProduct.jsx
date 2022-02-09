@@ -8,6 +8,7 @@ import { deleteProductImage } from "../services/products";
 import { getCategories } from "../services/category";
 
 import ImageUpload from "./UploadWidget.jsx";
+import hasAccessTo from "../utils/hasAccess";
 
 function UpdateProduct() {
   const { id } = useParams();
@@ -210,6 +211,7 @@ function UpdateProduct() {
                   Product Name
                 </label>
                 <input
+                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.productName}
                   className="form-control col-11 ml-3"
@@ -223,6 +225,7 @@ function UpdateProduct() {
                   Description
                 </label>
                 <textarea
+                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.description}
                   className="form-control col-11 ml-3"
@@ -242,6 +245,7 @@ function UpdateProduct() {
                   Supplier
                 </label>
                 <select
+                  disabled={!hasAccessTo(["Admin"])}
                   onChange={onchangeSelectSupp}
                   value={productData.supplier}
                   id="supplier"
@@ -267,6 +271,7 @@ function UpdateProduct() {
                   Material
                 </label>
                 <select
+                  disabled={!hasAccessTo(["Admin"])}
                   onChange={onchangeSelectMaterial}
                   value={productData.material}
                   id="material"
@@ -305,6 +310,7 @@ function UpdateProduct() {
                   Buying Price
                 </label>
                 <input
+                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.bprice}
                   className="form-control col-11 ml-3"
@@ -318,6 +324,7 @@ function UpdateProduct() {
                   Selling Price
                 </label>
                 <input
+                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.price}
                   className="form-control col-11"
@@ -345,6 +352,7 @@ function UpdateProduct() {
                   Category
                 </label>
                 <select
+                  disabled={!hasAccessTo(["Admin"])}
                   onChange={onchangeSelectCategory}
                   value={productData.category}
                   id="category"
@@ -371,6 +379,7 @@ function UpdateProduct() {
                   Re-Order Quantity
                 </label>
                 <input
+                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.rquantity}
                   className="form-control col-11"

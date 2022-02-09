@@ -9,7 +9,6 @@ function AdminLogin(props) {
     email: "",
     password: "",
   });
-  const [invalidLogin, setinvalidLogin] = useState(false);
 
   const onchange = (e) => {
     setloginData({
@@ -23,17 +22,8 @@ function AdminLogin(props) {
     const result = await userLogin(loginData);
     if (result) {
       localStorage.setItem("admin-token", result.token);
-      localStorage.setItem("type", result.type);
       props.history.push("/admin/orders");
-    } else {
-      setinvalidLogin(true);
     }
-  };
-
-  const style = {
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
   };
 
   const formStyle = {
@@ -41,19 +31,11 @@ function AdminLogin(props) {
     padding: "50px 30px 50px 30px",
     color: "white",
     borderRadius: "20px",
+    margin: "auto",
   };
 
   return (
-    <div className="row" style={style}>
-      {invalidLogin && (
-        <center>
-          <div class="alert alert-warning" role="alert">
-            Please check you email and password.{" "}
-          </div>
-        </center>
-      )}
-
-      <div className="col-3"></div>
+    <div className="container" style={{ height: "100%" }}>
       <form className="container mt-5 mb-5 col-6" style={formStyle}>
         <center>
           <FontAwesomeIcon icon={faUserCircle} size="10x" />
@@ -103,7 +85,6 @@ function AdminLogin(props) {
           </div>
         </div>
       </form>
-      <div className="col-3"></div>
     </div>
   );
 }

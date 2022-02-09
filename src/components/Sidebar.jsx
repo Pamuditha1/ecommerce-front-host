@@ -15,16 +15,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge } from "reactstrap";
 import "../css/sideBar.css";
 import { getOrdersCount } from "../services/orders";
+import hasAccessTo from "../utils/hasAccess";
 
 function Sidebar() {
   const [clicked, setclicked] = useState("");
   const [numOfOrders, setnumOfOrders] = useState(0);
-  const [userType, setuserType] = useState("");
 
   useEffect(() => {
-    let t = localStorage.getItem("type");
-    setuserType(t);
-
     setInterval(async () => {
       let count = await getOrdersCount();
       setnumOfOrders(count);
@@ -44,74 +41,87 @@ function Sidebar() {
 
   return (
     <div className="sidenav">
-      <Link to="/admin/orders">
-        <p
-          onClick={onClick}
-          id="orders"
-          style={clicked === "orders" ? onClickStyle : s}
-        >
-          <span style={{ marginRight: 10 }}>
-            <FontAwesomeIcon icon={faBell} size="2x" />
-          </span>
-          Orders
-          {numOfOrders > 0 && (
-            <Badge className="ml-3" color="warning">
-              {numOfOrders}
-            </Badge>
-          )}
-        </p>
-      </Link>
-      <Link to="/admin/item/add">
-        <p
-          onClick={onClick}
-          id="add-item"
-          style={clicked === "add-item" ? onClickStyle : s}
-        >
-          <span style={{ marginRight: 10 }}>
-            <FontAwesomeIcon icon={faPlusCircle} size="2x" />
-          </span>
-          Add Item
-        </p>
-      </Link>
-      <Link to="/admin/items">
-        <p
-          onClick={onClick}
-          id="view-item"
-          style={clicked === "view-item" ? onClickStyle : s}
-        >
-          <span style={{ marginRight: 10 }}>
-            <FontAwesomeIcon icon={faImages} size="2x" />
-          </span>
-          View Items
-        </p>
-      </Link>
-      <Link to="/admin/customers">
-        <p
-          onClick={onClick}
-          id="cus"
-          style={clicked === "cus" ? onClickStyle : s}
-        >
-          <span style={{ marginRight: 10 }}>
-            <FontAwesomeIcon icon={faUserTag} size="2x" />
-          </span>
-          Customers
-        </p>
-      </Link>
+      {hasAccessTo(["Admin", "Employee"]) && (
+        <Link to="/admin/orders">
+          <p
+            onClick={onClick}
+            id="orders"
+            style={clicked === "orders" ? onClickStyle : s}
+          >
+            <span style={{ marginRight: 10 }}>
+              <FontAwesomeIcon icon={faBell} size="2x" />
+            </span>
+            Orders
+            {numOfOrders > 0 && (
+              <Badge className="ml-3" color="warning">
+                {numOfOrders}
+              </Badge>
+            )}
+          </p>
+        </Link>
+      )}
 
-      <Link to="/admin/inventory">
-        <p
-          onClick={onClick}
-          id="inven"
-          style={clicked === "inven" ? onClickStyle : s}
-        >
-          <span style={{ marginRight: 10 }}>
-            <FontAwesomeIcon icon={faBoxes} size="2x" />
-          </span>
-          Inventory
-        </p>
-      </Link>
+      {hasAccessTo(["Admin", "Employee"]) && (
+        <Link to="/admin/item/add">
+          <p
+            onClick={onClick}
+            id="add-item"
+            style={clicked === "add-item" ? onClickStyle : s}
+          >
+            <span style={{ marginRight: 10 }}>
+              <FontAwesomeIcon icon={faPlusCircle} size="2x" />
+            </span>
+            Add Item
+          </p>
+        </Link>
+      )}
 
-      {userType === "Admin" && (
+      {hasAccessTo(["Admin", "Employee"]) && (
+        <Link to="/admin/items">
+          <p
+            onClick={onClick}
+            id="view-item"
+            style={clicked === "view-item" ? onClickStyle : s}
+          >
+            <span style={{ marginRight: 10 }}>
+              <FontAwesomeIcon icon={faImages} size="2x" />
+            </span>
+            View Items
+          </p>
+        </Link>
+      )}
+
+      {hasAccessTo(["Admin", "Employee"]) && (
+        <Link to="/admin/customers">
+          <p
+            onClick={onClick}
+            id="cus"
+            style={clicked === "cus" ? onClickStyle : s}
+          >
+            <span style={{ marginRight: 10 }}>
+              <FontAwesomeIcon icon={faUserTag} size="2x" />
+            </span>
+            Customers
+          </p>
+        </Link>
+      )}
+
+      {hasAccessTo(["Admin", "Employee"]) && (
+        <Link to="/admin/inventory">
+          <p
+            onClick={onClick}
+            id="inven"
+            style={clicked === "inven" ? onClickStyle : s}
+          >
+            <span style={{ marginRight: 10 }}>
+              <FontAwesomeIcon icon={faBoxes} size="2x" />
+            </span>
+            Inventory
+          </p>
+        </Link>
+      )}
+
+      {hasAccessTo(["Admin"]) && (
         <Link to="/admin/sales">
           <p
             onClick={onClick}
@@ -125,7 +135,7 @@ function Sidebar() {
           </p>
         </Link>
       )}
-      {userType === "Admin" && (
+      {hasAccessTo(["Admin"]) && (
         <Link to="/admin/add-supplier">
           <p
             onClick={onClick}
@@ -139,7 +149,7 @@ function Sidebar() {
           </p>
         </Link>
       )}
-      {userType === "Admin" && (
+      {hasAccessTo(["Admin"]) && (
         <Link to="/admin/category">
           <p
             onClick={onClick}
@@ -153,7 +163,7 @@ function Sidebar() {
           </p>
         </Link>
       )}
-      {userType === "Admin" && (
+      {hasAccessTo(["Admin"]) && (
         <Link to="/admin/reports">
           <p
             onClick={onClick}
@@ -167,7 +177,7 @@ function Sidebar() {
           </p>
         </Link>
       )}
-      {userType === "Admin" && (
+      {hasAccessTo(["Admin"]) && (
         <Link to="/admin/register">
           <p
             onClick={onClick}
