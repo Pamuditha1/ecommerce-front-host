@@ -21,18 +21,18 @@ function AddSupplier() {
       name: Yup.string()
         .min(2, "Mininum 2 characters")
         .max(15, "Maximum 10 characters")
-        .required("Required!"),
-      email: Yup.string().email("Invalid Email").required("Required!"),
+        .required("Name is Required"),
+      email: Yup.string().email("Invalid Email").required("Email is Required"),
       contact1: Yup.string()
-        .matches(phoneRegex, "Invalid Phone Number.")
-        .required("Contact No Required"),
+        .matches(phoneRegex, "Invalid Phone Number")
+        .required("Contact No is Required"),
       contact2: Yup.string()
-        .matches(phoneRegex, "Invalid Phone Number.")
-        .required("Contact No Required"),
+        .matches(phoneRegex, "Invalid Phone Number")
+        .required("Contact No is Required"),
       nic: Yup.string()
         .matches(nicRegex, "Invalid NIC number")
-        .required("National Identity Card Number is required."),
-      address: Yup.string().required("Required!"),
+        .required("National Identity Card Number is Required."),
+      address: Yup.string().required("Address is Required"),
     }),
     onSubmit: async (values) => {
       await registerSupplier(values);
