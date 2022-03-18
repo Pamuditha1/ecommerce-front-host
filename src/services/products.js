@@ -46,6 +46,27 @@ export function getAllProducts() {
     });
 }
 
+export function getProductsByCategory(id) {
+  return http
+    .get(`${apiEndPoint}/category/${id}`)
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      if (error.response.data) {
+        console.log(error.response.data);
+        toast.error(error.response.data);
+      }
+      if (error.response) {
+        console.log(error.response);
+        toast.error(error.response);
+      } else {
+        console.log(error);
+        toast.error(error);
+      }
+    });
+}
+
 export function getProductById(id) {
   return http
     .get(`${apiEndPoint}/${id}`)
