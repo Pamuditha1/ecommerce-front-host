@@ -238,3 +238,25 @@ export function deleteProductImage(id) {
       }
     });
 }
+
+export function hideProduct(id) {
+  return http
+    .put(`${apiEndPoint}/${id}`)
+    .then(function (response) {
+      console.log(response.data);
+      toast.success(`${response.data}`);
+    })
+    .catch(function (error) {
+      if (error.response.data) {
+        console.log(error.response.data);
+        toast.error(error.response.data);
+      }
+      if (error.response) {
+        console.log(error.response);
+        toast.error(error.response);
+      } else {
+        console.log(error);
+        toast.error(error);
+      }
+    });
+}

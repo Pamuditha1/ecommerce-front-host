@@ -414,22 +414,22 @@ function AddProduct() {
         {savedSize && <p className="">* Product Size {savedSize} Saved</p>}
         <div className="row mb-5 mt-3">
           <div className="col-6">
-            <button
-              onClick={submit}
-              type="submit"
-              className="btn btn-primary float-right m-1 col-12"
-            >
-              Save Product
-            </button>
-          </div>
-          <div className="col-6">
             {" "}
             <button
               onClick={clear}
               type="submit"
               className="btn btn-primary float-right m-1 col-12"
             >
-              Add Another
+              Reset
+            </button>
+          </div>
+          <div className="col-6">
+            <button
+              onClick={submit}
+              type="submit"
+              className="btn btn-primary float-right m-1 col-12"
+            >
+              Save Product
             </button>
           </div>
         </div>

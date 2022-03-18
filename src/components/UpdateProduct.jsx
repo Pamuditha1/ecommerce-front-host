@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
-import { getProductById } from "../services/products";
+import { getProductById, hideProduct } from "../services/products";
 import { updateProduct } from "../services/products";
 import { getSuppliers } from "../services/suppliers";
-import { deleteProductImage } from "../services/products";
+//import { deleteProductImage } from "../services/products";
 import { getCategories } from "../services/category";
 
-import ImageUpload from "./UploadWidget.jsx";
+//import ImageUpload from "./UploadWidget.jsx";
 import hasAccessTo from "../utils/hasAccess";
 
 function UpdateProduct() {
   const { id } = useParams();
+  const history = useHistory();
   const [productData, setProductData] = useState({
     productNo: "",
     productName: "",
@@ -44,7 +45,7 @@ function UpdateProduct() {
   const [productSaved, setproductSaved] = useState(false);
   const [savedSize, setsavedSize] = useState("");
   const [imageURL, setimageURL] = useState(null);
-  const [imageNull, setimageNull] = useState("");
+  // const [imageNull, setimageNull] = useState("");
 
   async function fetchProduct() {
     const product = await getProductById(id);
@@ -135,15 +136,20 @@ function UpdateProduct() {
     setproductSaved(true);
   };
 
-  const setImage = (url) => {
-    setimageURL(url);
-    setimageNull("");
-  };
+  // const setImage = (url) => {
+  //   setimageURL(url);
+  //   setimageNull("");
+  // };
 
-  const removeImage = async () => {
-    await deleteProductImage(productData._id);
-    setimageURL(null);
-    setProductData({ ...productData, image: null });
+  // const removeImage = async () => {
+  //   await deleteProductImage(productData._id);
+  //   setimageURL(null);
+  //   setProductData({ ...productData, image: null });
+  // };
+
+  const hideItem = async () => {
+    await hideProduct(id);
+    history.push("/admin/items");
   };
 
   let profitPre =
@@ -156,21 +162,35 @@ function UpdateProduct() {
       <form className="container" autoComplete="off">
         <h6
           style={{ backgroundColor: "blueviolet" }}
-          className="pl-5 pt-1 pb-1 mb-5"
+          className="pl-5 pt-1 pb-1 mb-2"
         >
           Update Item
         </h6>
 
+        <div className="row mb-3">
+          <div className="col-10"></div>
+          <div className="col-2">
+            {" "}
+            <button
+              onClick={hideItem}
+              type="button"
+              className="btn btn-outline-danger"
+            >
+              Remove Item
+            </button>
+          </div>
+        </div>
+
         <div className="row">
           <div className="col-6">
             <div className="row">
-              <p style={{ color: "red" }}>{imageNull}</p>
-              <ImageUpload
+              {/* <p style={{ color: "red" }}>{imageNull}</p> */}
+              {/* <ImageUpload
                 update
                 imageURL={imageURL}
                 setImageURL={setImage}
                 removeImage={removeImage}
-              />
+              /> */}
               <div className="col-12 text-center mb-3">
                 {imageURL && (
                   <img alt="product" src={imageURL} width={300} height="auto" />
