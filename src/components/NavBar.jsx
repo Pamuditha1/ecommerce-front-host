@@ -17,10 +17,14 @@ import {
   DropdownItem,
 } from "reactstrap";
 
+import { getCategories } from "../services/category";
+
 function NavBar(props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const categories = ["T-Shirt", "Shirt", "Trouser", "Shorts"];
+  const [categories, setCategories] = useState([]);
+
+  // const categories = ["T-Shirt", "Shirt", "Trouser", "Shorts"];
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -36,6 +40,14 @@ function NavBar(props) {
       console.log(err);
     }
   }, [username]);
+
+  useEffect(() => {
+    const getCate = async () => {
+      const categoryData = await getCategories();
+      setCategories(categoryData);
+    };
+    getCate();
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -69,10 +81,10 @@ function NavBar(props) {
                 Categories
               </DropdownToggle>
               <DropdownMenu right>
-                {categories.map((c) => {
+                {categories?.map((c) => {
                   return (
-                    <Link to={`/user/category/${c}`} style={linkStyle}>
-                      <DropdownItem>{c}</DropdownItem>
+                    <Link to={`/user/category/${c.name}`} style={linkStyle}>
+                      <DropdownItem>{c.name}</DropdownItem>
                     </Link>
                   );
                 })}

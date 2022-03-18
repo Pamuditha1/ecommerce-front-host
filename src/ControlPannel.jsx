@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch } from "react-router-dom";
 
 import Orders from "./pages/admin/Orders";
@@ -17,6 +17,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminContainer from "./components/AdminContainer";
 
 function ControlPannel(props) {
+  useEffect(() => {
+    document.title = "Admin | Men's Collection";
+  }, []);
   return (
     <>
       <AdminContainer>
