@@ -161,11 +161,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
               </h5>
             </div>
             <div className="col-4">
-              <Button
-                color="warning"
-                onClick={addCart}
-                disabled={quantity === 0}
-              >
+              <Button color="dark" onClick={addCart} disabled={quantity === 0}>
                 Add to Cart
               </Button>
             </div>
@@ -176,7 +172,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
                 className="nav-link"
               >
                 <FontAwesomeIcon icon={faShoppingCart} size="2x" />
-                <Badge color="warning">
+                <Badge color="dark">
                   {JSON.parse(localStorage.getItem("cart"))
                     ? JSON.parse(localStorage.getItem("cart")).length
                     : 0}

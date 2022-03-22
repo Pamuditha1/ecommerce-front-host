@@ -160,7 +160,7 @@ function AddSupplier() {
               </div>
               <div className="form-group col-12 mt-3">
                 <center>
-                  <button type="submit" className="btn btn-success">
+                  <button type="submit" className="btn btn-outline-light">
                     Register
                   </button>
                 </center>

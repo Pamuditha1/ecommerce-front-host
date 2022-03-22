@@ -159,7 +159,7 @@ export const InventoryTable = () => {
                       return (
                         <td
                           {...cell.getCellProps()}
-                          style={{ textAlign: "center" }}
+                          // style={{ textAlign: "center" }}
                         >
                           {cell.render("Cell")}
                         </td>

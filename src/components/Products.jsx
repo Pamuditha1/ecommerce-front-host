@@ -5,7 +5,7 @@ import ProductModal from "./modals/ProductModal.jsx";
 import ProductItem from "./ProductItem.jsx";
 Modal.setAppElement("#root");
 
-function Products({ cart, addtoCart, title, products, popular }) {
+function Products({ cart, addtoCart, title, products }) {
   const [isModalOpen, setisModalOpen] = useState(false);
   const [modalProduct, setmodalProduct] = useState({});
 
@@ -15,7 +15,7 @@ function Products({ cart, addtoCart, title, products, popular }) {
   };
 
   const titaleStyle = {
-    color: "#f4d219",
+    color: "white",
     fontWeight: "bold",
   };
 

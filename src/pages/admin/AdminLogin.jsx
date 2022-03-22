@@ -32,6 +32,7 @@ function AdminLogin(props) {
     color: "white",
     borderRadius: "20px",
     margin: "auto",
+    boxShadow: "10px 10px 10px black",
   };
 
   return (

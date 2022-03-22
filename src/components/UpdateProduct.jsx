@@ -455,7 +455,7 @@ function UpdateProduct() {
         <button
           onClick={submit}
           type="submit"
-          className="btn btn-primary float-right mb-5 mt-3 col-12"
+          className="btn btn-outline-primary float-right mb-5 mt-3 col-12"
         >
           {productSaved ? `Product Updated` : "Update Product"}
         </button>
