@@ -171,13 +171,15 @@ function UpdateProduct() {
           <div className="col-10"></div>
           <div className="col-2">
             {" "}
-            <button
-              onClick={hideItem}
-              type="button"
-              className="btn btn-outline-danger"
-            >
-              Remove Item
-            </button>
+            {hasAccessTo(["Admin"]) && (
+              <button
+                onClick={hideItem}
+                type="button"
+                className="btn btn-outline-danger"
+              >
+                Remove Item
+              </button>
+            )}
           </div>
         </div>
 
@@ -317,6 +319,7 @@ function UpdateProduct() {
                   Color
                 </label>
                 <input
+                  readOnly={!hasAccessTo(["Admin"])}
                   onChange={onchange}
                   value={productData.color}
                   className="form-control col-11"
@@ -455,7 +458,7 @@ function UpdateProduct() {
         <button
           onClick={submit}
           type="submit"
-          className="btn btn-primary float-right mb-5 mt-3 col-12"
+          className="btn btn-outline-light float-right mb-5 mt-3 col-12"
         >
           {productSaved ? `Product Updated` : "Update Product"}
         </button>
