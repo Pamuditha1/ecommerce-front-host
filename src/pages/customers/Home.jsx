@@ -24,6 +24,7 @@ function CustomerHome({ cart, addtoCart, filterCategory }) {
   };
 
   useEffect(() => {
+    setloading(true);
     getProducts();
     setloading(false);
   }, []);
@@ -34,13 +35,7 @@ function CustomerHome({ cart, addtoCart, filterCategory }) {
       <>
         {loading ? (
           <div className="container text-center" style={{ width: "793px" }}>
-            <Loader
-              type="Puff"
-              color="#050A30"
-              height={100}
-              width={100}
-              timeout={5000}
-            />
+            <Loader type="ThreeDots" color="#00BFFF" height={300} width={300} />
           </div>
         ) : (
           <>

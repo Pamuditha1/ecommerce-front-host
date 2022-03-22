@@ -24,7 +24,7 @@ function Header() {
       />
       <div id="siteName">
         <h1 id="brand">Men'sCollection</h1>
-        <h4 id="tagline" style={{ color: "grey" }}>
+        <h4 id="tagline" style={{ color: "white" }}>
           - wear your dream -
         </h4>
       </div>

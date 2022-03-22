@@ -113,7 +113,7 @@ function CartTable({
                                 </strong>
                               </p>
                             </div>
-                            <div className="col-6">
+                            <div className="col-6 align-middle">
                               <p>
                                 Size: <strong>{p.user.size}</strong>
                               </p>
@@ -122,12 +122,12 @@ function CartTable({
                         </div>
                       </div>
                     </td>
-                    <td className="text-center mt-3">
+                    <td className="text-center align-middle">
                       <input
                         value={p.user.quantity}
                         onChange={(e) => changeQty(e.target.value, p._id)}
                         type="number"
-                        className="mt-5"
+                        className="mt-4"
                         style={{ maxWidth: "60px" }}
                       />
                       <p style={{ color: "red" }}>
@@ -135,24 +135,34 @@ function CartTable({
                       </p>
                     </td>
                     {p.discount && p.discount !== "0" ? (
-                      <td className="text-center">
-                        <span style={{ textDecoration: "line-through" }}>
+                      <td className="text-center align-middle">
+                        <span
+                          style={{
+                            textDecoration: "line-through",
+                          }}
+                        >
                           Rs. {p.price}{" "}
                         </span>
-                        <strong style={{ color: "red" }}>
+                        <strong style={{ color: "black" }}>
                           {" "}
                           Rs. {p.discountedPrice}{" "}
                         </strong>
                       </td>
                     ) : (
-                      <td className="text-center">Rs. {p.price}</td>
+                      <td className="text-center align-middle">
+                        Rs. {p.price}
+                      </td>
                     )}
 
-                    <td className="text-center">
+                    <td className="text-center align-middle">
                       <strong>Rs. {p.user.total}</strong>
                     </td>
-                    <td>
-                      <Button color="danger" onClick={() => onRemove(p)}>
+                    <td className="align-middle">
+                      <Button
+                        color="danger"
+                        outline
+                        onClick={() => onRemove(p)}
+                      >
                         {" "}
                         <strong>X Remove</strong>{" "}
                       </Button>

@@ -54,14 +54,16 @@ function NavBar(props) {
   };
 
   const linkStyle = {
-    color: "black",
+    // color: "black",
+    color: "white",
     textDecoration: "none",
   };
 
   const navStyle = {
     borderRadius: "30px",
     marginBottom: "20px",
-    backgroundColor: "#f8e36e",
+    // backgroundColor: "#f8e36e",
+    backgroundColor: "#222831",
     boxShadow: "0px 10px 10px black",
   };
 
@@ -115,10 +117,10 @@ function NavBar(props) {
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 ) : (
-                  <p style={{ color: "black" }} className="pt-2">
+                  <p style={{ color: "white" }} className="pt-2">
                     {username}{" "}
                     <Link to="/">
-                      <small style={{ color: "black" }} onClick={logout}>
+                      <small style={{ color: "white" }} onClick={logout}>
                         Logout
                       </small>
                     </Link>
@@ -131,7 +133,7 @@ function NavBar(props) {
                     <FontAwesomeIcon
                       icon={faShoppingCart}
                       size="2x"
-                      style={{ color: "black" }}
+                      style={{ color: "white" }}
                     />
                     <Badge color="danger">
                       {JSON.parse(localStorage.getItem("cart"))
