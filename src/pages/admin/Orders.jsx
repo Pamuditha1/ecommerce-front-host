@@ -11,7 +11,10 @@ function Orders() {
   return (
     <div style={tableStyle}>
       <h6
-        style={{ backgroundColor: "blueviolet" }}
+        style={{
+          backgroundColor: "#3b485c",
+          boxShadow: "0px 5px 5px black",
+        }}
         className="pl-5 pt-1 pb-1 mb-5"
       >
         Orders

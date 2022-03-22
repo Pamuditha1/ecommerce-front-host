@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Switch } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 import Orders from "./pages/admin/Orders";
 import AddProduct from "./pages/admin/AddProduct";
@@ -16,9 +17,17 @@ import RegisterUser from "./pages/admin/RegisterUser";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminContainer from "./components/AdminContainer";
 
-function ControlPannel(props) {
+function ControlPannel() {
   useEffect(() => {
-    document.title = "Admin | Men's Collection";
+    let token = localStorage.getItem("admin-token");
+    let userType;
+    if (token) {
+      userType = jwtDecode(token).type;
+    }
+
+    document.title = userType
+      ? `${userType} | Men's Collection`
+      : "Men's Collection";
   }, []);
   return (
     <>
