@@ -111,7 +111,7 @@ const PurchaseModal = ({
               <div className="col-12 mt-3">
                 <Button
                   onClick={placeOder}
-                  color="warning"
+                  color="dark"
                   disabled={!user | !placeAccess}
                 >
                   Place Order

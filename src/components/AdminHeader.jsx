@@ -14,7 +14,8 @@ function AdminHeader() {
     boxShadow: "0px 10px 10px black",
     fontWeight: "bold",
     borderRadius: "40px",
-    backgroundColor: "#f4d219",
+    // backgroundColor: "#f4d219",
+    backgroundColor: "#222831",
     marginTop: "10px",
   };
   const logoStyle = {
@@ -34,10 +35,11 @@ function AdminHeader() {
       />
       <div id="siteName">
         <h3 id="adminbrand">Men'sCollection</h3>
-        <h1 id="admintagline" style={{ color: "red" }}>
+        <h1 id="admintagline" style={{ color: "white" }}>
           <strong>
-            Control Pannel
-            <button className="btn btn-outline-dark ml-5" onClick={logout}>
+            <span style={{ opacity: 0.7 }}> Control Pannel</span>
+
+            <button className="btn btn-outline-light ml-5" onClick={logout}>
               <FontAwesomeIcon icon={faSignOutAlt} size="xs" />
               <small className="ml-1">Logout</small>
             </button>

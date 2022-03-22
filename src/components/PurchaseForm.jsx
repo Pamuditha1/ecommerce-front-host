@@ -98,7 +98,7 @@ function PurchaseForm(props) {
                   <button
                     onClick={submit}
                     type="submit"
-                    className="btn btn-success"
+                    className="btn btn-outline-dark"
                   >
                     Confirm
                   </button>

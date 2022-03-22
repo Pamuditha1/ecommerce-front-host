@@ -103,7 +103,10 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
                 />
               </div>
               <div className="col-4">
-                <button className="btn btn-danger" onClick={removeDiscount}>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={removeDiscount}
+                >
                   Remove
                 </button>
               </div>
@@ -154,7 +157,7 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
           <div className="container">
             <center>
               <Link to={`/admin/item/update/${product._id}`}>
-                <Button color="warning" onClick={toggle}>
+                <Button color="dark" onClick={toggle}>
                   Update Item
                 </Button>
               </Link>

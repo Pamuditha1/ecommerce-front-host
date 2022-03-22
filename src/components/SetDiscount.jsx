@@ -25,7 +25,7 @@ function SetDiscount({ discount, setDis, id }) {
         name="productNo"
       />
       <div className="col-2">
-        <button onClick={submitDiscount} className="btn btn-success">
+        <button onClick={submitDiscount} className="btn btn-outline-success">
           Set
         </button>
       </div>
