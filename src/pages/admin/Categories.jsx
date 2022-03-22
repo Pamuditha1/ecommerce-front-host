@@ -45,7 +45,7 @@ function Categories() {
       >
         Categories
       </h6>
-      <div className="row mt-5">
+      <div className="row mt-5 ml-5">
         <div className="col-9">
           <input
             onChange={(e) => setcategory(e.target.value)}
@@ -57,7 +57,7 @@ function Categories() {
             placeholder="Add New Category"
           />
         </div>
-        <div className="col-3">
+        <div className="col-3 text-center">
           {edit ? (
             <>
               <button onClick={update} className="btn btn-warning">

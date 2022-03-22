@@ -31,7 +31,7 @@ function CustomerHome({ cart, addtoCart, filterCategory }) {
 
   return (
     <div>
-      <Carousel />
+      <Carousel captionText="items" />
       <>
         {loading ? (
           <div className="container text-center" style={{ width: "793px" }}>

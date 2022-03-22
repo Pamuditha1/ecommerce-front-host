@@ -85,7 +85,11 @@ function NavBar(props) {
               <DropdownMenu right>
                 {categories?.map((c) => {
                   return (
-                    <Link to={`/user/category/${c.name}`} style={linkStyle}>
+                    <Link
+                      key={c._id}
+                      to={`/user/category/${c.name}`}
+                      style={linkStyle}
+                    >
                       <DropdownItem>{c.name}</DropdownItem>
                     </Link>
                   );

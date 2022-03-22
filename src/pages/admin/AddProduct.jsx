@@ -145,7 +145,7 @@ function AddProduct() {
     <div>
       <form className="container" autoComplete="off">
         <h6
-          style={{ backgroundColor: "blueviolet" }}
+          style={{ backgroundColor: "#222831" }}
           className="pl-5 pt-1 pb-1 mb-5"
         >
           Add Item
@@ -418,7 +418,7 @@ function AddProduct() {
             <button
               onClick={clear}
               type="submit"
-              className="btn btn-primary float-right m-1 col-12"
+              className="btn btn-outline-light float-right m-1 col-12"
             >
               Reset
             </button>
@@ -427,7 +427,7 @@ function AddProduct() {
             <button
               onClick={submit}
               type="submit"
-              className="btn btn-primary float-right m-1 col-12"
+              className="btn btn-outline-light float-right m-1 col-12"
             >
               Save Product
             </button>

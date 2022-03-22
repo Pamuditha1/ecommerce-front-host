@@ -21,7 +21,7 @@ const items = [
 
 const Carousel = () => (
   <div className="container mt-5">
-    <UncontrolledCarousel items={items} />
+    <UncontrolledCarousel captionText="items" items={items} />
   </div>
 );
 export default Carousel;

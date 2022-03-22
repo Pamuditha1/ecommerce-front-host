@@ -24,7 +24,7 @@ export const OrdersTable = () => {
   const getRecords = async () => {
     setIsLoading(true);
     const records = await getOrders();
-    records.forEach((r) => {
+    for (let r of records || []) {
       r.items = "";
       r.date = new Date(r.timeStamp).toLocaleDateString();
       r.time = new Date(r.timeStamp).toLocaleTimeString();
@@ -33,14 +33,31 @@ export const OrdersTable = () => {
       r.email = r.customer.email;
       r.address = r.customer.address;
 
-      r.products.forEach((p) => {
+      r.products?.forEach((p) => {
         r.items =
           r.items +
           ` (${p.id && p.id?.productNo} - ${p.id.productName} - ${p.size} - ${
             p.qty
           })`;
       });
-    });
+    }
+    // records?.forEach((r) => {
+    //   r.items = "";
+    //   r.date = new Date(r.timeStamp).toLocaleDateString();
+    //   r.time = new Date(r.timeStamp).toLocaleTimeString();
+    //   r.username = r.customer.username;
+    //   r.contactNo = r.customer.contactNo;
+    //   r.email = r.customer.email;
+    //   r.address = r.customer.address;
+
+    //   r.products?.forEach((p) => {
+    //     r.items =
+    //       r.items +
+    //       ` (${p.id && p.id?.productNo} - ${p.id.productName} - ${p.size} - ${
+    //         p.qty
+    //       })`;
+    //   });
+    // });
     setProducts(records);
     setIsLoading(false);
   };
@@ -102,7 +119,7 @@ export const OrdersTable = () => {
               <input type="checkbox" {...getToggleHideAllColumnsProps()} />
               All Columns
             </div>
-            {allColumns.map((column) => (
+            {allColumns?.map((column) => (
               <div key={column.id} className="col-3" style={{ float: "left" }}>
                 <label>
                   <input type="checkbox" {...column.getToggleHiddenProps()} />
@@ -160,7 +177,7 @@ export const OrdersTable = () => {
                       return (
                         <td
                           {...cell.getCellProps()}
-                          style={{ textAlign: "center" }}
+                          // style={{ textAlign: "center" }}
                         >
                           {cell.render("Cell")}
                         </td>
