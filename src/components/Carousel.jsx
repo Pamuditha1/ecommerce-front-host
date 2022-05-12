@@ -1,6 +1,6 @@
 import React from "react";
 import { UncontrolledCarousel } from "reactstrap";
-import c1 from "../images/Carousel1.png";
+import c1 from "../images/Carousel1.jpg";
 import c2 from "../images/Carousel2.png";
 import c3 from "../images/Carousel3.png";
 
