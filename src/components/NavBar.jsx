@@ -59,12 +59,18 @@ function NavBar(props) {
     textDecoration: "none",
   };
 
+  const nameStyle = {
+    color: "black",
+    textDecoration: "none",
+  };
+
   const navStyle = {
     borderRadius: "30px",
     marginBottom: "20px",
     // backgroundColor: "#f8e36e",
     backgroundColor: "#222831",
     boxShadow: "0px 10px 10px black",
+    color: "black",
   };
 
   return (
@@ -109,12 +115,12 @@ function NavBar(props) {
                     </DropdownToggle>
                     <DropdownMenu>
                       <DropdownItem>
-                        <Link to="/user/login" style={linkStyle}>
+                        <Link to="/user/login" style={nameStyle}>
                           Sign In
                         </Link>
                       </DropdownItem>
                       <DropdownItem>
-                        <Link to="/user/register" style={linkStyle}>
+                        <Link to="/user/register" style={nameStyle}>
                           Sign Up
                         </Link>
                       </DropdownItem>
