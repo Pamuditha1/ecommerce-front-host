@@ -9,6 +9,7 @@ function SetDiscount({ discount, setDis, id }) {
       discount: discount,
     };
     await addDiscount(discountData);
+    window.location.reload();
   };
 
   return (

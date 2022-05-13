@@ -43,7 +43,7 @@ function ViewProductImage({ image, discount, popular, width, height }) {
             <span style={discountBadge}>
               <strong>
                 {discount !== "0" && discount}
-                {!discount.includes("%") && "/="} off
+                {discount && !discount.includes("%") && "/="} off
               </strong>
             </span>
           )}

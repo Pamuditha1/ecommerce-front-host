@@ -29,6 +29,7 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
       discount: 0,
     };
     await addDiscount(discountData);
+    window.location.reload();
   };
 
   const toggle = () => setisModalOpen(!isModalOpen);
@@ -80,7 +81,9 @@ const AdminProductModal = ({ isModalOpen, setisModalOpen, product }) => {
                   <p>
                     Discount :{" "}
                     <strong>
-                      {product.discount?.includes("%") ? "" : "Rs. "}
+                      {product.discount && product.discount.includes("%")
+                        ? ""
+                        : "Rs. "}
                       {product.discount}{" "}
                     </strong>
                   </p>
