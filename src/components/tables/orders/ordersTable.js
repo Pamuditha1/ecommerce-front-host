@@ -24,22 +24,24 @@ export const OrdersTable = () => {
   const getRecords = async () => {
     setIsLoading(true);
     const records = await getOrders();
-    for (let r of records || []) {
-      r.items = "";
-      r.date = new Date(r.timeStamp).toLocaleDateString();
-      r.time = new Date(r.timeStamp).toLocaleTimeString();
-      r.username = r.customer.username;
-      r.contactNo = r.customer.contactNo;
-      r.email = r.customer.email;
-      r.address = r.customer.address;
+    if (records && records.length !== 0) {
+      for (let r of records) {
+        r.items = "";
+        r.date = new Date(r.timeStamp).toLocaleDateString();
+        r.time = new Date(r.timeStamp).toLocaleTimeString();
+        r.username = r.customer.username;
+        r.contactNo = r.customer.contactNo;
+        r.email = r.customer.email;
+        r.address = r.customer.address;
 
-      r.products?.forEach((p) => {
-        r.items =
-          r.items +
-          ` (${p.id && p.id?.productNo} - ${p.id.productName} - ${p.size} - ${
-            p.qty
-          })`;
-      });
+        r.products?.forEach((p) => {
+          r.items =
+            r.items +
+            ` (${p.id && p.id?.productNo} - ${p.id.productName} - ${p.size} - ${
+              p.qty
+            })`;
+        });
+      }
     }
     // records?.forEach((r) => {
     //   r.items = "";
@@ -58,7 +60,7 @@ export const OrdersTable = () => {
     //       })`;
     //   });
     // });
-    setProducts(records);
+    setProducts(records && records.length !== 0 ? records : []);
     setIsLoading(false);
   };
 
