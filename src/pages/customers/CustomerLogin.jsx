@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { customerLogin } from "../../services/customer";
 
 function CustomerLogin() {
+  const history = useHistory();
+  const location = useLocation();
+
   const [loginData, setloginData] = useState({
     email: "",
     password: "",
@@ -19,7 +23,8 @@ function CustomerLogin() {
   const submit = async (e) => {
     e.preventDefault();
     const jwt = await customerLogin(loginData);
-    localStorage.setItem("token", jwt);
+    localStorage.setItem("customer-token", jwt);
+    location.state.cart ? history.push("/user/cart") : history.push("/");
   };
 
   return (

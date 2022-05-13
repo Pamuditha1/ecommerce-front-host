@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "reactstrap";
+import { faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import ViewProductImage from "../components/ViewProductImage";
 
 function CartTable({
@@ -203,7 +206,17 @@ function CartTable({
           </tbody>
         </Table>
       ) : (
-        <h3 className="text-center mt-5">Your Cart is Empty</h3>
+        <>
+          <div className="text-center mt-5">
+            <FontAwesomeIcon
+              icon={faCartArrowDown}
+              size="10x"
+              style={{ color: "white" }}
+            />
+          </div>
+
+          <h3 className="text-center mt-5">Your Cart is Empty</h3>
+        </>
       )}
     </div>
   );

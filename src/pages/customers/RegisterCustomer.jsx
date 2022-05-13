@@ -2,10 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useHistory } from "react-router-dom";
 
 import { registerCustomer } from "../../services/customer";
 
 function RegisterCustomer() {
+  const history = useHistory();
   const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
   const formik = useFormik({
     initialValues: {
@@ -41,6 +43,7 @@ function RegisterCustomer() {
       };
       const jwt = await registerCustomer(newOb);
       localStorage.setItem("customer-token", jwt);
+      history.push("/");
     },
   });
 
@@ -156,8 +159,6 @@ function RegisterCustomer() {
                   onChange={formik.handleChange}
                   value={formik.values.repeatpassword}
                   className="form-control col-11 ml-3"
-                  maxlength="10"
-                  minLength="6"
                   type="password"
                   id="repeatpassword"
                   name="repeatpassword"

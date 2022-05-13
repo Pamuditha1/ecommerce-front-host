@@ -157,7 +157,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
           <div className="row mt-5">
             <div className="col-6">
               <h5>
-                Total Amount : <strong>{total ? total : 0}</strong>
+                Total Amount : <strong>Rs. {total ? total : 0}</strong>
               </h5>
             </div>
             <div className="col-4">

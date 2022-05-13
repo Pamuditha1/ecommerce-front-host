@@ -32,14 +32,14 @@ function NavBar(props) {
 
   useEffect(() => {
     try {
-      const jwt = localStorage.getItem("token");
+      const jwt = localStorage.getItem("customer-token");
       const usern = jwtDecode(jwt).name.split(" ")[0];
 
       setusername(usern);
     } catch (err) {
       console.log(err);
     }
-  }, [username]);
+  }, []);
 
   useEffect(() => {
     const getCate = async () => {
@@ -50,7 +50,7 @@ function NavBar(props) {
   }, []);
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("customer-token");
   };
 
   const linkStyle = {
@@ -104,7 +104,7 @@ function NavBar(props) {
             </UncontrolledDropdown>
             <Nav className="ml-5">
               <NavItem className="ml-3">
-                {!localStorage.getItem("token") ? (
+                {!localStorage.getItem("customer-token") ? (
                   <UncontrolledDropdown nav inNavbar style={linkStyle}>
                     <DropdownToggle nav caret style={linkStyle}>
                       <FontAwesomeIcon

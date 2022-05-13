@@ -25,7 +25,7 @@ const PurchaseModal = ({
 
   const getUser = async () => {
     try {
-      const jwt = localStorage.getItem("token");
+      const jwt = localStorage.getItem("customer-token");
       const uid = jwtDecode(jwt)._id;
       setuser(uid);
 
@@ -84,15 +84,29 @@ const PurchaseModal = ({
               />
             </div>
           ) : (
-            <div>
-              <h6 style={{ color: "red" }}>
-                Log In to proceed the oder placement
-              </h6>
-              <Link to="/user/login">
-                <button type="button" className="btn btn-dark">
-                  Log In
-                </button>
-              </Link>
+            <div className="row text-center">
+              <div className="col-8">
+                <h6 style={{ color: "red" }}>
+                  Log In to proceed the oder placement
+                </h6>
+              </div>
+              <div className="col-4">
+                {/* <Link to="/user/login">
+                  <button type="button" className="btn btn-dark">
+                    Log In
+                  </button>
+                </Link> */}
+                <Link
+                  to={{
+                    pathname: "/user/login",
+                    state: { cart: true },
+                  }}
+                >
+                  <button type="button" className="btn btn-dark">
+                    Log In
+                  </button>
+                </Link>
+              </div>
             </div>
           )}
         </ModalBody>
