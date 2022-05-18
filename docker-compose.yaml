@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ecommerce-app-client-image
+    container_name: ecommerce-app-client
+    command: npm start
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+
+volumes:
+  web-root:
+    driver: local
