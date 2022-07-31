@@ -11,7 +11,7 @@ import ReactGA from "react-ga";
 
 function Main() {
   useEffect(() => {
-    ReactGA.initialized("G-8Y0YFXFZ1C");
+    ReactGA.initialize("G-8Y0YFXFZ1C");
   }, []);
 
   return (
