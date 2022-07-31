@@ -9,6 +9,7 @@ import CustomerView from "./CustomerView";
 import AdminLogin from "./pages/admin/AdminLogin";
 import ReactGA from "react-ga4";
 
+//ga-4
 ReactGA.initialize(process.env.REACT_APP_GA_ID);
 ReactGA.send("pageview");
 
