@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -7,13 +7,12 @@ import "./css/pageStyle.css";
 import ControlPannel from "./ControlPannel";
 import CustomerView from "./CustomerView";
 import AdminLogin from "./pages/admin/AdminLogin";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
+
+ReactGA.initialize(process.env.REACT_APP_GA_ID);
+ReactGA.send("pageview");
 
 function Main() {
-  useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GA_ID);
-  }, []);
-
   return (
     <div className="container">
       <ToastContainer />
