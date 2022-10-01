@@ -6,13 +6,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import TagManager from "react-gtm-module";
+// import TagManager from "react-gtm-module";
 
-const tagManagerArgs = {
-  gtmId: process.env.REACT_APP_GTM_ID || "GTM-KL9LWG2",
-};
+// const tagManagerArgs = {
+//   gtmId: process.env.REACT_APP_GTM_ID || "GTM-KL9LWG2",
+// };
 
-TagManager.initialize(tagManagerArgs);
+// TagManager.initialize(tagManagerArgs);
 
 ReactDOM.render(
   <React.StrictMode>
