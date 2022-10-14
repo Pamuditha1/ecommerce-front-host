@@ -1,4 +1,9 @@
 .accept-btn {
+  background-color: greenyellow;
+  color: whitesmoke;
+}
+
+.deny-btn {
   background-color: red;
   color: whitesmoke;
 }
