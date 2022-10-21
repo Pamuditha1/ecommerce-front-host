@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import Main from "./Main";
 import "react-toastify/dist/ReactToastify.css";
 import "./css/accept.css";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+// import Modal from "react-bootstrap/Modal";
+// import Button from "react-bootstrap/Button";
+import ModalCom from "./components/ModalCom";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -11,6 +12,7 @@ function App() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleCheck = () => setChecked((state) => !state);
 
   useEffect(() => {
     handleShow();
@@ -19,7 +21,14 @@ function App() {
   return (
     <>
       <Main />
-      <Modal
+      <ModalCom
+        show={show}
+        checked={checked}
+        handleShow={handleShow}
+        handleClose={handleClose}
+        handleCheck={handleCheck}
+      />
+      {/* <Modal
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -89,23 +98,7 @@ function App() {
             Save preferences
           </Button>
         </Modal.Footer>
-      </Modal>
-      {/* <button
-        id="accept-btn"
-        className="accept-btn"
-        name="accept-btn"
-        style={{ position: "fixed", bottom: 50, right: 50 }}
-      >
-        Accept
-      </button>
-      <button
-        id="deny-btn"
-        className="deny-btn"
-        name="deny-btn"
-        style={{ position: "fixed", bottom: 150, right: 50 }}
-      >
-        Deny
-      </button> */}
+      </Modal> */}
     </>
   );
 }

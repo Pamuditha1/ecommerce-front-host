@@ -1,0 +1,81 @@
+import React from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
+const ModalCom = ({ show, checked, handleCheck, handleShow, handleClose }) => {
+  return (
+    <Modal
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      show={show}
+      onHide={handleClose}
+      style={{ color: "black" }}
+    >
+      <Modal.Header>
+        <Modal.Title>Customized Cookie Preferences</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="container">
+          <div className="row mb-3">
+            <div className="col-12 border-bottom border-secondary">
+              <p>
+                We use cookies and similar tools for the following purposes.
+              </p>
+            </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col-12 border-bottom border-secondary">
+              <h5>Essential</h5>
+              <p>
+                Essential cookies are necessary to deliver our site's content
+                and services and cannot be deactivated.
+              </p>
+            </div>
+          </div>
+          <div className="row mb-3 border-bottom border-secondary">
+            <div className="col-12">
+              <h5>Performance</h5>
+            </div>
+            <div className="col-9">
+              <p>
+                Performance cookies provide anonymous statistics about how
+                customers navigate our site so we can improve site experience
+                and performance
+              </p>
+            </div>
+            <div className="col-3">
+              <input
+                className="ml-5"
+                id="ga4"
+                type="checkbox"
+                checked={checked}
+                onChange={handleCheck}
+              />{" "}
+              <span style={{ color: "black" }}>Allow</span>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <p>
+                You may review and change your choices at any time by clicking
+                the cookie preferences in the footer of the site. Please refer
+                to our privacy policy for more information.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleClose}>
+          Save preferences
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+export default ModalCom;
