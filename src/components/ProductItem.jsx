@@ -1,8 +1,13 @@
 /* eslint-disable eqeqeq */
-import React from "react";
+import React, { useState } from "react";
 import ViewProductImage from "./ViewProductImage.jsx";
+import { generateEvent } from "../utils/events.js";
+import { EVENT_TYPES } from "./../utils/constants";
+import moment from "moment";
 
 function ProductItem({ product, viewModal }) {
+  const [mouseEnter, setMouseEnter] = useState();
+
   const cardStyle = {
     color: "black",
     boxShadow: "0px 10px 10px black",
@@ -22,8 +27,26 @@ function ProductItem({ product, viewModal }) {
     opacity: "0.8",
   };
 
+  const onMouseEnter = () => {
+    setMouseEnter(new Date().getTime());
+  };
+  const onMouseLeave = async () => {
+    let leave = moment(new Date().getTime());
+    let enter = moment(mouseEnter);
+    let diff = leave.diff(enter, "seconds");
+
+    if (diff === 0) return;
+    const event = await generateEvent(product, EVENT_TYPES.HOVER, diff);
+    console.log("hover event", event);
+  };
+
   return (
-    <div className="card" style={cardStyle}>
+    <div
+      className="card"
+      style={cardStyle}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <ViewProductImage
         discount={product.discount}
         popular={product.popular}

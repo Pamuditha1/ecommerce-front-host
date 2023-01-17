@@ -6,12 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ViewProductImage from "../ViewProductImage";
 
+import moment from "moment";
+import { generateEvent } from "./../../utils/events";
+import { EVENT_TYPES } from "./../../utils/constants";
+
 const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   let size = "";
   const [selectedSize, setselectedSize] = useState("");
   const [quantity, setquantity] = useState(0);
   const [total, settotal] = useState(0);
   const [avaiQuantity, setavaiQuantity] = useState("");
+
+  const [mouseEnter, setMouseEnter] = useState();
 
   let availableSizes = ["Choose Size"];
   let availabel = [];
@@ -67,9 +73,27 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
     setquantity(0);
   };
 
+  const onMouseEnter = () => {
+    setMouseEnter(new Date().getTime());
+  };
+  const onMouseLeave = async () => {
+    let leave = moment(new Date().getTime());
+    let enter = moment(mouseEnter);
+    let diff = leave.diff(enter, "seconds");
+
+    if (diff === 0) return;
+    const event = await generateEvent(product, EVENT_TYPES.VIEW, diff);
+    console.log("view event", event);
+  };
+
   return (
     <div>
-      <Modal isOpen={isModalOpen} toggle={toggle}>
+      <Modal
+        isOpen={isModalOpen}
+        toggle={toggle}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
         <ModalHeader toggle={toggle} style={{ color: "black" }}>
           {product.productName}
         </ModalHeader>
