@@ -28,13 +28,15 @@ function Products({ cart, addtoCart, title, products }) {
       <h3 className="proName text-center mt-5 mb-5" style={titaleStyle}>
         {title}
       </h3>
-      <div className="row">
+      <div className="row text-center">
         {products?.map((product) => (
-          <ProductItem
-            key={product._id}
-            product={product}
-            viewModal={viewModal}
-          />
+          <div className="col-12 col-sm-6 col-md-4 col-lg-3">
+            <ProductItem
+              key={product._id}
+              product={product}
+              viewModal={viewModal}
+            />
+          </div>
         ))}
 
         <ProductModal

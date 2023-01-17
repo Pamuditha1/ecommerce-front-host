@@ -16,7 +16,7 @@ function ProductItem({ product, viewModal }) {
     margin: "auto",
     marginTop: 20,
     backgroundColor: "white",
-    width: "23%",
+    // width: "23%",
   };
   const discountedPriceStyle = {
     fontSize: 12,
