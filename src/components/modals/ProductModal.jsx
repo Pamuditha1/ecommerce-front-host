@@ -9,6 +9,7 @@ import ViewProductImage from "../ViewProductImage";
 import moment from "moment";
 import { generateEvent } from "./../../utils/events";
 import { EVENT_TYPES } from "./../../utils/constants";
+import { addEvent } from "../../services/event";
 
 const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   let size = "";
@@ -83,7 +84,9 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
 
     if (diff === 0) return;
     const event = await generateEvent(product, EVENT_TYPES.VIEW, diff);
+    const res = await addEvent(event);
     console.log("view event", event);
+    console.log("view event saved", res);
   };
 
   return (

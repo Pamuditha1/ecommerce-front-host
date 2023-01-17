@@ -16,6 +16,15 @@ export const getTimeOfTheDay = (timestamp) => {
   else return "NIGHT";
 };
 
+export const getSeasonOfTheYear = (timestamp) => {
+  let month = new Date(timestamp).getMonth();
+
+  if (month === 11) return "CHRISTMAS";
+  else if (month === 0) return "NEW YEAR";
+  else if (month === 3) return "SRI LANKAN NEW YEAR";
+  else return "USUAL";
+};
+
 export const getCurrentUser = () => {
   let user;
   const jwt = localStorage.getItem("customer-token");
@@ -75,12 +84,14 @@ export const generateEvent = async (product, eventType, timeDuration) => {
 
   let timestamp = new Date();
   let timeOfTheDay = getTimeOfTheDay(timestamp);
+  let season = getSeasonOfTheYear(timestamp);
 
   const eventData = {
     timestamp: timestamp,
     date: timestamp.toLocaleDateString(),
     time: timestamp.toLocaleTimeString(),
     timeOfTheDay: timeOfTheDay,
+    season: season,
     productId: product._id,
     userId: user._id,
     isDiscounted: product.discount !== "0",

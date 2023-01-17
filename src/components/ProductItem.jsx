@@ -4,6 +4,7 @@ import ViewProductImage from "./ViewProductImage.jsx";
 import { generateEvent } from "../utils/events.js";
 import { EVENT_TYPES } from "./../utils/constants";
 import moment from "moment";
+import { addEvent } from "../services/event.js";
 
 function ProductItem({ product, viewModal }) {
   const [mouseEnter, setMouseEnter] = useState();
@@ -37,7 +38,9 @@ function ProductItem({ product, viewModal }) {
 
     if (diff === 0) return;
     const event = await generateEvent(product, EVENT_TYPES.HOVER, diff);
+    const res = await addEvent(event);
     console.log("hover event", event);
+    console.log("hover event saved", res);
   };
 
   return (
