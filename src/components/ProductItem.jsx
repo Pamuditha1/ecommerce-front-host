@@ -36,7 +36,7 @@ function ProductItem({ product, viewModal }) {
     let enter = moment(mouseEnter);
     let diff = leave.diff(enter, "seconds");
 
-    if (diff === 0) return;
+    if (diff <= 1) return;
     const event = await generateEvent(product, EVENT_TYPES.HOVER, diff);
     const res = await addEvent(event);
     console.log("hover event", event);
