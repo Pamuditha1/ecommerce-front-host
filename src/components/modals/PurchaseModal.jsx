@@ -8,6 +8,10 @@ import PurchaseForm from "../PurchaseForm";
 import { getCustomerById } from "../../services/customer";
 import { placeOrder } from "../../services/orders";
 
+import { generateEvent } from "./../../utils/events";
+import { EVENT_TYPES } from "./../../utils/constants";
+import { addEvent } from "../../services/event";
+
 const PurchaseModal = ({
   isModalOpen,
   setisModalOpen,
@@ -59,6 +63,15 @@ const PurchaseModal = ({
     };
 
     await placeOrder(order);
+
+    for (const product of order.cartComplete) {
+      const event = await generateEvent(product, EVENT_TYPES.PURCHASE, 0);
+
+      const res = await addEvent(event);
+      console.log("purchase event", event);
+      console.log("purchase event saved", res);
+    }
+
     toggle();
     const resetCart = () => {
       localStorage.removeItem("cart");
