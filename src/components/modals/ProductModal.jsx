@@ -57,7 +57,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
     settotal(t);
   };
 
-  const addCart = () => {
+  const addCart = async () => {
     let p = product;
     const user = {
       size: selectedSize,
@@ -72,6 +72,11 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
     addtoCart(p);
     settotal(0);
     setquantity(0);
+
+    const event = await generateEvent(product, EVENT_TYPES.ADD_TO_CART, 0);
+    const res = await addEvent(event);
+    console.log("cart event", event);
+    console.log("cart event saved", res);
   };
 
   const onMouseEnter = () => {
