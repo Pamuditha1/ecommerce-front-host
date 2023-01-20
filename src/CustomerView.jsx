@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Carousel from "./components/Carousel";
@@ -10,6 +11,9 @@ import CategoryProducts from "./components/CategoryProducts";
 import RegisterCustomer from "./pages/customers/RegisterCustomer";
 import CustomerLogin from "./pages/customers/CustomerLogin";
 import CustomerHome from "./pages/customers/Home";
+import Wishlist from "./components/Wishlist";
+import jwtDecode from "jwt-decode";
+import { getWishlist } from "./services/wishlist";
 
 export const UserContext = React.createContext();
 
@@ -19,6 +23,26 @@ function CustomerView(props) {
   const [cCount, setcCount] = useState(0);
   const [filtering, setfiltering] = useState(false);
   const [filterCategory, setfilterCategory] = useState("");
+
+  const getUserWishlist = async () => {
+    let userId;
+    try {
+      const jwt = localStorage.getItem("customer-token");
+      const user = jwt && jwtDecode(jwt)._id;
+
+      userId = user || null;
+    } catch (err) {
+      console.log(err);
+    }
+
+    const wishlist = await getWishlist(userId);
+    const products = wishlist.map((wish) => wish.productId);
+    localStorage.setItem("wishlist", JSON.stringify(products));
+  };
+
+  useEffect(() => {
+    getUserWishlist();
+  }, []);
 
   const addtoCart = (p) => {
     let newCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -97,6 +121,12 @@ function CustomerView(props) {
                 setfilterCategory={setfilterCategory}
                 {...props}
               />
+            )}
+          />
+          <Route
+            path="/user/wishlist"
+            render={(props) => (
+              <Wishlist cart={cart} addtoCart={addtoCart} {...props} />
             )}
           />
           <Route path="/user/register" component={RegisterCustomer} />

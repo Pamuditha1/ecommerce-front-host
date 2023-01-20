@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faShoppingCart,
+  faUser,
+  faHandHoldingHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge } from "reactstrap";
 import jwtDecode from "jwt-decode";
@@ -150,6 +154,17 @@ function NavBar(props) {
                         ? JSON.parse(localStorage.getItem("cart")).length
                         : 0}
                     </Badge>{" "}
+                  </a>
+                </Link>
+              </NavItem>
+              <NavItem className="float-right" style={linkStyle}>
+                <Link to="/user/wishlist" style={linkStyle}>
+                  <a className="nav-link" href="/">
+                    <FontAwesomeIcon
+                      icon={faHandHoldingHeart}
+                      size="2x"
+                      style={{ color: "white" }}
+                    />
                   </a>
                 </Link>
               </NavItem>

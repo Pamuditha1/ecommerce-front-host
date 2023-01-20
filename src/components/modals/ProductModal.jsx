@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, ModalHeader, ModalBody, Badge } from "reactstrap";
 import { Link } from "react-router-dom";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faShoppingCart,
+  faHeart as heartFilled,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ViewProductImage from "../ViewProductImage";
@@ -10,6 +13,8 @@ import moment from "moment";
 import { generateEvent } from "./../../utils/events";
 import { EVENT_TYPES } from "./../../utils/constants";
 import { addEvent } from "../../services/event";
+import { addToWishlist } from "./../../services/wishlist";
+import jwtDecode from "jwt-decode";
 
 const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   let size = "";
@@ -17,6 +22,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   const [quantity, setquantity] = useState(0);
   const [total, settotal] = useState(0);
   const [avaiQuantity, setavaiQuantity] = useState("");
+  const [inWishlist, setInWishlist] = useState(false);
 
   const [mouseEnter, setMouseEnter] = useState();
 
@@ -35,6 +41,13 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   }
 
   const toggle = () => setisModalOpen(!isModalOpen);
+
+  useEffect(() => {
+    const products = JSON.parse(localStorage.getItem("wishlist"));
+    for (const pro of products) {
+      if (pro._id === product._id) setInWishlist(true);
+    }
+  }, [product]);
 
   const onchangeSelect = (e) => {
     size = e.target.value;
@@ -79,6 +92,21 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
     console.log("cart event saved", res);
   };
 
+  const addWishlist = async () => {
+    const jwt = localStorage.getItem("customer-token");
+    const uid = jwt && jwtDecode(jwt)._id;
+    const newWishlist = await addToWishlist({
+      timestamp: new Date(),
+      userId: uid || null,
+      productId: product._id,
+    });
+
+    const products = newWishlist.map((wish) => wish.productId);
+    localStorage.setItem("wishlist", JSON.stringify(products));
+
+    toggle();
+  };
+
   const onMouseEnter = () => {
     setMouseEnter(new Date().getTime());
   };
@@ -105,7 +133,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
         <ModalHeader toggle={toggle} style={{ color: "black" }}>
           {product.productName}
         </ModalHeader>
-        <ModalBody style={{ color: "black" }}>
+        <ModalBody style={{ color: "black", padding: "5%" }}>
           <div className="row">
             <div className="col-6" style={{ margin: "auto" }}>
               <p>
@@ -186,21 +214,32 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
             </div>
           </div>
 
-          <div className="row mt-5">
-            <div className="col-6">
-              <h5>
+          <div className="row mt-4">
+            <div className="col-12">
+              <h5 className="text-center">
                 Total Amount : <strong>Rs. {total ? total : 0}</strong>
               </h5>
+            </div>
+          </div>
+
+          <div className="row mt-5">
+            <div className="col-4">
+              <FontAwesomeIcon
+                onClick={addWishlist}
+                icon={heartFilled}
+                size="2x"
+                style={{ marginLeft: 20, color: inWishlist ? "red" : "grey" }}
+              />
             </div>
             <div className="col-4">
               <Button color="dark" onClick={addCart} disabled={quantity === 0}>
                 Add to Cart
               </Button>
-            </div>
-            <div className="col-2">
+            </div>{" "}
+            <div className="col-4">
               <Link
                 to="/user/cart"
-                style={{ color: "black" }}
+                style={{ color: "black", float: "right" }}
                 className="nav-link"
               >
                 <FontAwesomeIcon icon={faShoppingCart} size="2x" />
