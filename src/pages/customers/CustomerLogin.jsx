@@ -24,7 +24,7 @@ function CustomerLogin() {
     e.preventDefault();
     const jwt = await customerLogin(loginData);
     localStorage.setItem("customer-token", jwt);
-    location.state.cart ? history.push("/user/cart") : history.push("/");
+    location?.state?.cart ? history.push("/user/cart") : history.push("/");
   };
 
   return (

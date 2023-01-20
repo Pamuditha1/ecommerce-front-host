@@ -55,6 +55,7 @@ function NavBar(props) {
 
   const logout = () => {
     localStorage.removeItem("customer-token");
+    localStorage.removeItem("wishlist");
   };
 
   const linkStyle = {

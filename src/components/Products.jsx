@@ -39,13 +39,15 @@ function Products({ cart, addtoCart, title, products }) {
           </div>
         ))}
 
-        <ProductModal
-          isModalOpen={isModalOpen}
-          setisModalOpen={setisModalOpen}
-          product={modalProduct}
-          cart={cart}
-          addtoCart={addtoCart}
-        />
+        {isModalOpen && (
+          <ProductModal
+            isModalOpen={isModalOpen}
+            setisModalOpen={setisModalOpen}
+            product={modalProduct}
+            cart={cart}
+            addtoCart={addtoCart}
+          />
+        )}
       </div>
     </div>
   );

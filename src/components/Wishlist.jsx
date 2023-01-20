@@ -24,8 +24,19 @@ const Wishlist = (props) => {
     // const products = wishlist.map((wish) => wish.productId);
 
     // setProducts(products);
+    const logged = localStorage.getItem("wishlist");
+    const unlogged = localStorage.getItem("un-wishlist");
 
-    const products = JSON.parse(localStorage.getItem("wishlist"));
+    const lgProducts = logged ? JSON.parse(logged) : [];
+    const unProducts = unlogged ? JSON.parse(unlogged) : [];
+
+    let products;
+    if (lgProducts && lgProducts.length > 0) {
+      products = lgProducts;
+    } else {
+      products = unProducts;
+    }
+
     setProducts(products);
     setloading(false);
   }

@@ -43,11 +43,28 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
   const toggle = () => setisModalOpen(!isModalOpen);
 
   useEffect(() => {
-    const products = JSON.parse(localStorage.getItem("wishlist"));
-    for (const pro of products) {
-      if (pro._id === product._id) setInWishlist(true);
+    const logged = localStorage.getItem("wishlist");
+    const unlogged = localStorage.getItem("un-wishlist");
+
+    const lgProducts = logged ? JSON.parse(logged) : [];
+    const unProducts = unlogged ? JSON.parse(unlogged) : [];
+
+    if (lgProducts && lgProducts.length > 0) {
+      for (const pro of lgProducts) {
+        if (pro._id === product._id) {
+          setInWishlist(true);
+          return;
+        }
+      }
+    } else {
+      for (const pro of unProducts) {
+        if (pro._id === product._id) {
+          setInWishlist(true);
+          return;
+        }
+      }
     }
-  }, [product]);
+  }, [product._id]);
 
   const onchangeSelect = (e) => {
     size = e.target.value;
@@ -94,17 +111,50 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
 
   const addWishlist = async () => {
     const jwt = localStorage.getItem("customer-token");
-    const uid = jwt && jwtDecode(jwt)._id;
-    const newWishlist = await addToWishlist({
-      timestamp: new Date(),
-      userId: uid || null,
-      productId: product._id,
-    });
+    if (jwt) {
+      const uid = jwt && jwtDecode(jwt)._id;
+      const newWishlist = await addToWishlist({
+        timestamp: new Date(),
+        userId: uid || null,
+        productId: product._id,
+      });
 
-    const products = newWishlist.map((wish) => wish.productId);
-    localStorage.setItem("wishlist", JSON.stringify(products));
+      const products = newWishlist.map((wish) => wish.productId);
+      localStorage.setItem("wishlist", JSON.stringify(products));
+    } else {
+      const unWishlist = localStorage.getItem("un-wishlist");
 
+      let unWishlistArr = [];
+      if (unWishlist) unWishlistArr = JSON.parse(unWishlist);
+
+      let included;
+      if (unWishlistArr.length === 0) {
+        unWishlistArr.push(product);
+      } else {
+        unWishlistArr.forEach((unWish, indx) => {
+          if (unWish._id === product._id) {
+            unWishlistArr.splice(indx, 1);
+            included = true;
+            return;
+          }
+        });
+
+        if (!included) {
+          unWishlistArr = [...unWishlistArr, product];
+        }
+      }
+
+      localStorage.setItem("un-wishlist", JSON.stringify(unWishlistArr));
+    }
+
+    const event = await generateEvent(product, EVENT_TYPES.ADD_TO_WISHLIST, 0);
+    const res = await addEvent(event);
+    console.log("add to wishlist event", event);
+    console.log("add to wishlist event saved", res);
+
+    setInWishlist(false);
     toggle();
+    window.location.reload();
   };
 
   const onMouseEnter = () => {

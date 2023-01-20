@@ -26,18 +26,15 @@ function CustomerView(props) {
 
   const getUserWishlist = async () => {
     let userId;
-    try {
-      const jwt = localStorage.getItem("customer-token");
-      const user = jwt && jwtDecode(jwt)._id;
+    const jwt = localStorage.getItem("customer-token");
+    const user = jwt && jwtDecode(jwt)._id;
+    userId = user || null;
 
-      userId = user || null;
-    } catch (err) {
-      console.log(err);
+    if (userId) {
+      const wishlist = await getWishlist(userId);
+      const products = wishlist.map((wish) => wish.productId);
+      localStorage.setItem("wishlist", JSON.stringify(products));
     }
-
-    const wishlist = await getWishlist(userId);
-    const products = wishlist.map((wish) => wish.productId);
-    localStorage.setItem("wishlist", JSON.stringify(products));
   };
 
   useEffect(() => {
