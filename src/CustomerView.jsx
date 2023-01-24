@@ -32,8 +32,8 @@ function CustomerView(props) {
 
     if (userId) {
       const wishlist = await getWishlist(userId);
-      const products = wishlist.map((wish) => wish.productId);
-      localStorage.setItem("wishlist", JSON.stringify(products));
+      const products = wishlist?.map((wish) => wish.productId);
+      localStorage.setItem("wishlist", JSON.stringify(products || {}));
     }
   };
 

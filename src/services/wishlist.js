@@ -35,7 +35,7 @@ export function getWishlist(id) {
     .catch(function (error) {
       if (error.response.data) {
         console.log(error.response.data);
-        toast.error(error.response.data);
+        // toast.error(error.response.data);
       }
       if (error.response) {
         console.log(error.response);

@@ -30,10 +30,10 @@ const Wishlist = (props) => {
     const lgProducts = logged ? JSON.parse(logged) : [];
     const unProducts = unlogged ? JSON.parse(unlogged) : [];
 
-    let products;
+    let products = [];
     if (lgProducts && lgProducts.length > 0) {
       products = lgProducts;
-    } else {
+    } else if (unProducts && unProducts.length > 0) {
       products = unProducts;
     }
 

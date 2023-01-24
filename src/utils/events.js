@@ -6,6 +6,8 @@ import {
   browserName,
   mobileVendor,
 } from "react-device-detect";
+import { getCustomerById } from "../services/customer";
+import moment from "moment";
 
 export const getTimeOfTheDay = (timestamp) => {
   let hour = new Date(timestamp).getHours();
@@ -25,12 +27,35 @@ export const getSeasonOfTheYear = (timestamp) => {
   else return "USUAL";
 };
 
-export const getCurrentUser = () => {
+export const getUserAgeGroup = (userDob) => {
+  let today = moment(new Date());
+  let dob = moment(userDob);
+  let age = today.diff(dob, "years");
+
+  if (age < 10) return "0-9";
+  else if (age >= 10 && age < 15) return "10-14";
+  else if (age >= 15 && age < 20) return "15-19";
+  else if (age >= 20 && age < 25) return "20-24";
+  else if (age >= 25 && age < 30) return "25-29";
+  else if (age >= 30 && age < 35) return "30-34";
+  else if (age >= 35 && age < 40) return "35-39";
+  else if (age >= 40 && age < 45) return "40-44";
+  else if (age >= 45 && age < 50) return "45-49";
+  else if (age >= 50) return "50+";
+};
+
+export const getCurrentUser = async () => {
   let user;
   const jwt = localStorage.getItem("customer-token");
   if (jwt) user = jwtDecode(jwt);
 
-  return user;
+  const userData = await getCustomerById(user._id);
+
+  let ageGroup;
+  if (userData.dob) ageGroup = getUserAgeGroup(userData.dob);
+  userData.userAgeGroup = ageGroup;
+
+  return userData;
 };
 
 export const getIPaddress = async () => {
@@ -78,7 +103,7 @@ export const getLocation = async () => {
 };
 
 export const generateEvent = async (product, eventType, timeDuration) => {
-  let user = getCurrentUser();
+  let user = await getCurrentUser();
   let ipAddress = await getIPaddress();
   let location = await getLocation();
 
@@ -94,6 +119,7 @@ export const generateEvent = async (product, eventType, timeDuration) => {
     season: season,
     productId: product._id,
     userId: user ? user._id : null,
+    userAgeGroup: user ? user.userAgeGroup : null,
     isLoggedUser: user ? true : false,
     isDiscounted: product.discount !== "0",
     event: eventType,
