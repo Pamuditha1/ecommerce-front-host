@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
+// import { DatePicker } from "react-rainbow-components";
 
 import { registerCustomer } from "../../services/customer";
 
@@ -12,6 +13,7 @@ function RegisterCustomer() {
   const formik = useFormik({
     initialValues: {
       name: "",
+      dob: "",
       email: "",
       contact: "",
       address: "",
@@ -25,6 +27,7 @@ function RegisterCustomer() {
         .min(2, "Mininum 2 characters")
         .max(15, "Maximum 10 characters")
         .required("Name is Required"),
+      dob: Yup.date().required(),
       email: Yup.string().email("Invalid Email").required("Email is Required"),
       contact: Yup.string()
         .matches(phoneRegex, "Invalid Phone Number.")
@@ -78,6 +81,30 @@ function RegisterCustomer() {
                 />
                 {formik.errors.name && formik.touched.name && (
                   <p className="ml-5 mt-2 text-danger">{formik.errors.name}</p>
+                )}
+              </div>
+              <div className="form-group col-12">
+                <label htmlFor="dob" className="col-5">
+                  Date of Birth
+                </label>
+                {/* <DatePicker
+                  id="dob"
+                  name="dob"
+                  formatStyle="medium"
+                  value={formik.values.dob}
+                  onChange={(val) => formik.handleChange(val.toISOString())}
+                /> */}
+                <input
+                  onChange={formik.handleChange}
+                  value={formik.values.dob}
+                  className="form-control col-11 ml-3"
+                  max={new Date()}
+                  type="date"
+                  id="dob"
+                  name="dob"
+                />
+                {formik.errors.dob && formik.touched.dob && (
+                  <p className="ml-5 mt-2 text-danger">{formik.errors.dob}</p>
                 )}
               </div>
               <div className="form-group col-12">
