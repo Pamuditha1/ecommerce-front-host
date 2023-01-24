@@ -28,6 +28,8 @@ export const getSeasonOfTheYear = (timestamp) => {
 };
 
 export const getUserAgeGroup = (userDob) => {
+  if (!userDob) return;
+
   let today = moment(new Date());
   let dob = moment(userDob);
   let age = today.diff(dob, "years");
@@ -49,10 +51,15 @@ export const getCurrentUser = async () => {
   const jwt = localStorage.getItem("customer-token");
   if (jwt) user = jwtDecode(jwt);
 
-  const userData = await getCustomerById(user._id);
+  let userData;
+  let ageGroup = null;
+  if (user) {
+    userData = await getCustomerById(user?._id);
+    if (userData?.dob) {
+      ageGroup = getUserAgeGroup(userData.dob);
+    }
+  }
 
-  let ageGroup;
-  if (userData.dob) ageGroup = getUserAgeGroup(userData.dob);
   userData.userAgeGroup = ageGroup;
 
   return userData;

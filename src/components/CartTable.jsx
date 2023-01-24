@@ -90,7 +90,7 @@ function CartTable({
                 let aq = p.combinations.filter((c) => {
                   if (c.size === p.user.size) return true;
                   return false;
-                })[0].qty;
+                })[0]?.qty;
 
                 if (aq < p.user.quantity) checkDisable = true;
 
