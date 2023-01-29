@@ -136,7 +136,7 @@ export const generateEvent = async (product, eventType, timeDuration) => {
     productId: product._id,
     userId: user ? user._id : null,
     userAgeGroup: user ? user.userAgeGroup : null,
-    isLoggedUser: user ? true : false,
+    isLoggedUser: user.email ? true : false,
     isDiscounted: product.discount !== "0",
     event: eventType,
     duration: timeDuration,
