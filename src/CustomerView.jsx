@@ -14,6 +14,7 @@ import CustomerHome from "./pages/customers/Home";
 import Wishlist from "./components/Wishlist";
 import jwtDecode from "jwt-decode";
 import { getWishlist } from "./services/wishlist";
+import { getTemporaryUserId } from "./services/event";
 
 export const UserContext = React.createContext();
 
@@ -36,6 +37,15 @@ function CustomerView(props) {
       localStorage.setItem("wishlist", JSON.stringify(products || {}));
     }
   };
+
+  const getTemporaryUser = async () => {
+    const id = await getTemporaryUserId();
+    id && localStorage.setItem("customer-temporary-token", id);
+  };
+
+  useEffect(() => {
+    getTemporaryUser();
+  }, []);
 
   useEffect(() => {
     getUserWishlist();

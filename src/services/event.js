@@ -20,3 +20,21 @@ export function addEvent(event) {
       }
     });
 }
+
+export function getTemporaryUserId() {
+  return http
+    .get(`${apiEndPoint}/user`)
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      if (error.response.data) {
+        console.log(error.response.data);
+      }
+      if (error.response) {
+        console.log(error.response);
+      } else {
+        console.log(error);
+      }
+    });
+}

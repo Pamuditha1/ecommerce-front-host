@@ -51,13 +51,22 @@ export const getCurrentUser = async () => {
   const jwt = localStorage.getItem("customer-token");
   if (jwt) user = jwtDecode(jwt);
 
-  let userData;
+  let userId;
+
+  let userData = {
+    userAgeGroup: null,
+    userId: null,
+  };
   let ageGroup = null;
   if (user) {
-    userData = await getCustomerById(user?._id);
+    let userD = await getCustomerById(user?._id);
+    userData = { ...userData, ...userD };
     if (userData?.dob) {
       ageGroup = getUserAgeGroup(userData.dob);
     }
+  } else {
+    userId = localStorage.getItem("customer-temporary-token");
+    userData = { ...userData, _id: userId };
   }
 
   userData.userAgeGroup = ageGroup;
