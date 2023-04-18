@@ -165,7 +165,7 @@ const ProductModal = ({ isModalOpen, setisModalOpen, product, addtoCart }) => {
     let enter = moment(mouseEnter);
     let diff = leave.diff(enter, "seconds");
 
-    if (diff === 0) return;
+    // if (diff === 0) return;
     const event = await generateEvent(product, EVENT_TYPES.VIEW, diff);
     const res = await addEvent(event);
     console.log("view event", event);
