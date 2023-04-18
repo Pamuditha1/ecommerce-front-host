@@ -1,6 +1,5 @@
 const PORT = 3002;
-const PRODUCTION_API =
-  process.env.API || "https://research-ecommerce-back.onrender.com/api";
+const PRODUCTION_API = process.env.REACT_APP_API
 const DEVELOPMENT_API = `http://localhost:${PORT}/api`;
 
 export const api =
